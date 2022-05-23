@@ -1,10 +1,10 @@
 <template>
-
+  <div>I am login</div>
 </template>
 
 <script>
 export default {
-  name: "BottomBar"
+  name: "LoginView"
 }
 </script>
 

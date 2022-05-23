@@ -1,14 +1,17 @@
 <template>
-  <HelloWorld/>
+  <NavigationBar></NavigationBar>
+  <router-view></router-view>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import NavigationBar from "@/components/NavigationBar";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NavigationBar: NavigationBar
   }
 }
 </script>
@@ -20,5 +23,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #f0f0f0;
+  text-decoration: none;
+  height: 100vh;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: inherit;
+  margin: 10px 20px 10px 20px;
 }
 </style>
