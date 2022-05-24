@@ -1,7 +1,6 @@
 package com.example.packend.controller;
 
 import com.example.packend.dto.TerminDto;
-import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.entities.CancellationUrl;
 import com.example.packend.entities.Termin;
 import com.example.packend.mapper.TerminToDtoMapper;
@@ -92,9 +91,7 @@ public class TerminController {
         System.out.println(data);
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
 
-        Beratungsstelle beratungsstelle = data.getBeratungsstelle();
-
-        emailService.sendeTerminbestaetigung(data, beratungsstelle, cancellationUrl);
+        emailService.sendeTerminbestaetigung(data, cancellationUrl);
         terminRepository.save(data);
 
         return "This works!";

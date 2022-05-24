@@ -8,6 +8,7 @@
         <th scope="col">Termin</th>
         <th scope="col">Email</th>
         <th scope="col">Details</th>
+        <th scope="col">Absagen</th>
       </tr>
       </thead>
       <tbody>
@@ -18,10 +19,43 @@
         <td>
           <router-link to="/appointment/{{appointment.id}}">zum Termin</router-link>
         </td>
+        <td>
+          <button class="btn btn-danger px-2 py-0" data-target="#myModal" data-toggle="modal"
+                  type="button"
+                  v-on:click="saveAppointment(appointment)">x
+          </button>
+        </td>
       </tr>
       </tbody>
     </table>
     <div v-if="allAppointments.length <= 0" class="col-lg-6">Derzeit gibt es keine Termine.</div>
+  </div>
+
+  <!-- Modal -->
+  <div v-if="selectedAppointment !== null" id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <h4 class="modal-title">Termin absagen</h4>
+        </div>
+        <div class="modal-body">
+          <div>Möchten Sie diesen Termin wirklich absagen?</div>
+          <div class="my-4">{{ selectedAppointment.formatDateToGermanLocale() }} {{ selectedAppointment.uhrzeit }} Uhr
+          </div>
+          <div>{{ selectedAppointment.vorname }} {{ selectedAppointment.nachname }}</div>
+          <div class="mt-4">Der Kunde wird über die Terminabsage per E-Mail benachrichtigt.</div>
+          <div>Diese Aktion kann nicht rückgängig gemacht werden.</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-dismiss="modal" type="button">Abbrechen</button>
+          <button class="btn btn-danger" data-dismiss="modal" type="button" v-on:click="cancelAppointment">Ja, absagen
+          </button>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -33,16 +67,29 @@ export default {
   data: function () {
     return {
       allAppointments: [],
+      selectedAppointment: null
     }
   },
   methods: {
     async getAppointments() {
       this.allAppointments = await TerminService.getAllAppointments();
+    },
+    saveAppointment(appointment) {
+      this.selectedAppointment = appointment;
+    },
+    async cancelAppointment() {
+      await TerminService.cancelAppointment(this.selectedAppointment.id)
+      await this.getAppointments();
+
     }
   },
   beforeMount: function () {
     this.getAppointments();
   },
+  errorCaptured: function (err) {
+    console.log(err)
+    this.$router.push("/")
+  }
 }
 </script>
 
