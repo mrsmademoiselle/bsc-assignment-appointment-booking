@@ -8,7 +8,7 @@ import com.example.packend.mapper.TerminToDtoMapper;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.CancellationLinkRepository;
 import com.example.packend.repositories.TerminRepository;
-import com.example.packend.services.EmailService;
+import com.example.packend.services.mail.EmailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +48,7 @@ public class ExampleController {
         try {
             List<JsonNode> alleTerminDtos = new ArrayList<>();
             for (Termin termin : all) {
-                Beratungsstelle beratungsstelle = beratungsstellenRepository.findById(termin.getBeratungsstellenId())
-                        .orElseThrow(() -> new RuntimeException("Termin hat keine Beratungsstelle!"));
-                JsonNode node = objectMapper.valueToTree(terminToDtoMapper.terminToDto(termin, beratungsstelle));
+                JsonNode node = objectMapper.valueToTree(terminToDtoMapper.terminToDto(termin));
                 alleTerminDtos.add(node);
                 System.out.println(node);
             }
@@ -77,9 +75,8 @@ public class ExampleController {
         try {
             if (terminOptional.isPresent()) {
                 Termin termin = terminOptional.get();
-                Beratungsstelle beratungsstelle = beratungsstellenRepository.findById(termin.getBeratungsstellenId())
-                        .orElseThrow(() -> new RuntimeException("Termin hat keine Beratungsstelle!"));
-                TerminDto terminDto = terminToDtoMapper.terminToDto(termin, beratungsstelle);
+
+                TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
                 return ResponseEntity.ok(terminDto);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -95,8 +92,7 @@ public class ExampleController {
         System.out.println(data);
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
         try {
-            Beratungsstelle beratungsstelle = beratungsstellenRepository.findById(data.getBeratungsstellenId())
-                    .orElseThrow(() -> new RuntimeException("Termin hat keine Beratungsstelle!"));
+            Beratungsstelle beratungsstelle = data.getBeratungsstelle();
 
             emailService.sendeTerminbestaetigung(data, beratungsstelle, cancellationUrl);
             terminRepository.save(data);
@@ -116,9 +112,8 @@ public class ExampleController {
                 System.out.println(cancellationUrlOptional.get().getTerminId());
                 if (terminOptional.isPresent()) {
                     Termin termin = terminOptional.get();
-                    Beratungsstelle beratungsstelle = beratungsstellenRepository.findById(termin.getBeratungsstellenId())
-                            .orElseThrow(() -> new RuntimeException("Termin hat keine Beratungsstelle!"));
-                    TerminDto terminDto = terminToDtoMapper.terminToDto(termin, beratungsstelle);
+
+                    TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
                     return ResponseEntity.ok(terminDto);
                 } else {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);

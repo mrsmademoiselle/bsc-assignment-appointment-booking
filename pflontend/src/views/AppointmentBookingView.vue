@@ -111,7 +111,7 @@
     </div>
 
 
-    <button v-if="step > 1 && step <4" class="btn btn-secondary mx-2" type="button" v-on:click="previous">Zurück
+    <button v-if="step > 1 && step < 5" class="btn btn-secondary mx-2" type="button" v-on:click="previous">Zurück
     </button>
     <button v-if="step < 4" class="btn btn-primary mx-2" type="button" v-on:click="nextStep">Weiter</button>
     <button v-if="step === 4" class="btn btn-primary mx-2" type="button" v-on:click="submit">Buchen</button>

@@ -1,14 +1,13 @@
 package com.example.packend.mapper;
 
 import com.example.packend.dto.TerminDto;
-import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.entities.Termin;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TerminToDtoMapper {
 
-    public TerminDto terminToDto(Termin termin, Beratungsstelle beratungsstelle) {
+    public TerminDto terminToDto(Termin termin) {
         TerminDto terminDto = new TerminDto();
 
         terminDto.setId(termin.getId());
@@ -20,7 +19,7 @@ public class TerminToDtoMapper {
         terminDto.setBereitsMitglied(String.valueOf(termin.getKundeninformationen().isBereitsMitglied()));
         terminDto.setTelefon(termin.getKundeninformationen().getTelefon());
 
-        terminDto.setBeratungsstelle(beratungsstelle);
+        terminDto.setBeratungsstelle(termin.getBeratungsstelle());
 
         terminDto.setTerminerinnerungPerMail(termin.getTerminerinnerungPerMail());
         terminDto.setBemerkung(termin.getBemerkung());

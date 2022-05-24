@@ -3,9 +3,13 @@ package com.example.packend.dto;
 import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.enums.Terminerinnerung;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @Data
 public class TerminDto {

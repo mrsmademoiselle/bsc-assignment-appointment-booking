@@ -1,4 +1,4 @@
-package com.example.packend.services;
+package com.example.packend.services.mail;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

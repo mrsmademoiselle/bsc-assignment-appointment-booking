@@ -67,7 +67,7 @@ public class PackendApplication implements CommandLineRunner {
                     .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
                     .id(generateString())
                     .uhrzeit(LocalTime.of(i, i * 3))
-                    .beratungsstellenId(istEutin ? "1" : "2")
+                    .beratungsstelle(istEutin ? eutin : preetz)
                     .kundeninformationen(kundeninformationen).build();
 
 
