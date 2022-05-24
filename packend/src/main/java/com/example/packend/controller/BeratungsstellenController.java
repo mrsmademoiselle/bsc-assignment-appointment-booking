@@ -36,11 +36,11 @@ public class BeratungsstellenController {
         LOGGER.info("Calling getAllBeratungsstellen");
         List<Beratungsstelle> all = beratungsstellenRepository.findAll();
 
-        List<JsonNode> alleBeratungsstellen = new ArrayList<>();
+        List<JsonNode> beratungsstellenAlsJsonList = new ArrayList<>();
         for (Beratungsstelle beratungsstelle : all) {
-            alleBeratungsstellen.add(objectMapper.valueToTree(beratungsstelle));
+            beratungsstellenAlsJsonList.add(objectMapper.valueToTree(beratungsstelle));
         }
-        return ResponseEntity.ok(alleBeratungsstellen);
+        return ResponseEntity.ok(beratungsstellenAlsJsonList);
     }
 
     @GetMapping("/termingrund/get/all")

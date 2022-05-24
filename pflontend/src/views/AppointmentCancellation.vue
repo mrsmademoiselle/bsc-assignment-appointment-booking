@@ -1,5 +1,5 @@
 <template>
-  <div v-if="appointment != ''" class="mt-4">
+  <div v-if="appointment !== null" class="mt-4">
     <div class="h2 m-4">Terminabsage</div>
     <div class="mt-3 mb-4">Sind Sie sicher, dass Sie Ihren Termin am</div>
     <div class="h5 font-weight-bold">{{ appointment.formatDateToGermanLocale() }} um {{ appointment.uhrzeit }} Uhr</div>
@@ -25,7 +25,7 @@ export default {
   name: "AppointmentCancellation",
   data: function () {
     return {
-      appointment: "",
+      appointment: null,
       abgesagt: false,
       token: ""
     }
