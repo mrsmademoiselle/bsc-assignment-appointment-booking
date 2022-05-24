@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4">
+  <div v-if="appointment != ''" class="mt-4">
     <div class="h2 m-4">Terminabsage</div>
     <div class="my-4">Sind Sie sicher, dass Sie Ihren Termin vom</div>
     <div class="h4">{{ appointment.formatDateToGermanLocale() }} um {{ appointment.uhrzeit }} Uhr</div>
@@ -22,7 +22,7 @@ export default {
     return {
       appointment: "",
       abgesagt: false,
-      token: "";
+      token: ""
     }
   },
   methods: {
@@ -43,7 +43,7 @@ export default {
         this.appointment = await TerminService.getAppointmentForCancellationToken(this.token);
       } catch (e) {
         // TODO redirect zur Startseite mit Fehlermeldung
-        await this.$router.push('/login');
+        await this.$router.push("/");
       }
     }
   },

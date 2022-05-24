@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import {createRouter, createWebHistory} from "vue-router";
 import HomepageClient from "@/views/HomepageClientView";
-import AppointmentBooking from "@/views/AppointmentBookingView";
+import AppointmentBookingView from "@/views/AppointmentBookingView";
 import LoginView from "@/views/LoginView";
 import AppointmentOverview from "@/views/authenticated/AppointmentOverview";
 import AppointmentDetails from "@/views/authenticated/AppointmentDetails";
@@ -15,7 +15,7 @@ const routes = [
     {path: '/', component: AppointmentOverview},
     {path: '/home', component: HomepageClient},
     {path: '/login', component: LoginView},
-    {path: '/book-appointment', component: AppointmentBooking},
+    {path: '/book-appointment', component: AppointmentBookingView},
     {path: '/appointment/:id', component: AppointmentDetails},
     {path: '/appointment/cancel/:id', component: AppointmentCancellation},
 ]

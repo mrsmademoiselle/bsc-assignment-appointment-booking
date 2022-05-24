@@ -1,33 +1,36 @@
+import {Beratungsstelle} from "@/entity/Beratungsstelle";
+
 export class Appointment {
     constructor(json) {
         if (Appointment.isValidAppointment(json)) {
             console.log("is valid appointment!");
-
             this.id = json.id;
             this.vorname = json.vorname;
             this.nachname = json.nachname;
             this.email = json.email;
+            this.geschlecht = json.geschlecht;
             this.telefon = json.telefon;
-            this.ort = json.ort;
             this.bemerkung = json.bemerkung;
             this.terminerinnerungPerMail = json.terminerinnerungPerMail;
-            this.beratungsstelle = json.beratungsstelle;
+            this.beratungsstelle = new Beratungsstelle(json.beratungsstelle);
             this.bereitsMitglied = json.bereitsMitglied;
             this.beratungsgrund = json.beratungsgrund;
             this.ausgewaehlterTermin = json.ausgewaehlterTermin;
             this.uhrzeit = json.uhrzeit;
+        } else {
+            let e = {};
+            throw e;
         }
     }
+
 
     static isValidAppointment(jsonObject) {
         return this.hasField(jsonObject, "vorname") &&
             this.hasField(jsonObject, "nachname") &&
-            this.hasField(jsonObject, "id") &&
+            this.hasField(jsonObject, "geschlecht") &&
             this.hasField(jsonObject, "email") &&
             this.hasField(jsonObject, "telefon") &&
-            this.hasField(jsonObject, "ort") &&
             this.hasField(jsonObject, "bemerkung") &&
-            this.hasField(jsonObject, "beratungsstelle") &&
             this.hasField(jsonObject, "bereitsMitglied") &&
             this.hasField(jsonObject, "beratungsgrund") &&
             this.hasField(jsonObject, "ausgewaehlterTermin") &&

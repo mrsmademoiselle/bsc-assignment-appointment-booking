@@ -24,22 +24,20 @@ public class Termin {
     @Id
     @NotNull
     private String id;
-
     @Embedded
     private Kundeninformationen kundeninformationen;
-    @NotNull
-    private String ort;
+
     private String bemerkung;
     private Terminerinnerung terminerinnerungPerMail;
-    @Embedded
-    private Beratungsstelle beratungsstelle;
-
     @NotNull
     private Beratungsgrund beratungsgrund;
     @NotNull
     private LocalDate ausgewaehlterTermin;
     @NotNull
     private LocalTime uhrzeit;
+
+    @NotNull
+    private String beratungsstellenId;
 
     public String getId() {
         return id;

@@ -38,7 +38,6 @@ export default {
   methods: {
     async getAppointments() {
       this.allAppointments = await TerminService.getAllAppointments();
-      console.log("total appointments:", this.allAppointments.length)
     }
   },
   beforeMount: function () {

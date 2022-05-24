@@ -2,15 +2,17 @@ import myApi from "@/services/myApi";
 import {Appointment} from "@/entity/Appointment";
 
 export class TerminService {
+    static async getAlleBelegtenTermine() {
+        // TODO
+    }
 
     static async getAllAppointments() {
         let allAppointments = [];
         let data = (await myApi.get("example/get/all")).data;
-        console.log(data)
         data.forEach(appointment => {
-            allAppointments.push(new Appointment(appointment));
+            let appointment1 = new Appointment(appointment);
+            allAppointments.push(appointment1);
         });
-        console.log(allAppointments.length)
         return allAppointments;
     }
 
