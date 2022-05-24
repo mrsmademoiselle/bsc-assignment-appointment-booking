@@ -26,7 +26,7 @@ export default {
   methods: {
 
     getInitialData() {
-      myApi.get("example/get").then(response => this.msg = response.data)
+      myApi.get("public/termin/get").then(response => this.msg = response.data)
     }
   }, beforeMount: function () {
     this.getInitialData()

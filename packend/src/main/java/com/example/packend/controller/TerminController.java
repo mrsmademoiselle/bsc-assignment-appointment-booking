@@ -24,8 +24,8 @@ import java.util.Random;
 
 @Transactional
 @RestController
-@RequestMapping("/example")
-public class ExampleController {
+@RequestMapping("/public/termin")
+public class TerminController {
     @Autowired
     public EmailService emailService;
 

@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .cors().and()
                 // auth-header check fuer folgende Endpunkte deaktivieren
-                .authorizeRequests().antMatchers("/example/**", "/public/**").permitAll().
+                .authorizeRequests().antMatchers("/public/**").permitAll().
                 // Alle Anfragen an anderen Endpunkten werden ueberprueft
                         anyRequest().authenticated();
     }

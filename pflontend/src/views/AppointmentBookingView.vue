@@ -155,7 +155,7 @@ export default {
       return exampleTerminbuchung;
     },
     sendData() {
-      myApi.post("example/post", this.collectData()).then(response => this.responseMessage = response.data)
+      myApi.post("public/termin/post", this.collectData()).then(response => this.responseMessage = response.data)
     },
     nextStep() {
       this.step = this.step + 1;
