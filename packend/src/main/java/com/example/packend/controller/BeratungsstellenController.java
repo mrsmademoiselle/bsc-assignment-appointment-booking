@@ -1,6 +1,7 @@
 package com.example.packend.controller;
 
 import com.example.packend.entities.Beratungsstelle;
+import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,6 +49,12 @@ public class BeratungsstellenController {
     @GetMapping("/termingrund/get/all")
     public ResponseEntity<List<String>> getAllTermingruende() {
         Beratungsgrund[] values = Beratungsgrund.values();
-        return ResponseEntity.ok(Arrays.asList(values).stream().map(e -> e.getGrund()).collect(Collectors.toList()));
+        return ResponseEntity.ok(Arrays.stream(values).map(Beratungsgrund::getGrund).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/anrede/get/all")
+    public ResponseEntity<List<String>> getAllAnreden() {
+        Anrede[] values = Anrede.values();
+        return ResponseEntity.ok(Arrays.stream(values).map(Anrede::getAnrede).collect(Collectors.toList()));
     }
 }

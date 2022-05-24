@@ -59,7 +59,7 @@ public class PackendApplication implements CommandLineRunner {
                     .nachname("Loof")
                     .vorname("Claudia" + i)
                     .telefon("1234567" + i)
-                    .geschlecht(Anrede.FEMALE).build();
+                    .geschlecht(Anrede.DIVERSE).build();
             Termin termin = Termin.builder()
                     .ausgewaehlterTermin(LocalDate.of(2020, i, i))
                     .bemerkung(generateString())

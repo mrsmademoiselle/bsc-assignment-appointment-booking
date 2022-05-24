@@ -1,22 +1,25 @@
 {
-  "id": "ugv50qpwd3zoqhe0ojdp0eiaq1mryysus0k050m2",
-  "vorname": "Claudia1",
-  "nachname": "Loof",
-  "geschlecht": "Frau",
-  "email": "franziska.loof@web.de",
-  "telefon": "12345671",
-  "bereitsMitglied": "false",
-  "bemerkung": "aeu59tkdaxzj056emfoh6gi89u41rf6fc5momg34",
-  "terminerinnerungPerMail": "EINE_STUNDE",
-  "beratungsgrund": "BERATUNG",
-  "ausgewaehlterTermin": "2020-01-01",
-  "uhrzeit": "01:03",
+  "id": "12345",
+  "kundeninformationen": {
+    "vorname": "Pflanziska",
+    "nachname": "Pfloof",
+    "email": "franziska.loof@web.de",
+    "telefon": "1234567",
+    "ort": "hamburg",
+    "bereitsMitglied": "false",
+    "geschlecht": "DIVERSE"
+  },
+  "bemerkung": "null",
+  "terminerinnerungPerMail": "KEINE",
   "beratungsstelle": {
-    "id": "2",
-    "ansprechpartner": "Claudia Loof",
-    "hausnummer": "36",
-    "ort": "Eutin",
+    "id": "1",
+    "strasse": "Lübecker Straße",
     "plz": "23701",
-    "strasse": "Lübecker Straße"
-  }
+    "ansprechpartner": "Jannika Loof",
+    "hausnummer": "13",
+    "ort": "Eutin"
+  },
+  "beratungsgrund": "TELEFONTERMIN",
+  "ausgewaehlterTermin": "2017-01-13",
+  "uhrzeit": "14:00:00"
 }

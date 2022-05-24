@@ -3,7 +3,7 @@ import {Appointment} from "@/entity/Appointment";
 
 export class TerminService {
     static async getAlleBelegtenTermine() {
-        // TODO
+        return [];
     }
 
     static async getAllAppointments() {

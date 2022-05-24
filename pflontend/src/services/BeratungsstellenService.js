@@ -3,7 +3,8 @@ import {Beratungsstelle} from "@/entity/Beratungsstelle";
 
 export class BeratungsstellenService {
     static async getAlleAnreden() {
-        // TODO
+        let data = (await myApi.get("public/anrede/get/all")).data;
+        return data;
     }
 
     static async getAlleBeratungsstellen() {

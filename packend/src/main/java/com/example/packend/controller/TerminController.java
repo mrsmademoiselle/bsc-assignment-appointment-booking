@@ -91,14 +91,12 @@ public class TerminController {
         System.out.println("Post works!!");
         System.out.println(data);
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
-        try {
-            Beratungsstelle beratungsstelle = data.getBeratungsstelle();
 
-            emailService.sendeTerminbestaetigung(data, beratungsstelle, cancellationUrl);
-            terminRepository.save(data);
-        } catch (Exception e) {
-            return null;
-        }
+        Beratungsstelle beratungsstelle = data.getBeratungsstelle();
+
+        emailService.sendeTerminbestaetigung(data, beratungsstelle, cancellationUrl);
+        terminRepository.save(data);
+
         return "This works!";
     }
 

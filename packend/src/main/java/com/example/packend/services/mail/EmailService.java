@@ -3,6 +3,7 @@ package com.example.packend.services.mail;
 import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.entities.CancellationUrl;
 import com.example.packend.entities.Termin;
+import com.example.packend.enums.Anrede;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,8 +20,9 @@ public class EmailService {
         String beratungsstelleAlsText = beratungsstelle.getAnsprechpartner() + "\n"
                 + beratungsstelle.getStrasse() + " " + beratungsstelle.getHausnummer() + "\n"
                 + beratungsstelle.getPlz() + " " + beratungsstelle.getOrt();
+        String anrede = termin.getKundeninformationen().getGeschlecht().equals(Anrede.DIVERSE) ? "" : termin.getKundeninformationen().getGeschlecht().getAnrede();
         String text = String.format(template.getText(),
-                termin.getKundeninformationen().getGeschlecht().getAnrede(),
+                anrede,
                 termin.getKundeninformationen().buildFullName(),
                 termin.getAusgewaehlterTermin(),
                 termin.getUhrzeit(),

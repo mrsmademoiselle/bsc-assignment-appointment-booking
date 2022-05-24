@@ -2,7 +2,7 @@
   <form class="mt-5">
 
     <!-- Step1: Grund -->
-    <div v-if="step === 1" class="container">
+    <div v-if="step === 1 " class="container">
       <div>
         <div class="h5 my-4">1. Welche Beratungsstelle möchten Sie besuchen?</div>
         <div v-for="beratungsstelle in alleBeratungsstellen" :key="beratungsstelle.id"
@@ -60,9 +60,9 @@
       <div class="form-group row">
         <label class="col-3">Anrede:</label>
         <select v-model="kundeninformationen.anrede" class="custom-select col-6">
-          <option value="1">Frau</option>
-          <option value="2">Herr</option>
-          <option value="3">keine Angabe</option>
+          <option v-for="anrede in alleAnreden" :key="anrede" :value="anrede">
+            {{ anrede }}
+          </option>
         </select>
       </div>
       <div class="form-group row">
@@ -111,6 +111,7 @@
     </div>
 
 
+    <button class="btn btn-outline-primary mx-2" type="button" v-on:click="sendData">Fire Dummy Data</button>
     <button v-if="step > 1 && step < 5" class="btn btn-secondary mx-2" type="button" v-on:click="previous">Zurück
     </button>
     <button v-if="step < 4" class="btn btn-primary mx-2" type="button" v-on:click="nextStep">Weiter</button>
@@ -129,7 +130,7 @@ export default {
   data: function () {
     return {
       responseMessage: "No response yet.",
-      step: 3,
+      step: 1,
       alleBeratungsstellen: [],
       alleTermingruende: [],
       // "anonymisiert"
@@ -178,20 +179,20 @@ export default {
     async getApiInformation() {
       switch (this.step) {
         case 1:
-          if (this.alleBeratungsstellen === []) {
+          if (this.alleBeratungsstellen.length === 0) {
             this.alleBeratungsstellen = await BeratungsstellenService.getAlleBeratungsstellen();
           }
-          if (this.alleTermingruende === []) {
+          if (this.alleTermingruende.length === 0) {
             this.alleTermingruende = await BeratungsstellenService.getAlleTermingruende();
           }
           break;
         case 2:
-          if (this.alleBelegtenTermine === []) {
+          if (this.alleBelegtenTermine.length === 0) {
             this.alleBelegtenTermine = await TerminService.getAlleBelegtenTermine();
           }
           break;
         case 3:
-          if (this.alleAnreden === []) {
+          if (this.alleAnreden.length === 0) {
             this.alleAnreden = await BeratungsstellenService.getAlleAnreden();
           }
           break;
