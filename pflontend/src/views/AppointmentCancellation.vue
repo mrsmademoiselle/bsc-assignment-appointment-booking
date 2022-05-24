@@ -1,10 +1,15 @@
 <template>
   <div v-if="appointment != ''" class="mt-4">
     <div class="h2 m-4">Terminabsage</div>
-    <div class="my-4">Sind Sie sicher, dass Sie Ihren Termin vom</div>
-    <div class="h4">{{ appointment.formatDateToGermanLocale() }} um {{ appointment.uhrzeit }} Uhr</div>
-    <div class="h4">{{ appointment.beratungsstelle.id }}</div>
-    <div class="mt-4"> absagen möchten?</div>
+    <div class="mt-3 mb-4">Sind Sie sicher, dass Sie Ihren Termin am</div>
+    <div class="h5 font-weight-bold">{{ appointment.formatDateToGermanLocale() }} um {{ appointment.uhrzeit }} Uhr</div>
+    <div class="my-4">in der Beratungsstelle</div>
+    <div class="h5 mt-4 font-weight-bold">{{ appointment.beratungsstelle.ansprechpartner }}</div>
+    <div class="h5 font-weight-bold">{{ appointment.beratungsstelle.strasse }}
+      {{ appointment.beratungsstelle.hausnummer }}
+    </div>
+    <div class="h5 font-weight-bold">{{ appointment.beratungsstelle.plz }} {{ appointment.beratungsstelle.ort }}</div>
+    <div class="mt-4 pb-4"> absagen möchten?</div>
     <div class="my-4 justify-content-center d-flex">
       <button class="btn btn-secondary col-2 mx-2" v-on:click="$router.push('/')">Nein, abbrechen</button>
       <button class="btn btn-primary col-2 mx-2" v-on:click="cancelAppointment">Ja, absagen</button>
