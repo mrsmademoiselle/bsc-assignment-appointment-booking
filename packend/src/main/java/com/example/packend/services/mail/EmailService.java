@@ -4,6 +4,8 @@ import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.entities.CancellationUrl;
 import com.example.packend.entities.Termin;
 import com.example.packend.enums.Anrede;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,37 +14,48 @@ import org.springframework.stereotype.Service;
 
 @Service("EmailService")
 public class EmailService {
-    @Value("spring.mail.username")
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    @Value("${spring.mail.username}")
     String from;
-    @Value("spring.mail.cc")
+    @Value("${spring.mail.cc}")
     String cc;
-    @Autowired
     private SimpleMailMessage terminbestaetigung;
-    @Autowired
     private SimpleMailMessage terminabsage;
-    @Autowired
     private JavaMailSender emailSender;
 
+    @Autowired
+    public EmailService(SimpleMailMessage terminbestaetigung, SimpleMailMessage terminabsage, JavaMailSender emailSender) {
+        this.terminbestaetigung = terminbestaetigung;
+        this.terminabsage = terminabsage;
+        this.emailSender = emailSender;
+    }
+
     public void sendeTerminbestaetigung(Termin termin, CancellationUrl cancellationUrl) {
+
+        LOGGER.info("Calling sendeTerminbestaetigung");
         String text = String.format(terminbestaetigung.getText(),
                 getOffizielleAnrede(termin),
                 termin.getKundeninformationen().buildFullName(),
                 termin.getAusgewaehlterTermin(),
                 termin.getUhrzeit(),
                 getBeratungsstelleFooter(termin),
-                cancellationUrl.entireUrl(), getBeratungsstelleFooter(termin));
+                cancellationUrl.entireUrl(),
+                getBeratungsstelleFooter(termin));
         sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminbestätigung", text, terminbestaetigung);
     }
 
 
     public void sendeTerminabsage(Termin termin) {
+        LOGGER.info("Calling sendeTerminabsage");
+
         String text = String.format(terminabsage.getText(),
                 getOffizielleAnrede(termin),
                 termin.getKundeninformationen().buildFullName(),
                 termin.getAusgewaehlterTermin(),
                 termin.getUhrzeit(),
                 getBeratungsstelleFooter(termin),
-                "http://localhost:8080/book-appointment", getBeratungsstelleFooter(termin));
+                "http://localhost:8080/book-appointment",
+                getBeratungsstelleFooter(termin));
         sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminabsage", text, terminabsage);
     }
 
@@ -53,7 +66,13 @@ public class EmailService {
         template.setText(text);
         // TODO replace with vlh
         template.setCc(cc);
-        emailSender.send(template);
+
+        try {
+            emailSender.send(template);
+            LOGGER.info("Sending email with subject " + subject + " to " + to + ", " + cc);
+        } catch (Exception e) {
+            LOGGER.error("Mail sending failed! Mail with subject " + subject + " to " + to + ", " + cc);
+        }
     }
 
     private String getOffizielleAnrede(Termin termin) {

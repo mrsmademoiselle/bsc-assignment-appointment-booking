@@ -105,7 +105,6 @@
             <version>3.4.1</version>
             <scope>test</scope>
         </dependency>
-
         <!-- com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
         Java 8 date/time type `java.time.LocalDate` not supported by default: a
         dd Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling (through reference chain:

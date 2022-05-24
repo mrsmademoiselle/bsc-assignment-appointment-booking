@@ -6,8 +6,9 @@ import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/public")
 public class BeratungsstellenController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeratungsstellenController.class);
 
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
@@ -31,30 +33,32 @@ public class BeratungsstellenController {
 
     @GetMapping("/beratungsstellen/get/all")
     public ResponseEntity<List<JsonNode>> getAllBeratungsstellen() {
-        System.out.println("getAllBeratungsstellen works!");
+        LOGGER.info("Calling getAllBeratungsstellen");
         List<Beratungsstelle> all = beratungsstellenRepository.findAll();
 
-        try {
-            List<JsonNode> alleberatungsstellen = new ArrayList<>();
-            for (Beratungsstelle beratungsstelle : all) {
-                alleberatungsstellen.add(objectMapper.valueToTree(beratungsstelle));
-            }
-            return ResponseEntity.ok(alleberatungsstellen);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        List<JsonNode> alleBeratungsstellen = new ArrayList<>();
+        for (Beratungsstelle beratungsstelle : all) {
+            alleBeratungsstellen.add(objectMapper.valueToTree(beratungsstelle));
         }
+        return ResponseEntity.ok(alleBeratungsstellen);
     }
 
     @GetMapping("/termingrund/get/all")
     public ResponseEntity<List<String>> getAllTermingruende() {
+        LOGGER.info("Calling getAllTermingruende");
+
         Beratungsgrund[] values = Beratungsgrund.values();
-        return ResponseEntity.ok(Arrays.stream(values).map(Beratungsgrund::getGrund).collect(Collectors.toList()));
+        return ResponseEntity.ok(Arrays.stream(values)
+                .map(Beratungsgrund::getGrund)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/anrede/get/all")
     public ResponseEntity<List<String>> getAllAnreden() {
+        LOGGER.info("Calling getAllAnreden");
         Anrede[] values = Anrede.values();
-        return ResponseEntity.ok(Arrays.stream(values).map(Anrede::getAnrede).collect(Collectors.toList()));
+        return ResponseEntity.ok(Arrays.stream(values)
+                .map(Anrede::getAnrede)
+                .collect(Collectors.toList()));
     }
 }

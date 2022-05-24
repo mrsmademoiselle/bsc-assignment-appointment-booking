@@ -10,6 +10,8 @@ import com.example.packend.repositories.TerminRepository;
 import com.example.packend.services.mail.EmailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +27,9 @@ import java.util.Random;
 @RestController
 @RequestMapping("/public/termin")
 public class TerminController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TerminController.class);
     @Autowired
     public EmailService emailService;
-
     @Autowired
     TerminRepository terminRepository;
     @Autowired
@@ -38,39 +40,24 @@ public class TerminController {
     TerminToDtoMapper terminToDtoMapper;
     ObjectMapper objectMapper = new ObjectMapper();
 
-
     @GetMapping("/get/all")
     public ResponseEntity<List<JsonNode>> getAll() {
-        System.out.println("Get all works!");
+        LOGGER.info("Calling getAll");
         List<Termin> all = terminRepository.findAll();
 
-        try {
-            List<JsonNode> alleTerminDtos = new ArrayList<>();
-            for (Termin termin : all) {
-                JsonNode node = objectMapper.valueToTree(terminToDtoMapper.terminToDto(termin));
-                alleTerminDtos.add(node);
-                System.out.println(node);
-            }
-            return ResponseEntity.ok(alleTerminDtos);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        List<JsonNode> alleTerminDtos = new ArrayList<>();
+        for (Termin termin : all) {
+            JsonNode node = objectMapper.valueToTree(terminToDtoMapper.terminToDto(termin));
+            alleTerminDtos.add(node);
         }
-    }
-
-    @GetMapping("/get")
-    public String getMe() {
-        System.out.println("getMe works!");
-        return "It works!";
+        return ResponseEntity.ok(alleTerminDtos);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<TerminDto> getById(@PathVariable String id) {
-        System.out.println("getById works! id:" + id);
+        LOGGER.info("Calling getById");
 
         Optional<Termin> terminOptional = terminRepository.findById(id);
-
-        System.out.println("is there: " + terminOptional.isPresent());
         try {
             if (terminOptional.isPresent()) {
                 Termin termin = terminOptional.get();
@@ -86,9 +73,8 @@ public class TerminController {
     }
 
     @PostMapping("/post")
-    public String postMe(@RequestBody Termin data) {
-        System.out.println("Post works!!");
-        System.out.println(data);
+    public String saveTermin(@RequestBody Termin data) {
+        LOGGER.info("Calling saveTermin with data " + data.toString());
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
 
         emailService.sendeTerminbestaetigung(data, cancellationUrl);
@@ -99,33 +85,34 @@ public class TerminController {
 
     @GetMapping("/cancel/{token}")
     public ResponseEntity<TerminDto> getByCancellationToken(@PathVariable String token) {
+        LOGGER.info("Calling getByCancellationToken with token " + token);
+
         Optional<CancellationUrl> cancellationUrlOptional = cancellationLinkRepository.findByToken(token);
 
-        try {
-            if (cancellationUrlOptional.isPresent()) {
-                Optional<Termin> terminOptional = terminRepository.findById(cancellationUrlOptional.get().getTerminId());
-                System.out.println(cancellationUrlOptional.get().getTerminId());
-                if (terminOptional.isPresent()) {
-                    Termin termin = terminOptional.get();
+        if (cancellationUrlOptional.isPresent()) {
+            Optional<Termin> terminOptional = terminRepository.findById(cancellationUrlOptional.get().getTerminId());
+            if (terminOptional.isPresent()) {
+                Termin termin = terminOptional.get();
 
-                    TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
-                    return ResponseEntity.ok(terminDto);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
+                TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
+                return ResponseEntity.ok(terminDto);
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                LOGGER.warn("No Appointment has been found for token " + token);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            LOGGER.warn("The CancellationToken does not exist.");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
     }
 
     @PostMapping("/cancel/{id}")
     public ResponseEntity<String> cancelAppointment(@PathVariable String id) {
+        LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
+
         Optional<Termin> terminOptional = terminRepository.findById(id);
         if (terminOptional.isPresent()) {
-
             // remove cancellationUrl
             cancellationLinkRepository.deleteByTerminId(id);
             // remove appointment
@@ -135,6 +122,7 @@ public class TerminController {
 
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
+            LOGGER.info("No appointment has been found for id " + id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
