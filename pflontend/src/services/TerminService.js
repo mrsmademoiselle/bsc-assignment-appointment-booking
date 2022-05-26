@@ -6,6 +6,10 @@ export class TerminService {
         return [];
     }
 
+    static async getAlleVerfuegbarenUhrzeiten() {
+        return (await myApi.get("public/admin/uhrzeiten/get/all")).data;
+    }
+
     static async getAllAppointments() {
         let allAppointments = [];
         let data = (await myApi.get("public/termin/get/all")).data;

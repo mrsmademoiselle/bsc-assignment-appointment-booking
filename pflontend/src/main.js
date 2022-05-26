@@ -10,6 +10,10 @@ import AppointmentOverview from "@/views/authenticated/AppointmentOverview";
 import AppointmentDetails from "@/views/authenticated/AppointmentDetails";
 import AppointmentCancellation from "@/views/AppointmentCancellation";
 
+
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 // 2. Define some routes
 const routes = [
     {path: '/', component: AppointmentOverview},
@@ -29,4 +33,6 @@ const router = createRouter({
 
 const app = createApp(App)
 app.use(router)
+// eslint-disable-next-line vue/multi-word-component-names
+app.component('Datepicker', Datepicker);
 app.mount("#app");

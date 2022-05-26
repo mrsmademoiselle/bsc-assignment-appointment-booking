@@ -7,7 +7,7 @@
         <div class="h5 my-4">1. Welche Beratungsstelle möchten Sie besuchen?</div>
         <div v-for="beratungsstelle in alleBeratungsstellen" :key="beratungsstelle.id"
              class="form-check row">
-          <input id="beratungsstelle" v-model="beratungsstellenId" :value="beratungsstelle.id" checked
+          <input id="beratungsstelle" v-model="termin.beratungsstelle" :value="beratungsstelle" checked
                  class="form-check-input"
                  name="exampleRadios" type="radio">
           <label class="form-check-label" for="beratungsstelle">
@@ -17,13 +17,13 @@
         <div>
           <div class="h5 mt-4">2. Sind Sie bereits Mitglied der VLH?</div>
           <div class="form-check form-check-inline">
-            <input id="ja" v-model="kundeninformationen.bereitsMitglied" :value="true" class="form-check-input"
+            <input id="ja" v-model="termin.kundeninformationen.bereitsMitglied" :value="true" class="form-check-input"
                    name="inlineRadioOptions"
                    type="radio">
             <label class="form-check-label" for="ja">ja</label>
           </div>
           <div class="form-check form-check-inline">
-            <input id="nein" v-model="kundeninformationen.bereitsMitglied" :value="false"
+            <input id="nein" v-model="termin.kundeninformationen.bereitsMitglied" :value="false"
                    class="form-check-input"
                    name="inlineRadioOptions" type="radio">
             <label class="form-check-label" for="nein">nein</label>
@@ -31,7 +31,7 @@
         </div>
         <div class="h5 mt-4">Worum geht es bei Ihrem Termin?</div>
         <div v-for="tg in alleTermingruende" :key="tg" class="form-check my-2">
-          <input id="termingrund" v-model="termingrund" :value="tg" checked
+          <input id="termingrund" v-model="termin.termingrund" :value="tg" checked
                  class="form-check-input"
                  name="exampleRadios" type="radio">
           <label class="form-check-label" for="termingrund">
@@ -43,14 +43,29 @@
 
     <!-- Step2: Termin -->
     <div v-if="step === 2" class="container">
-      <div class="h4">Wählen Sie einen Termin aus, der Ihnen passt.</div>
-      <div class="row justify-content-center">
-        <div class="col">Calendar</div>
+      <div class="h4 mb-4">Wählen Sie einen Termin aus, der Ihnen passt.</div>
+      <div class="row justify-content-center bg-light rounded border">
+        <div class="col-5 my-4 mx-4">
+          <Datepicker v-model="termin.ausgewaehlterTermin" :disabledDates="alleBelegtenTermine"
+                      :enableTimePicker="false"
+                      :yearRange="verfuegbareJahre"
+                      autoApply
+                      class="mx-4 px-4" inline
+                      name="date"></Datepicker>
+        </div>
         <div class="col">
-          <!-- TODO Alle Termine ziehen und darstellen-->
-          <input id="uhrzeit" v-model="uhrzeit" checked
-                 class="form-check-input" type="radio">
-          <label class="form-check-label" for="uhrzeit">Uhrzeit 1</label>
+          <div class="h5 mt-4">{{
+              this.termin.ausgewaehlterTermin !== null
+                  ? "Ausgewähltes Datum: " + this.termin.ausgewaehlterTermin.toLocaleDateString("de-DE")
+                  : "Bitte wählen Sie ein Datum aus."
+            }}
+          </div>
+          <div v-if="this.termin.ausgewaehlterTermin !== null">
+            <!-- TODO Alle Termine ziehen und darstellen-->
+            <input id="uhrzeit" v-model="termin.uhrzeit" checked
+                   class="form-check-input" type="radio">
+            <label class="form-check-label" for="uhrzeit">Uhrzeit 1</label>
+          </div>
         </div>
       </div>
     </div>
@@ -59,7 +74,7 @@
     <div v-if="step === 3" class="container">
       <div class="form-group row">
         <label class="col-3">Anrede:</label>
-        <select v-model="kundeninformationen.anrede" class="custom-select col-6">
+        <select v-model="termin.kundeninformationen.anrede" class="custom-select col-6">
           <option v-for="anrede in alleAnreden" :key="anrede" :value="anrede">
             {{ anrede }}
           </option>
@@ -67,30 +82,32 @@
       </div>
       <div class="form-group row">
         <label class="col-3" for="vorname">Vorname:</label>
-        <input id="vorname" v-model="kundeninformationen.vorname" class="form-control col-6" placeholder="Vorname"
+        <input id="vorname" v-model="termin.kundeninformationen.vorname" class="form-control col-6"
+               placeholder="Vorname"
                type="text">
       </div>
       <div class="form-group row">
         <label class="col-3" for="nachname">Nachname:</label>
-        <input id="nachname" v-model="kundeninformationen.nachname" class="form-control col-6" placeholder="Nachname"
+        <input id="nachname" v-model="termin.kundeninformationen.nachname" class="form-control col-6"
+               placeholder="Nachname"
                type="text">
       </div>
       <div class="form-group row">
         <label class="col-3" for="telefon">Telefon:</label>
-        <input id="telefon" v-model="kundeninformationen.telefon" class="form-control col-6"
+        <input id="telefon" v-model="termin.kundeninformationen.telefon" class="form-control col-6"
                placeholder="01234 56789"
                type="text">
       </div>
       <div class="form-group row">
         <label class="col-3" for="email">E-Mail:</label>
-        <input id="email" v-model="kundeninformationen.email" class="form-control col-6" placeholder="max@mustermann.de"
+        <input id="email" v-model="termin.kundeninformationen.email" class="form-control col-6"
+               placeholder="max@mustermann.de"
                type="email">
       </div>
       <div class="form-group row">
         <label class="col-3" for="bemerkung">Bemerkung:</label>
-        <textarea id="bemerkung" v-model="kundeninformationen.bemerkung" class="form-control col-6"
-                  placeholder="Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!"
-                  type="bemerkung"></textarea>
+        <textarea id="bemerkung" v-model="termin.kundeninformationen.bemerkung" class="form-control col-6"
+                  placeholder="Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!"></textarea>
       </div>
     </div>
 
@@ -98,9 +115,9 @@
     <div v-if="step === 4" class="container">
       <div class="h4">Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit "Buchen".</div>
       <div class="form-group my-4">
-        <div class="col-6" for="vorname">Anrede: {{ this.kundeninformationen.anrede }}</div>
-        <div class="col-6" for="vorname">Vorname: {{ this.kundeninformationen.vorname }}</div>
-        <div class="col-6" for="vorname">Nachname: {{ this.kundeninformationen.nachname }}</div>
+        <div class="col-6">Anrede: {{ this.termin.kundeninformationen.anrede }}</div>
+        <div class="col-6">Vorname: {{ this.termin.kundeninformationen.vorname }}</div>
+        <div class="col-6">Nachname: {{ this.termin.kundeninformationen.nachname }}</div>
         <!-- ... -->
       </div>
     </div>
@@ -124,31 +141,49 @@ import exampleTerminbuchung from "../assets/exampleData.json";
 import myApi from "@/services/myApi";
 import {BeratungsstellenService} from "@/services/BeratungsstellenService";
 import {TerminService} from "@/services/TerminService";
+import Datepicker from '@vuepic/vue-datepicker';
 
 export default {
   name: "AppointmentBookingView",
+  components: {Datepicker},
   data: function () {
     return {
+      // Data to API
+      termin: {
+        termingrund: null,
+        uhrzeit: null,
+        ausgewaehlterTermin: null,
+        bemerkung: "",
+        beratungsstelle: null,
+        kundeninformationen: {
+          vorname: null,
+          nachname: null,
+          ort: null,
+          plz: null,
+          bereitsMitglied: false,
+          anrede: null
+        },
+      },
+      step: 2,
       responseMessage: "No response yet.",
-      step: 1,
+
+      // Data from API
       alleBeratungsstellen: [],
       alleTermingruende: [],
       // "anonymisiert"
       alleBelegtenTermine: [],
       alleAnreden: [],
-      kundeninformationen: {
-        vorname: null,
-        nachname: null,
-        ort: null,
-        plz: null,
-        bereitsMitglied: false,
-        anrede: null
-      },
-      beratungsstellenId: null,
-      termingrund: null,
-      uhrzeit: null,
-      datum: null
+      alleVerfuegbarenUhrzeiten: [],
+
+
+      verfuegbareUhrzeitenFuerDatum: [],
+      verfuegbareJahre: []
     }
+  },
+  watch: {
+    date(value) {
+      this.verfuegbareUhrzeitenFuerDatum = this.getVerfuegbareUhrzeiten(value);
+    },
   },
   methods: {
 
@@ -172,6 +207,11 @@ export default {
       this.step = this.step + 1;
       alert("submitted!")
     },
+    getVerfuegbareUhrzeiten(date) {
+      // TODO
+      alert("changing uhrzeiten for " + date.toLocaleString());
+      return [];
+    },
     /**
      * Switch case to prevent the user from having to fetch all data when the view mounts.
      * Instead, the data is being fetched piece by piece whenever it is needed.
@@ -189,6 +229,8 @@ export default {
         case 2:
           if (this.alleBelegtenTermine.length === 0) {
             this.alleBelegtenTermine = await TerminService.getAlleBelegtenTermine();
+            this.alleVerfuegbarenUhrzeiten = await TerminService.getAlleVerfuegbarenUhrzeiten();
+            alert("alle Uhrzeiten: " + this.alleVerfuegbarenUhrzeiten);
           }
           break;
         case 3:
@@ -198,8 +240,14 @@ export default {
           break;
       }
     },
+    getVerfuegbareJahre() {
+      let date = new Date();
+      this.verfuegbareJahre = date.getMonth() >= 10 ? [date.getFullYear(), date.getFullYear() + 1] : [date.getFullYear()];
+
+    },
   }, beforeMount: function () {
     this.getApiInformation();
+    this.getVerfuegbareJahre();
   }
 }
 </script>
