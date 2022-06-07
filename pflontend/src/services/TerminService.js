@@ -2,12 +2,28 @@ import myApi from "@/services/myApi";
 import {Appointment} from "@/entity/Appointment";
 
 export class TerminService {
-    static async getAlleBelegtenTermine() {
-        return [];
+
+    /**
+     * Gibt ein Objekt zurück, das für jeden Tag eine Liste der verfügbaren Uhrzeiten beinhält.
+     * @returns {Promise<VerfuegbareUhrzeiten>}
+     */
+    static async getAlleVerfuegbarenUhrzeiten(date) {
+        if (date !== null) {
+            let verfuegbareUhrzeiten = [];
+
+            verfuegbareUhrzeiten = ((await (myApi.get("public/termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
+            alert(verfuegbareUhrzeiten)
+            return verfuegbareUhrzeiten;
+        }
     }
 
-    static async getAlleVerfuegbarenUhrzeiten() {
-        return (await myApi.get("public/admin/uhrzeiten/get/all")).data;
+    /**
+     * Gibt eine Liste von Datümern zurück, die komplett nicht auswählbar sind.
+     */
+    static async getKomplettBelegteDatuemer() {
+        let komplettBelegteDatuemer = [];
+        komplettBelegteDatuemer = ((await (myApi.get("public/termin/komplett-belegt/all/"))).data);
+        return komplettBelegteDatuemer;
     }
 
     static async getAllAppointments() {

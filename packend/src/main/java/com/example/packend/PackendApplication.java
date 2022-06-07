@@ -61,20 +61,37 @@ public class PackendApplication implements CommandLineRunner {
                     .telefon("1234567" + i)
                     .geschlecht(Anrede.DIVERSE).build();
             Termin termin = Termin.builder()
-                    .ausgewaehlterTermin(LocalDate.of(2020, i, i))
+                    .ausgewaehlterTermin(LocalDate.of(2022, i, i))
                     .bemerkung(generateString())
                     .beratungsgrund(Beratungsgrund.BERATUNG)
                     .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
                     .id(generateString())
-                    .uhrzeit(LocalTime.of(i, i * 3))
+                    .uhrzeit(LocalTime.of(i, 0))
                     .beratungsstelle(istEutin ? eutin : preetz)
                     .kundeninformationen(kundeninformationen).build();
-
 
             terminRepository.save(termin);
             istEutin = !istEutin;
         }
-
+        Kundeninformationen kundeninformationen = Kundeninformationen.builder()
+                .bereitsMitglied(istEutin)
+                .email("franziska.loof@web.de")
+                .nachname("Loof")
+                .vorname("Claudia")
+                .telefon("1234567")
+                .geschlecht(Anrede.DIVERSE).build();
+        for (int i = 9; i <= 18; i++) {
+            Termin termin = Termin.builder()
+                    .ausgewaehlterTermin(LocalDate.of(2022, 10, 10))
+                    .bemerkung(generateString())
+                    .beratungsgrund(Beratungsgrund.BERATUNG)
+                    .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
+                    .id(generateString())
+                    .uhrzeit(LocalTime.of(i, 0))
+                    .beratungsstelle(istEutin ? eutin : preetz)
+                    .kundeninformationen(kundeninformationen).build();
+            terminRepository.save(termin);
+        }
     }
 
     private String generateString() {

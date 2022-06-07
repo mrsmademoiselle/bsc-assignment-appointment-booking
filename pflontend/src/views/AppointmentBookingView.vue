@@ -47,10 +47,12 @@
       <div class="row justify-content-center bg-light rounded border">
         <div class="col-5 my-4 mx-4">
           <Datepicker v-model="termin.ausgewaehlterTermin" :disabledDates="alleBelegtenTermine"
+                      :disabledWeekDays="[6, 0]"
                       :enableTimePicker="false"
                       :yearRange="verfuegbareJahre"
                       autoApply
-                      class="mx-4 px-4" inline
+                      class="mx-4 px-4"
+                      inline locale="de"
                       name="date"></Datepicker>
         </div>
         <div class="col">
@@ -61,10 +63,15 @@
             }}
           </div>
           <div v-if="this.termin.ausgewaehlterTermin !== null">
-            <!-- TODO Alle Termine ziehen und darstellen-->
-            <input id="uhrzeit" v-model="termin.uhrzeit" checked
-                   class="form-check-input" type="radio">
-            <label class="form-check-label" for="uhrzeit">Uhrzeit 1</label>
+            <div v-for="verfuegbareUhrzeit in verfuegbareUhrzeitenFuerDatum" :key="verfuegbareUhrzeit">
+              <!-- TODO Alle Termine ziehen und darstellen-->
+              <input id="uhrzeit" v-model="termin.uhrzeit" checked
+                     class="form-check-input" type="radio">
+              <label class="form-check-label" for="uhrzeit">{{ verfuegbareUhrzeit }}
+                Uhr</label>
+              <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -173,16 +180,22 @@ export default {
       // "anonymisiert"
       alleBelegtenTermine: [],
       alleAnreden: [],
-      alleVerfuegbarenUhrzeiten: [],
-
 
       verfuegbareUhrzeitenFuerDatum: [],
       verfuegbareJahre: []
     }
   },
+  /**
+   * Beobachter für das Feld termin.ausgewaehlterTermin. Verändert sich der Wert durch einen Klick aus den Kalender,
+   * werden für dieses Datum die verfügbaren Uhrzeiten geparst und gesetzt.
+   *
+   *
+   * Als API-Aufruf, damit ich nicht im Vorhinein für alle Daten berechnen muss, welche Uhrzeiten belegt sind und welche nicht...
+   *
+   */
   watch: {
-    date(value) {
-      this.verfuegbareUhrzeitenFuerDatum = this.getVerfuegbareUhrzeiten(value);
+    'termin.ausgewaehlterTermin'(newValue) {
+      this.getAlleVerfuegbarenUhrzeiten(newValue);
     },
   },
   methods: {
@@ -207,11 +220,7 @@ export default {
       this.step = this.step + 1;
       alert("submitted!")
     },
-    getVerfuegbareUhrzeiten(date) {
-      // TODO
-      alert("changing uhrzeiten for " + date.toLocaleString());
-      return [];
-    },
+
     /**
      * Switch case to prevent the user from having to fetch all data when the view mounts.
      * Instead, the data is being fetched piece by piece whenever it is needed.
@@ -228,9 +237,7 @@ export default {
           break;
         case 2:
           if (this.alleBelegtenTermine.length === 0) {
-            this.alleBelegtenTermine = await TerminService.getAlleBelegtenTermine();
-            this.alleVerfuegbarenUhrzeiten = await TerminService.getAlleVerfuegbarenUhrzeiten();
-            alert("alle Uhrzeiten: " + this.alleVerfuegbarenUhrzeiten);
+            this.alleBelegtenTermine = await TerminService.getKomplettBelegteDatuemer();
           }
           break;
         case 3:
@@ -245,6 +252,10 @@ export default {
       this.verfuegbareJahre = date.getMonth() >= 10 ? [date.getFullYear(), date.getFullYear() + 1] : [date.getFullYear()];
 
     },
+    async getAlleVerfuegbarenUhrzeiten(datum) {
+      this.verfuegbareUhrzeitenFuerDatum = await TerminService.getAlleVerfuegbarenUhrzeiten(datum);
+
+    }
   }, beforeMount: function () {
     this.getApiInformation();
     this.getVerfuegbareJahre();

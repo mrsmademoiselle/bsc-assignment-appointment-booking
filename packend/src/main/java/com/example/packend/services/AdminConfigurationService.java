@@ -1,18 +1,23 @@
 package com.example.packend.services;
 
 import com.example.packend.config.VerfuegbareUhrzeitenConfiguration;
+import com.example.packend.dto.VerfuegbareUhrzeitenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AdminConfigurationService {
     @Autowired
     VerfuegbareUhrzeitenConfiguration verfuegbareUhrzeitenConfiguration;
 
-    public List<String> getAlleVerfuegbarenUhrzeiten() {
-        System.out.println(verfuegbareUhrzeitenConfiguration.getMontag());
-        return verfuegbareUhrzeitenConfiguration.getMontag();
+    public VerfuegbareUhrzeitenDto getAlleVerfuegbarenUhrzeiten() {
+        VerfuegbareUhrzeitenDto verfuegbareUhrzeitenDto = new VerfuegbareUhrzeitenDto();
+        verfuegbareUhrzeitenDto.setMontag(verfuegbareUhrzeitenConfiguration.getMontag());
+        verfuegbareUhrzeitenDto.setDienstag(verfuegbareUhrzeitenConfiguration.getDienstag());
+        verfuegbareUhrzeitenDto.setMittwoch(verfuegbareUhrzeitenConfiguration.getMittwoch());
+        verfuegbareUhrzeitenDto.setDonnerstag(verfuegbareUhrzeitenConfiguration.getDonnerstag());
+        verfuegbareUhrzeitenDto.setFreitag(verfuegbareUhrzeitenConfiguration.getFreitag());
+
+        return verfuegbareUhrzeitenDto;
     }
 }

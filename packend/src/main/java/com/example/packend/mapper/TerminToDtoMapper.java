@@ -2,9 +2,9 @@ package com.example.packend.mapper;
 
 import com.example.packend.dto.TerminDto;
 import com.example.packend.entities.Termin;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class TerminToDtoMapper {
 
     public TerminDto terminToDto(Termin termin) {
