@@ -1,10 +1,8 @@
 package com.example.packend.controller;
 
-import com.example.packend.dto.AnonymisierterTerminDto;
 import com.example.packend.dto.TerminDto;
 import com.example.packend.entities.CancellationUrl;
 import com.example.packend.entities.Termin;
-import com.example.packend.mapper.TerminToAnonymisierterTerminDtoMapper;
 import com.example.packend.mapper.TerminToDtoMapper;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.CancellationLinkRepository;
@@ -42,8 +40,6 @@ public class TerminController {
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
     TerminToDtoMapper terminToDtoMapper;
-    @Autowired
-    TerminToAnonymisierterTerminDtoMapper terminToAnonymisierterTerminDtoMapper;
 
     @Autowired
     TerminService terminService;
@@ -67,17 +63,6 @@ public class TerminController {
         return ResponseEntity.ok(komplettBelegteTage);
     }
 
-    @GetMapping("/get/all/anonymisiert")
-    public ResponseEntity<List<AnonymisierterTerminDto>> getAlleTermineAnonymisiert() {
-        LOGGER.info("Calling getAlleTermineAnonymisiert");
-
-        // TODO eventuell beschränken auf die nächsten 3 Monate? -> Admin Einstellung?
-        List<Termin> all = terminRepository.findAll();
-        List<AnonymisierterTerminDto> anonymisierterTerminDtos = terminToAnonymisierterTerminDtoMapper.mapToAnonymisierterTerminDto(all);
-
-        LOGGER.info("Found " + anonymisierterTerminDtos.size() + " Appointments.");
-        return ResponseEntity.ok(anonymisierterTerminDtos);
-    }
 
     @GetMapping("/get/all")
     public ResponseEntity<List<JsonNode>> getAll() {

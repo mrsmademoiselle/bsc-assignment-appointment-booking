@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Configuration
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:admin.configuration.properties")
-public class VerfuegbareUhrzeitenConfiguration {
+public class VerfuegbareUhrzeitenConfig {
     @Value("#{${montag}}")
     private List<String> montag;
     @Value("#{${dienstag}}")

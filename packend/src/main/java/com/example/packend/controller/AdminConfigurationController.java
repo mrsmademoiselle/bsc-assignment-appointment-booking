@@ -1,6 +1,6 @@
 package com.example.packend.controller;
 
-import com.example.packend.config.VerfuegbareUhrzeitenConfiguration;
+import com.example.packend.config.VerfuegbareUhrzeitenConfig;
 import com.example.packend.dto.VerfuegbareUhrzeitenDto;
 import com.example.packend.services.AdminConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,23 @@ public class AdminConfigurationController {
     @Autowired
     AdminConfigurationService adminConfigurationService;
 
+    /**
+     * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag abzurufen.
+     *
+     * @return
+     */
     @GetMapping("public/admin/uhrzeiten/get/all")
     public ResponseEntity<VerfuegbareUhrzeitenDto> getAlleVerfuegbarenTagesUhrzeiten() {
         return ResponseEntity.ok(adminConfigurationService.getAlleVerfuegbarenUhrzeiten());
     }
 
+    /**
+     * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag abzupassen..
+     *
+     * @return
+     */
     @PostMapping("admin/uhrzeiten/post")
-    public ResponseEntity<String> postSetzeVerfuegbareTagesUhrzeiten(@RequestBody VerfuegbareUhrzeitenConfiguration verfuegbareUhrzeitenConfiguration) {
+    public ResponseEntity<String> postSetzeVerfuegbareTagesUhrzeiten(@RequestBody VerfuegbareUhrzeitenConfig verfuegbareUhrzeitenConfiguration) {
         return ResponseEntity.ok("");
     }
 }

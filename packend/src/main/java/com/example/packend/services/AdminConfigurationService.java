@@ -1,6 +1,6 @@
 package com.example.packend.services;
 
-import com.example.packend.config.VerfuegbareUhrzeitenConfiguration;
+import com.example.packend.config.VerfuegbareUhrzeitenConfig;
 import com.example.packend.dto.VerfuegbareUhrzeitenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminConfigurationService {
     @Autowired
-    VerfuegbareUhrzeitenConfiguration verfuegbareUhrzeitenConfiguration;
+    VerfuegbareUhrzeitenConfig verfuegbareUhrzeitenConfiguration;
 
     public VerfuegbareUhrzeitenDto getAlleVerfuegbarenUhrzeiten() {
         VerfuegbareUhrzeitenDto verfuegbareUhrzeitenDto = new VerfuegbareUhrzeitenDto();

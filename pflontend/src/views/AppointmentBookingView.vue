@@ -9,7 +9,7 @@
              class="form-check row">
           <input id="beratungsstelle" v-model="termin.beratungsstelle" :value="beratungsstelle" checked
                  class="form-check-input"
-                 name="exampleRadios" type="radio">
+                 name="beratungsstelle" type="radio">
           <label class="form-check-label" for="beratungsstelle">
             {{ beratungsstelle.formatToReadableString() }}
           </label>
@@ -18,14 +18,14 @@
           <div class="h5 mt-4">2. Sind Sie bereits Mitglied der VLH?</div>
           <div class="form-check form-check-inline">
             <input id="ja" v-model="termin.kundeninformationen.bereitsMitglied" :value="true" class="form-check-input"
-                   name="inlineRadioOptions"
+                   name="bereitsMitglied"
                    type="radio">
             <label class="form-check-label" for="ja">ja</label>
           </div>
           <div class="form-check form-check-inline">
             <input id="nein" v-model="termin.kundeninformationen.bereitsMitglied" :value="false"
                    class="form-check-input"
-                   name="inlineRadioOptions" type="radio">
+                   name="bereitsMitglied" type="radio">
             <label class="form-check-label" for="nein">nein</label>
           </div>
         </div>
@@ -33,7 +33,7 @@
         <div v-for="tg in alleTermingruende" :key="tg" class="form-check my-2">
           <input id="termingrund" v-model="termin.termingrund" :value="tg" checked
                  class="form-check-input"
-                 name="exampleRadios" type="radio">
+                 name="termingrund" type="radio">
           <label class="form-check-label" for="termingrund">
             {{ tg }}
           </label>
@@ -65,8 +65,8 @@
           <div v-if="this.termin.ausgewaehlterTermin !== null">
             <div v-for="verfuegbareUhrzeit in verfuegbareUhrzeitenFuerDatum" :key="verfuegbareUhrzeit">
               <!-- TODO Alle Termine ziehen und darstellen-->
-              <input id="uhrzeit" v-model="termin.uhrzeit" checked
-                     class="form-check-input" type="radio">
+              <input id="uhrzeit" v-model="termin.uhrzeit" class="form-check-input"
+                     name="uhrzeit" type="radio">
               <label class="form-check-label" for="uhrzeit">{{ verfuegbareUhrzeit }}
                 Uhr</label>
               <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
@@ -119,13 +119,37 @@
     </div>
 
     <!-- Step4: Zusammenfassung -->
-    <div v-if="step === 4" class="container">
+    <div v-if="step === 4" class="container ">
+
       <div class="h4">Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit "Buchen".</div>
-      <div class="form-group my-4">
-        <div class="col-6">Anrede: {{ this.termin.kundeninformationen.anrede }}</div>
-        <div class="col-6">Vorname: {{ this.termin.kundeninformationen.vorname }}</div>
-        <div class="col-6">Nachname: {{ this.termin.kundeninformationen.nachname }}</div>
-        <!-- ... -->
+      <div class="bg-light rounded border mb-4 justify-content-center">
+        <div class="row">
+          <div class="form-group my-4 col-6">
+            <div class="col-6">Anrede: {{ this.termin.kundeninformationen.anrede }}</div>
+            <div class="col-6">Vorname: {{ this.termin.kundeninformationen.vorname }}</div>
+            <div class="col-6">Nachname: {{ this.termin.kundeninformationen.nachname }}</div>
+            <!-- ... -->
+          </div>
+          <div class="form-group my-4 col-6">
+            <div class="col-6">bereitsMitglied: {{ this.termin.kundeninformationen.bereitsMitglied }}</div>
+            <div class="col-6">Plz: {{ this.termin.kundeninformationen.plz }}</div>
+            <div class="col-6">Ort: {{ this.termin.kundeninformationen.ort }}</div>
+            <!-- ... -->
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="form-group my-4 col-6">
+            <div class="col-6">Termin: {{ this.termin.ausgewaehlterTermin }} {{ this.termin.uhrzeit }} Uhr</div>
+            <div class="col-6">beratungsstelle: {{ this.termin.beratungsstelle }}</div>
+
+          </div>
+          <div class="form-group my-4 col-6">
+            <div class="col-6">Termingrund: {{ this.termin.termingrund }}</div>
+            <div class="col-6">Bemerkung: {{ this.termin.bemerkung }}</div>
+
+          </div>
+        </div>
       </div>
     </div>
 
@@ -171,7 +195,7 @@ export default {
           anrede: null
         },
       },
-      step: 2,
+      step: 4,
       responseMessage: "No response yet.",
 
       // Data from API
