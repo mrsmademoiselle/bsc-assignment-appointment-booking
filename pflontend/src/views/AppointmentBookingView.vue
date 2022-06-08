@@ -3,13 +3,13 @@
 
     <!-- Step1: Grund -->
     <div v-if="step === 1 " class="container">
-      <div>
+      <div class="bg-light rounded border mb-4 justify-content-center">
         <div class="h5 my-4">1. Welche Beratungsstelle möchten Sie besuchen?</div>
         <div v-for="beratungsstelle in alleBeratungsstellen" :key="beratungsstelle.id"
              class="form-check row">
-          <input id="beratungsstelle" v-model="termin.beratungsstelle" :value="beratungsstelle" checked
-                 class="form-check-input"
-                 name="beratungsstelle" type="radio">
+          <input id="beratungsstelle" v-model="termin.beratungsstelle" class="form-check-input"
+                 name="beratungsstelle" type="radio"
+                 v-bind:value="beratungsstelle">
           <label class="form-check-label" for="beratungsstelle">
             {{ beratungsstelle.formatToReadableString() }}
           </label>
@@ -30,12 +30,13 @@
           </div>
         </div>
         <div class="h5 mt-4">Worum geht es bei Ihrem Termin?</div>
-        <div v-for="tg in alleTermingruende" :key="tg" class="form-check my-2">
-          <input id="termingrund" v-model="termin.termingrund" :value="tg" checked
+        <div v-for="termingrund in alleTermingruende" :key="termingrund" class="form-check my-2">
+          <input id="termingrund" v-model="termin.termingrund"
                  class="form-check-input"
-                 name="termingrund" type="radio">
+                 name="termingrund"
+                 type="radio" v-bind:value="termingrund">
           <label class="form-check-label" for="termingrund">
-            {{ tg }}
+            {{ termingrund }}
           </label>
         </div>
       </div>
@@ -49,11 +50,12 @@
           <Datepicker v-model="termin.ausgewaehlterTermin" :disabledDates="alleBelegtenTermine"
                       :disabledWeekDays="[6, 0]"
                       :enableTimePicker="false"
-                      :yearRange="verfuegbareJahre"
+                      :maxDate="maxDate" :minDate="minDate"
                       autoApply
                       class="mx-4 px-4"
-                      inline locale="de"
-                      name="date"></Datepicker>
+                      inline
+                      locale="de" name="date"
+                      preventMinMaxNavigation></Datepicker>
         </div>
         <div class="col">
           <div class="h5 mt-4">{{
@@ -64,14 +66,18 @@
           </div>
           <div v-if="this.termin.ausgewaehlterTermin !== null">
             <div v-for="verfuegbareUhrzeit in verfuegbareUhrzeitenFuerDatum" :key="verfuegbareUhrzeit">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-warning active">
+                  <input id="verfuegbareUhrzeit" v-model="termin.uhrzeit" autocomplete="off" name="verfuegbareUhrzeit"
+                         type="radio">
+                  {{ verfuegbareUhrzeit }} Uhr
+                </label>
+              </div>
               <!-- TODO Alle Termine ziehen und darstellen-->
-              <input id="uhrzeit" v-model="termin.uhrzeit" class="form-check-input"
-                     name="uhrzeit" type="radio">
-              <label class="form-check-label" for="uhrzeit">{{ verfuegbareUhrzeit }}
-                Uhr</label>
               <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -113,7 +119,7 @@
       </div>
       <div class="form-group row">
         <label class="col-3" for="bemerkung">Bemerkung:</label>
-        <textarea id="bemerkung" v-model="termin.kundeninformationen.bemerkung" class="form-control col-6"
+        <textarea id="bemerkung" v-model="termin.bemerkung" class="form-control col-6"
                   placeholder="Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!"></textarea>
       </div>
     </div>
@@ -131,17 +137,20 @@
             <!-- ... -->
           </div>
           <div class="form-group my-4 col-6">
-            <div class="col-6">bereitsMitglied: {{ this.termin.kundeninformationen.bereitsMitglied }}</div>
-            <div class="col-6">Plz: {{ this.termin.kundeninformationen.plz }}</div>
-            <div class="col-6">Ort: {{ this.termin.kundeninformationen.ort }}</div>
+            <div class="col-6">bereitsMitglied: {{
+                this.termin.kundeninformationen.bereitsMitglied ? "ja" : "nein"
+              }}
+            </div>
             <!-- ... -->
           </div>
         </div>
         <div class="row">
 
           <div class="form-group my-4 col-6">
-            <div class="col-6">Termin: {{ this.termin.ausgewaehlterTermin }} {{ this.termin.uhrzeit }} Uhr</div>
-            <div class="col-6">beratungsstelle: {{ this.termin.beratungsstelle }}</div>
+            <div class="col-6">Termin: {{ this.termin.ausgewaehlterTermin.toDateString() }} {{ this.termin.uhrzeit }}
+              Uhr
+            </div>
+            <div class="col-6">Beratungsstelle: {{ this.termin.beratungsstelle.formatToReadableString() }}</div>
 
           </div>
           <div class="form-group my-4 col-6">
@@ -168,8 +177,6 @@
 </template>
 
 <script>
-import exampleTerminbuchung from "../assets/exampleData.json";
-import myApi from "@/services/myApi";
 import {BeratungsstellenService} from "@/services/BeratungsstellenService";
 import {TerminService} from "@/services/TerminService";
 import Datepicker from '@vuepic/vue-datepicker';
@@ -189,13 +196,13 @@ export default {
         kundeninformationen: {
           vorname: null,
           nachname: null,
-          ort: null,
-          plz: null,
           bereitsMitglied: false,
+          email: null,
+          telefon: null,
           anrede: null
         },
       },
-      step: 4,
+      step: 1,
       responseMessage: "No response yet.",
 
       // Data from API
@@ -206,7 +213,8 @@ export default {
       alleAnreden: [],
 
       verfuegbareUhrzeitenFuerDatum: [],
-      verfuegbareJahre: []
+      minDate: null,
+      maxDate: null
     }
   },
   /**
@@ -223,14 +231,12 @@ export default {
     },
   },
   methods: {
-
-    collectData() {
-      return exampleTerminbuchung;
-    },
-    sendData() {
-      myApi.post("public/termin/post", this.collectData()).then(response => this.responseMessage = response.data)
-    },
     nextStep() {
+      if (this.step === 2 && (this.termin.ausgewaehlterTermin == null || this.termin.uhrzeit == null)) {
+        alert("Bitte geben Sie einen Termin und eine Uhrzeit an!")
+        return;
+      }
+
       this.step = this.step + 1;
       // get necessary information from api
       this.getApiInformation();
@@ -242,6 +248,7 @@ export default {
     },
     submit() {
       this.step = this.step + 1;
+      TerminService.legeTerminAn(this.termin);
       alert("submitted!")
     },
 
@@ -254,14 +261,18 @@ export default {
         case 1:
           if (this.alleBeratungsstellen.length === 0) {
             this.alleBeratungsstellen = await BeratungsstellenService.getAlleBeratungsstellen();
+            this.termin.beratungsstelle = this.alleBeratungsstellen[0];
           }
           if (this.alleTermingruende.length === 0) {
             this.alleTermingruende = await BeratungsstellenService.getAlleTermingruende();
+            this.termin.termingrund = this.alleTermingruende[0];
+
           }
           break;
         case 2:
           if (this.alleBelegtenTermine.length === 0) {
             this.alleBelegtenTermine = await TerminService.getKomplettBelegteDatuemer();
+            this.setMinAndMaxDate();
           }
           break;
         case 3:
@@ -271,18 +282,19 @@ export default {
           break;
       }
     },
-    getVerfuegbareJahre() {
+    setMinAndMaxDate() {
       let date = new Date();
-      this.verfuegbareJahre = date.getMonth() >= 10 ? [date.getFullYear(), date.getFullYear() + 1] : [date.getFullYear()];
-
+      this.minDate = date.toDateString();
+      // Man darf maximal 6 Monate im voraus buchen
+      this.maxDate = new Date(date.setMonth(date.getMonth() + 6)).toDateString();
     },
+
     async getAlleVerfuegbarenUhrzeiten(datum) {
       this.verfuegbareUhrzeitenFuerDatum = await TerminService.getAlleVerfuegbarenUhrzeiten(datum);
 
     }
   }, beforeMount: function () {
     this.getApiInformation();
-    this.getVerfuegbareJahre();
   }
 }
 </script>

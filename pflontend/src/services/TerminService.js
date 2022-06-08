@@ -12,7 +12,6 @@ export class TerminService {
             let verfuegbareUhrzeiten = [];
 
             verfuegbareUhrzeiten = ((await (myApi.get("public/termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
-            alert(verfuegbareUhrzeiten)
             return verfuegbareUhrzeiten;
         }
     }
@@ -48,6 +47,13 @@ export class TerminService {
             await myApi.post("public/termin/cancel/" + id);
         } catch (e) {
             console.log("Could not cancel appointment", e)
+        }
+    }
+
+    static async legeTerminAn(termin) {
+        let status = (await myApi.post("public/termin/post", termin)).status;
+        if (status !== 200) {
+            alert("something went wrong: " + status);
         }
     }
 }

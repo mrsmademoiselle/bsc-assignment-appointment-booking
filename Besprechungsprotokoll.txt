@@ -1,3 +1,29 @@
+---------------------- Notizen vom 08.06.
+- Ich KANN User-Stories umwandeln zu Personas, muss ich aber nicht
+    -> ich kann es aber auch als Fließtext mit Vorgehensweise machen
+    - optional, um Benutzergruppen darzustellen eventuell
+- !!!!! MUST: Als Lastenheft Vorgehensweise definieren
+    - dann kann ich mich darauf beziehen und sagen "diese Anforderung wurde erfüllt"
+- Anforderungen mit Kennziffern/Codes versehen
+- Grenzen kurz beschreiben (was behandle ich nicht)
+- Nielsens Heuristiken
+    - grundsätzlich kann man sagen ob das überhaupt beachtet wurde
+    - definieren, in welchen Elementen das vorkommt
+        - "dieses Element unterstützt die und die Heuristiken und deswegen nehme ich das bei mir auch mit rein"
+    - Die Elemente mit Heuristiken gegeneinander vergleichen bei anderen Terminsoftware
+        - "das beste rauspicken"
+        - subjektiv entscheiden, welches ich besser finde (Element von System 1 und System 2)
+        - gar nicht so wichtig, welches ich nehme, hauptsache ide heuristik ist erfüllt
+        - 2 UI-Prototypen machen und Benutzer befragen
+- Bestehende Terminbuchungssysteme
+    - Auflisten, worin sich diese Systeme unterscheiden
+    - zu jeder Anwendung einen kleinen Einleitungstext schreiben (was bietet das Tool, worin unterscheidet es sich)
+- Zielgruppenanalyse/Beschreibung, eventuell mit Persona integrieren
+- Alle Tabellen/Grafiken nochmal beschreiben, alles beschreiben was der/die Leserin auf keinen Fall übersehen sollte beim Anschauen der Grafiken
+- Begriffe nach der Definition immer verwenden (z.B. Kunde, Mitarbeiter)
+- !!!! Beim Erstellen der Mocks den Bezug herstellen zwischen meinem Mock und den Erkenntnissen aus den Systemanalysen)
+- Konzeption, Frontend und Usability Tests durchziehen, das ist der größte Meilenstein
+- ein Kapitel (1., 2.) und ein Kapitel aus Entwurf
 
 ---------------------- Notizen vom 25.05.
 - Anforderungen erheben durch Gespräch erheben ist ok
@@ -5,9 +31,10 @@
 	- beschreiben wie das Meeting passiert ist
 - funktionale Anforderung aus PO-Gespräch sind harte Vorgaben, nicht die funktionalen Anforderungen aus den anderen Systemen
 - Ausblick
-- einheitlich machen, maximum: Doku deutsch, Variablen englisch
-- Code auf Deutsch, gängige Verben (DB-Operationen auf Englisch)
-- Selbe Begriffe im Programmcode wiederfinden aus den Anforderungen/Spezifikation
+- Code Sprache
+    - einheitlich machen, maximum: Doku deutsch, Variablen englisch
+    - Code auf Deutsch, gängige Verben (DB-Operationen auf Englisch)
+    - Selbe Begriffe im Programmcode wiederfinden aus den Anforderungen/Spezifikation
 - Datenmodell = ER Diagramm/
 	- https://luo-darmstadt.de/sqltutorial/db_busunternehmen.html 
 	- https://kb.i-doit.com/display/de/Datenbank-Modell

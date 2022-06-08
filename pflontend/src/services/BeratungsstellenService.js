@@ -11,7 +11,6 @@ export class BeratungsstellenService {
         let alleBeratungsstellen = [];
         let data = (await myApi.get("public/beratungsstellen/get/all")).data;
         data.forEach(beratungsstelle => {
-            console.log("beratungsstelle", data);
             alleBeratungsstellen.push(new Beratungsstelle(beratungsstelle));
         });
         return alleBeratungsstellen;
