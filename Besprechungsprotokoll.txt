@@ -1,0 +1,183 @@
+
+---------------------- Notizen vom 25.05.
+- Anforderungen erheben durch Gespräch erheben ist ok
+	- sagen, dass das so passiert ist
+	- beschreiben wie das Meeting passiert ist
+- funktionale Anforderung aus PO-Gespräch sind harte Vorgaben, nicht die funktionalen Anforderungen aus den anderen Systemen
+- Ausblick
+- einheitlich machen, maximum: Doku deutsch, Variablen englisch
+- Code auf Deutsch, gängige Verben (DB-Operationen auf Englisch)
+- Selbe Begriffe im Programmcode wiederfinden aus den Anforderungen/Spezifikation
+- Datenmodell = ER Diagramm/
+	- https://luo-darmstadt.de/sqltutorial/db_busunternehmen.html 
+	- https://kb.i-doit.com/display/de/Datenbank-Modell
+- Klassendiagramm erst gegen Ende entwickeln	
+	- https://www.uml-diagrams.org/uml-25-diagrams.html 
+	- Offizielle Dokumentation https://www.omg.org/spec/UML/2.5.1/PDF 
+	- Nicht SWT Modul benutzen
+	- Beinhält alles (Services, Repositories, ...)
+	- evtl. 2, falls Klassendiagramm sehr groß wird
+		- 1x Ausschnitte mit Methoden etc
+		- 1x Klasennamen mit Beziehungen
+	- SYNTAX!
+
+- digitale Fassung bis zur Deadline vorliegen
+- Zugang zum Repo geben oder zippen
+- schriftliche Fasssung bis zum Kolloquium einreichen
+	- Hochschuladresse oder Sekretariat persönlich
+	- zweifache Version (to be checked)
+
+- Anforderungen erheben
+- Tools vergleichen/Entscheiden
+- Begrifflichkeiten präzise formulieren (Anforderungen)
+	- Anforderungen müssen messbar sein "UI soll schön sein" ist nicht messbar
+
+---------------------- Notizen vom 11.05.
+- Sie meldet mich Anfang nächster Woche an
+	- falls mir bis dahin noch Anmerkungen einfallen, schicke ich ihr die per E-Mail
+- Architektur
+	– ihr ist wichtig:
+	Microservices/Monolith (Hauptarchitektur, konkretes Architekturmuster), 
+	Aufteilung in Packages, Richtung Objektorientierung, Klassendiagramm (eher schon innere Struktur), Komponentendiagramm 
+- Anforderungen an Mocks ableiten aus Gesprächen mit Mom
+- Bestehende Tools aussuchen und deren Usability bewerten
+	- nach Usability Standards/Metriken 
+	- zweigleisig fahren - einmal sagen "ok ich konzentrier mich auf den PO, bekomme da Anforderungen, 
+	parallel untersuche ich dazu die gängigsten Systeme, analysiere sie nach Usability, und führe die Gleise zusammen und komme darauf
+	basierend zu einer Entscheidung", ca. 3 Systeme sind in Ordnung die Dinge unterschiedlich umsetzen -> begründen, warum ich mir 
+	genau diese anschaue
+	- 2 Mockups bauen, evtl AB-Tests (wenn bekannte Systeme sehr unterschiedlich sind)
+- Anforderungsanalyse mit Kunden machen
+- Zielgruppe definieren
+	- davon abhängig evtl. die Mocks bauen
+- Admin kann manuell Termine eintragen
+- Termine mit Lenka sind flexibel, nicht schlimm wenn mal einer ausfällt weil ich nicht wirklich was gemacht habe
+
+---------------------- Notizen vom 26.04.
+
+- im ersten Kapitel bisschen mehr Usability hinweisen, 1-2 Sätze bei 1.1 und 1.2
+- Quellen zu Aussagen finden, Vergleichsartikel
+	- wenn es die nicht gibt, versuchen eine Abstraktionsschicht höher zu gehen
+		- gucken, was wäre ähnlich, was wäre die Oberkategorie dessen
+		- allgemeine Probleme bei Terminbuchungen
+		- englischsprachigen Raum durchsuchen wenn ich sonst nichts finde
+- Titel
+	- "Terminbuchungssoftware"
+	- Konzeption und Implementation einer plattformunabhängigen Terminbuchungssoftware
+- QUELLEN!!!!!!!!!!
+	- bei online-Quellen Aufrufdatum "Letzter Aufruf 29.01.2012"
+	- [1] oder [Author, Veröffentlichungsjahr]
+	- alles was man sich nicht selbst im Gehirn ausgedacht hat, soll belegt werden
+
+----------------------
+
+- erstes Kapitel schreiben und ihr schicken, basierend darauf formulieren wir das Thema
+- Prozessoptimierung als Schlagwort nennen im ersten Kapitel als Hintergrund, Grundmotivation, Punkt Usability hilfreich
+
+---------------------- Notizen vom 23.03.
+
+Ich darf mir einen Zweitbetreuer aussuchen
+auch wiss. Mitarbeiter oder so, aber sollte BA Abschluss haben
+- in KW 32 abgeben, 33 bewerten, Anfang 34 Kolloquium
+	- so früh wie möglich mit praktischem Teil durch sein
+	- ca 1 Woche Zeit lassen für BA-Revision
+	- ein paar Tage Puffer
+- falls ich Probleme habe/stecken bleibe soll ich sie kontaktieren
+- grobes Inhaltsverzeichnis sieht gut aus, roter Faden ist da, Kapitelunterteilung ist nicht so wichtig, kann man am Ende schauen je nachdem wie groß die Kapitel sind
+- Leute die keine Ahnung haben sollten das verstehen (Leute aus meinem Studiengang)
+- viele Abkürzungen, unbekannte Begriffe -> Glossar machen
+- vor der Einleitung noch ein Abstract
+	- 5-6 Sätze
+	- Aufgaben/Ziel/Methoden/Ergebnis
+	- Abstract ganz am Ende schreiben! Was habe ich gemacht in der Arbeit, welche Methodiken habe ich angewandt und was ist das Ergebnis?
+- im Fazit steht nicht komplett alles nochmal wiederholen sondern eine Reflexion des Ganzen
+	- Gedanken, Schlüsse ziehen, Abrundung
+- Usability-Test-Kapitel sollten umbenannt werden, damit man weiß was da gemacht wird und damit man sie unterscheiden kann
+
+- Entwurf: Nicht nur ein Klassendiagramm reinklatschen, sondern Herleitung erklären, warum dieses Diagramm gewählt
+	- Diagramm selbst beschreiben
+- Alle Graphiken beschreiben -> was soll die Leserin sehen? Nicht davon ausgehen, dass die leserin das auf den ersten Blick sieht
+
+--------------------------- 22.03. Vorbereitung
+- Soll auch die Präsentation zur BA-Deadline fertig sein, oder kann ich die noch nach der Abgabe verfassen?
+		--> Nein, kann ich danach noch machen, muss nur zum Kolloquium fertig sein
+- Mögliche Zeiträume für wöchentliches Zusammensetzen:
+	- Mo: 		ganztags
+	- Di, Mi: 	ab 14 Uhr
+	- Do: 		gar nicht
+	- Fr: 		ab 14 Uhr
+		--> Lenka kümmert sich drum
+- Wir ausführlich soll ich Entscheidungen begründen? z.B. Abwägung von Tools, Architekturentscheidungen erfordern ja Gegenüberstellungen
+		--> was sind eigentlich meine Kriterien? Wonach beurteile ich, ob es geeignet ist oder nicht? z.b. Bekanntesten/Aktuellsten (Top3), 
+		oder Tools mit denen ich Erfahrung habe und ein anderes, nicht seitenweise Text schreiben, maximal eine halbe Seite pro Tool
+		--> nachdem ich Tools beschreibe, ein kleines Fazit schreiben "Aufgrund dessen habe ich mich für dieses Tool entschieden, das Tool sehe ich am geeignetesten"
+
+--------------------------- NÄCHSTER SCHRITT
+- welchen Zeitraum will ich haben?
+- festen wöchentlichen Termin machen
+- Inhaltsverzeichnis erstellen
+- groben Zeitplan erstellen (kann auch monatsweise sein), kein fester Plan, kann noch angepasst werden
+- 3 Monate, bis Ende August mit ca. 2 Wochen Puffer für ihren Urlaub
+- muss noch nicht final sein, kann auch Sachen leer lassen
+
+--------------------------- INFOGESPRÄCH
+- Inhaltsverzeichnis zu Beginn der Betreuerin vorlegen
+- 3 Monate Bearbeitungszeit, kann auch April/Mai starten
+- rückwirkend anmelden nicht gern gesehen 
+- früher abgeben auch möglich
+- remote 
+- einmal die Woche zusammensetzen für updates und Fragen, berichten was so passiert ist, was habe ich nächste Woche vor
+- zu Beginn einen Plan/Projektplan machen, Meilensteine überlegen
+- nicht alles am Ende machen, sondern zwischendurch schon Teilkapitel/Notizen machen
+- Abstract und Fazit
+- keien Prüfungsanmeldung, macht Kleinau für mich
+- wenn mit mind. 4,0 bewertet, meldet Sekretariat das Kolloquium an
+- spätestens zur Deadline gebe ich die Bachelorarbeit ab (Schriftliches & Implementierung)
+- anschließend Kolloquium, ca. 20-25min, anschließend Fragerunde, vermutlich so 1h insgesamt
+- Codearchitektur auch sehr wichtig, Codestruktur, Kommentare
+- Entscheidungen immer begründen können
+- manchmal waren Entscheidungen im Nachhinein schlecht -> sowas schreibt man in den Bericht mit rein und reflektiert das, auch im Fazit
+- Entwurf, Architektur gut argumentieren, es gibt versch Möglichkeiten, die haben die und die Vor- und Nachteile, ich habe die gewählt, weil
+	- z.B. Frameworks: Aktualität, Bewerten, Entscheiden, Denkprozess
+- Schriftliche Arbeit ist wichtiger, fließt mehr in die Note mit ein, genauer Prozentanteil ist prüferabhängig, 25% Implementierung grob
+	- WICHTIG: Zweitprüfer im Kolloquium, wird sich auch das Programm anschauen, kennt aber die Entwicklung und mich nicht
+		- schriftliche Ausarbeitung ist sehr wichtig
+- wenig Code zeigen, außer Diagramme oder spezielle Algorithmen
+- Titel wird mit Anmeldung feststehen, sie überlegt sich ein paar Optionen und ich entscheide dann
+- Länge der Ausarbeitung 50 Seiten inkl. Quellenangaben, Qualität vor Quantität, länger ist auch ok, 
+	man könnte auch 100 Seiten schreiben, dann ist nur die Frage: Habe ich die Fähigkeit wichtiges von unwichtigem zu unterscheiden?
+- 2 Kapitel vorab schicken, vielleicht nicht eine Woche vor der Abgabe (bei 7-8 Kapitel)
+	- 1 ganzes Kapitel wo ich noch keine Umsetzung mache
+	- 2. Kapitel kann ich mir aussuchen
+- wenn Fragen aufkommen, eine Email schicken (aber nicht jeden Tag 3 Emails)
+
+
+------------------------ FACHLICHES
+- Umfang der Implementierung ist in Ordnung, Fokus auf Usability
+- Anforderungsermittlung
+	- später bei Evaluierung darauf zurückgreifen
+	- einmal über den Stakeholder
+	- andererseits recherchieren, was gibt es in dem Bereich für Software? Was sind Standards? Was sind Standards in Usability? Was für Elemente werden da genutzt?`
+		- das machen bevor ich mit dem Entwurf/Architektur starten
+		- eine Art Analyse da noch mit reinnehmen, was es da für ähnliche Buchungssysteme bereits gibt, evtl auch fachlich in dem Bereich
+		- Analyse mit Schwerpunkt Usability
+			- daraus ableiten: Wo möchte ich hin mit dem Tool? Was möchte ich ähnlich/anders machen?
+- Struktur sonst ganz gut so
+- nicht Verbesserungsmaßnahmen, sondern Fazit/Ausblick -> Was könnte besser geschehen? was könnte anders gemacht werden? nicht optimale Entscheidungen
+	- an der Stelle noch eine extra Klasse machen können
+	- nicht nochmal durchführen, sondern nennen/beschreiben
+	- was wäre der nächste Schritt
+	- vllt will Stakeholder am Ende das TOol noch an etwas anderes anbinden/Funktionalitäten fehlen
+- 2 Usability Tests
+- Usability Tests mit 2 Personen die sich fachlich auskennen, ansonsten noch 3 weitere Personen (können auch aus anderem Fachgebiet sein)
+	- Personen mit Büro/Terminplanung, keine Personen die etwas mit IT/Usability zutun haben
+- Usability Test nicht ganz am Ende machen, Prototypen kleinen ersten Usabilitytest machen, Papierprototypen
+- Nach der Konzeption des Frontends (vor Implementierung)
+- Usability Test nochmal am Ende
+
+- grob schreiben, welche Frameworks könnte man nehmen, warum habe ich dieses gewählt
+
+- Deployment kann ich rauslassen
+- Software soll getestet werden, JUnit Tests
+
+- nicht zwei neue Technologien nehmen in der Bachelorarbeit
