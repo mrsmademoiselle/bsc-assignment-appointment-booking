@@ -1,3 +1,26 @@
+
+---------------------- Notizen vom 15.06.
+- Zu den Fragen:
+    - Ich soll die Software auf die Steuerberatung zurechtschneiden.
+    - Funktionen für Lastenheft können ruhig sehr konkret formuliert werden.
+
+- Heuristiken auf die Portale beziehen
+    - das Kapitel kann ich mit einem Fazit schließen, Punkte mit den Heuristiken nochmal aufzählen & benennen
+- USe-Case-Diagramm als erstes im Modellierungskapitel (Entwurf)
+- ER-Diagramm Datenbankschema
+- Komponentendiagramm in Architekturkapitel
+- Tools -> innere Struktur darstellen, z.B. Objektorientierung Klassendiagramm
+
+
+---------------------- Fragen zum 15.06.
+- Heuristik: Übereinstimmung zwischen dem System und der realen Welt
+    - Wording von Steuerberatern möglich, oder generelles Wording, oder Branchenauswahl und Wording darüber definiert
+        - ist es notwendig, dass ich das ganze generell halte, oder kann ich es auch exakt auf die VLH zuschneiden?
+        - auch relevant für Zielgruppenanalyse: andere Branchen, andere Zielgruppe
+- Lastenheft: Grund für Funktion?
+- Lastenheft: "Unterfunktionen" -> Terminabsage -> Bei der Absage soll eine Email verschickt werden
+    - Theoretisch kann man das über die Usability-Heuristiken abbilden
+
 ---------------------- Notizen vom 08.06.
 - Ich KANN User-Stories umwandeln zu Personas, muss ich aber nicht
     -> ich kann es aber auch als Fließtext mit Vorgehensweise machen
@@ -23,7 +46,7 @@
 - Begriffe nach der Definition immer verwenden (z.B. Kunde, Mitarbeiter)
 - !!!! Beim Erstellen der Mocks den Bezug herstellen zwischen meinem Mock und den Erkenntnissen aus den Systemanalysen)
 - Konzeption, Frontend und Usability Tests durchziehen, das ist der größte Meilenstein
-- ein Kapitel (1., 2.) und ein Kapitel aus Entwurf
+- ein Kapitel (1., 2.) und ein Kapitel aus Entwurf ihr zusenden
 
 ---------------------- Notizen vom 25.05.
 - Anforderungen erheben durch Gespräch erheben ist ok
