@@ -10,8 +10,8 @@ export default {
   name: "LoginView",
   data: function () {
     return {
-      username: null,
-      password: null,
+      username: "asd",
+      password: "asd",
 
       error: false,
       errors: []
@@ -20,7 +20,7 @@ export default {
   methods: {
     callLogin() {
       this.errors = [];
-      this.$store.dispatch("login", {user: this.username, password: this.password})
+      this.$store.dispatch('login', {username: this.username, password: this.password})
           .then(() => {
             this.$router.push('/')
           })

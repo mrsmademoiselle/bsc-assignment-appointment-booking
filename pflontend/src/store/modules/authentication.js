@@ -1,4 +1,4 @@
-import myApi from "@/services/myApi";
+import apiService from "@/services/ApiService";
 
 const state = () => ({
     loginSuccess: false,
@@ -12,10 +12,11 @@ const getters = {
 }
 
 const actions = { // asynchronous
-    login({commit}, {user, password}) {
+    login({commit}, {username, password}) {
         return new Promise((resolve, reject) => {
-            console.log("Accessing backend with user: '" + user);
-            myApi.get(user, password)
+            console.log("Accessing backend with user: " + username);
+
+            apiService.post("login", {username, password})
                 .then(response => {
                     console.log("Response: '" + response.data + "' with Statuscode " + response.status);
                     if (response.status === 200) {
@@ -31,6 +32,10 @@ const actions = { // asynchronous
                     reject("Invalid credentials!")
                 })
         })
+    },
+
+    logout({commit}) {
+        commit('logout');
     }
 }
 
@@ -47,9 +52,8 @@ const mutations = { // synchronous
 }
 
 export default {
-    namespaced: true,
     state,
-    getters,
-    actions,
     mutations,
+    actions,
+    getters
 }
