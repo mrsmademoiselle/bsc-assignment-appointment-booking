@@ -7,8 +7,12 @@ const state = () => ({
 
 // getters
 const getters = {
-    isLoggedIn: state => state.loginSuccess,
-    token: state => state.token
+    isLoggedIn: state => {
+        return state.loginSuccess;
+    },
+    token: state => {
+        return state.token;
+    }
 }
 
 const actions = { // asynchronous

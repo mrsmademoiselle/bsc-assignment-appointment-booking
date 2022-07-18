@@ -11,6 +11,7 @@ public class TerminToDtoMapper {
         TerminDto terminDto = new TerminDto();
 
         // Kundeninformationen
+        terminDto.setId(termin.getId());
         terminDto.setVorname(termin.getKundeninformationen().getVorname());
         terminDto.setNachname(termin.getKundeninformationen().getNachname());
         terminDto.setEmail(termin.getKundeninformationen().getEmail());

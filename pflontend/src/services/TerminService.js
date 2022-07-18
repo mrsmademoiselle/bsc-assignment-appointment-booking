@@ -25,9 +25,9 @@ export class TerminService {
         return komplettBelegteDatuemer;
     }
 
-    static async getAllAppointments() {
+    static async getAllAppointments(token) {
         let allAppointments = [];
-        let data = (await apiService.get("termin/get/all")).data;
+        let data = (await apiService.authenticatedGet("termin/get/all", token)).data;
         data.forEach(appointment => {
             let appointment1 = new Appointment(appointment);
             allAppointments.push(appointment1);
@@ -40,6 +40,14 @@ export class TerminService {
         let data = (await apiService.get("termin/cancel/" + token)).data;
         appointment = new Appointment(data);
         return appointment;
+    }
+
+    static async cancelAppointmentAdmin(id, token) {
+        try {
+            await apiService.authenticatedPost("termin/cancel/" + id, {}, token);
+        } catch (e) {
+            console.log("Could not cancel appointment", e)
+        }
     }
 
     static async cancelAppointment(id) {

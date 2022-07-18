@@ -72,15 +72,14 @@ export default {
   },
   methods: {
     async getAppointments() {
-      this.allAppointments = await TerminService.getAllAppointments();
+      this.allAppointments = await TerminService.getAllAppointments(this.$store.getters.token);
     },
     saveAppointment(appointment) {
       this.selectedAppointment = appointment;
     },
     async cancelAppointment() {
-      await TerminService.cancelAppointment(this.selectedAppointment.id)
+      await TerminService.cancelAppointmentAdmin(this.selectedAppointment.id, this.$store.getters.token)
       await this.getAppointments();
-
     }
   },
   beforeMount: function () {

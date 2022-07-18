@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class TerminDto {
     // Kundeninformationen
+    private Long id;
     private String vorname;
     private String nachname;
     private String geschlecht;

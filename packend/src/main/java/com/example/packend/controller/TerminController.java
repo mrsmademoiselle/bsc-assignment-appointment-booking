@@ -28,7 +28,7 @@ import java.util.Random;
 
 @Transactional
 @RestController
-@RequestMapping("/public/termin")
+@RequestMapping
 public class TerminController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TerminController.class);
     @Autowired
@@ -47,8 +47,11 @@ public class TerminController {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @GetMapping("/uhrzeiten/get/{jahr}/{monat}/{tag}")
-    public ResponseEntity<List<String>> get(@PathVariable String jahr, @PathVariable String monat, @PathVariable String tag) {
+    /**
+     * Berechnet und gibt die verfügbaren Uhrzeiten für einen spezifischen Termin zurück.
+     */
+    @GetMapping("/public/termin/uhrzeiten/get/{jahr}/{monat}/{tag}")
+    public ResponseEntity<List<String>> getVerfuegbareUhrzeitenFuerTermin(@PathVariable String jahr, @PathVariable String monat, @PathVariable String tag) {
 
         List<String> verfuegbareUhrzeitenFuerTag = terminService.berechneVerfuegbareUhrzeitenFuerTag(
                 LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)));
@@ -57,17 +60,23 @@ public class TerminController {
         return ResponseEntity.ok(verfuegbareUhrzeitenFuerTag);
     }
 
-    @GetMapping("/komplett-belegt/all")
+    /**
+     * Gibt alle Datümer zurück, in denen schon Termine existieren.
+     * Wird bei der Terminbuchung verwendet, um diese Datümer auszugrauen.
+     */
+    @GetMapping("/public/termin/komplett-belegt/all")
     public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatümer() {
         List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage();
         LOGGER.info("Komplett belegte Tage: " + komplettBelegteTage.size());
         return ResponseEntity.ok(komplettBelegteTage);
     }
 
-
-    @GetMapping("/get/all")
+    /**
+     * Gibt eine Übersicht aller bestehenden Termine zurück.
+     */
+    @GetMapping("/termin/get/all")
     public ResponseEntity<List<JsonNode>> getAll() {
-        LOGGER.info("Calling getAll");
+        LOGGER.info("Calling /termin/get/all");
         List<Termin> all = terminRepository.findAll();
 
         List<JsonNode> alleTerminDtos = new ArrayList<>();
@@ -78,7 +87,7 @@ public class TerminController {
         return ResponseEntity.ok(alleTerminDtos);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/public/termin/get/{id}")
     public ResponseEntity<TerminDto> getById(@PathVariable Long id) {
         LOGGER.info("Calling getById");
 
@@ -97,7 +106,10 @@ public class TerminController {
         }
     }
 
-    @PostMapping("/post")
+    /**
+     * Speichert einen Termin
+     */
+    @PostMapping("/public/termin/post")
     public String saveTermin(@RequestBody @Validated Termin data) {
         LOGGER.info("Calling saveTermin with data " + data.toString());
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
@@ -108,7 +120,10 @@ public class TerminController {
         return "This works!";
     }
 
-    @GetMapping("/cancel/{token}")
+    /**
+     * Generiert und gibt ein CancellationToken zurück, über das ein Termin storniert werden kann.
+     */
+    @GetMapping("/public/termin/cancel/{token}")
     public ResponseEntity<TerminDto> getByCancellationToken(@PathVariable String token) {
         LOGGER.info("Calling getByCancellationToken with token " + token);
 
@@ -132,14 +147,40 @@ public class TerminController {
 
     }
 
-    @PostMapping("/cancel/{id}")
-    public ResponseEntity<String> cancelAppointment(@PathVariable Long id) {
+    /**
+     * Über diesen Endpunkt kann ein Benutzer seinen eigenen Termin stornieren.
+     */
+    @PostMapping("/public/termin/cancel/{id}")
+    public ResponseEntity<String> cancelAppointmentUser(@PathVariable Long id) {
         LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
 
         Optional<Termin> terminOptional = terminRepository.findById(id);
         if (terminOptional.isPresent()) {
             // remove cancellationUrl
             cancellationLinkRepository.deleteByTerminId(id);
+            // remove appointment
+            terminRepository.delete(terminOptional.get());
+            // send cancellation-Email
+            emailService.sendeTerminabsage(terminOptional.get());
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            LOGGER.info("No appointment has been found for id " + id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Über diesen Endpunkt kann ein Admin jeden Termin stornieren.
+     */
+    @PostMapping("/termin/cancel/{id}")
+    public ResponseEntity<String> cancelAppointmentAdmin(@PathVariable String id) {
+        LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
+        Long terminId = Long.valueOf(id);
+        Optional<Termin> terminOptional = terminRepository.findById(terminId);
+        if (terminOptional.isPresent()) {
+            // remove cancellationUrl
+            cancellationLinkRepository.deleteByTerminId(terminId);
             // remove appointment
             terminRepository.delete(terminOptional.get());
             // send cancellation-Email

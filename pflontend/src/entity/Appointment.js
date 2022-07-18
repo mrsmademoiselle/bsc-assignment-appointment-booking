@@ -25,7 +25,7 @@ export class Appointment {
 
 
     static isValidAppointment(jsonObject) {
-        return this.hasField(jsonObject, "vorname") &&
+        return this.hasField(jsonObject, "vorname") && this.hasField(jsonObject, "id") &&
             this.hasField(jsonObject, "nachname") &&
             this.hasField(jsonObject, "geschlecht") &&
             this.hasField(jsonObject, "email") &&
