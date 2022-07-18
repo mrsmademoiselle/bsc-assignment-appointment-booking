@@ -8,10 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -22,12 +19,12 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class Termin {
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @NotNull
-    private String id;
+    private Long id;
     @Embedded
     private Kundeninformationen kundeninformationen;
-
     private String bemerkung;
     private Terminerinnerung terminerinnerungPerMail;
     @NotNull
@@ -41,7 +38,7 @@ public class Termin {
     @OneToOne
     private Beratungsstelle beratungsstelle;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 }

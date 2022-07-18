@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
@@ -12,8 +14,9 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class Abwesenheit {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    String id;
+    Long id;
     String startDatum;
     String endDatum;
 }

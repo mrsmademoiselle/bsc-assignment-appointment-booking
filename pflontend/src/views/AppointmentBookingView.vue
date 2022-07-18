@@ -68,8 +68,9 @@
             <div v-for="verfuegbareUhrzeit in verfuegbareUhrzeitenFuerDatum" :key="verfuegbareUhrzeit">
               <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-warning active">
-                  <input id="verfuegbareUhrzeit" v-model="termin.uhrzeit" autocomplete="off" name="verfuegbareUhrzeit"
-                         type="radio">
+                  <input id="verfuegbareUhrzeit" v-model="termin.uhrzeit" autocomplete="off"
+                         name="verfuegbareUhrzeit" type="radio"
+                         v-bind:value="verfuegbareUhrzeit">
                   {{ verfuegbareUhrzeit }} Uhr
                 </label>
               </div>
@@ -248,6 +249,7 @@ export default {
     },
     submit() {
       this.step = this.step + 1;
+      this.termin.uhrzeit += ":00";
       TerminService.legeTerminAn(this.termin);
       alert("submitted!")
     },

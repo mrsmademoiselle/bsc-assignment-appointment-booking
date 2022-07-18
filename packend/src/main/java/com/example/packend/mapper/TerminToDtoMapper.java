@@ -10,7 +10,6 @@ public class TerminToDtoMapper {
     public TerminDto terminToDto(Termin termin) {
         TerminDto terminDto = new TerminDto();
 
-        terminDto.setId(termin.getId());
         // Kundeninformationen
         terminDto.setVorname(termin.getKundeninformationen().getVorname());
         terminDto.setNachname(termin.getKundeninformationen().getNachname());

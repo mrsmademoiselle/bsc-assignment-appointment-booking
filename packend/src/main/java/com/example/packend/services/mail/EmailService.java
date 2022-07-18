@@ -79,12 +79,12 @@ public class EmailService {
         Anrede geschlecht = termin.getKundeninformationen().getGeschlecht();
         String anrede = "";
 
-        if (geschlecht.equals(Anrede.MALE)) {
-            anrede = "Sehr geehrter " + geschlecht.getAnrede();
-        } else if (geschlecht.equals(Anrede.FEMALE)) {
-            anrede = "Sehr geehrte " + geschlecht.getAnrede();
-        } else {
+        if (geschlecht == null || (!geschlecht.equals(Anrede.MALE) && !geschlecht.equals(Anrede.FEMALE))) {
             anrede = "Sehr geehrte/r ";
+        } else if (geschlecht.equals(Anrede.MALE)) {
+            anrede = "Sehr geehrter " + geschlecht.getAnrede();
+        } else {
+            anrede = "Sehr geehrte " + geschlecht.getAnrede();
         }
         return anrede;
     }

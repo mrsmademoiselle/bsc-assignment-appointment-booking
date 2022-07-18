@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface TerminRepository extends JpaRepository<Termin, String> {
+public interface TerminRepository extends JpaRepository<Termin, Long> {
     List<Termin> findAll();
 
     List<Termin> findAllByOrderByAusgewaehlterTerminAsc();

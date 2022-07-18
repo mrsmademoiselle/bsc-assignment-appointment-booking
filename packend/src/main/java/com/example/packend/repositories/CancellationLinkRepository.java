@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CancellationLinkRepository extends CrudRepository<CancellationUrl, String> {
+public interface CancellationLinkRepository extends CrudRepository<CancellationUrl, Long> {
     Optional<CancellationUrl> findByToken(String token);
 
-    void deleteByTerminId(String terminId);
+    void deleteByTerminId(Long terminId);
 }

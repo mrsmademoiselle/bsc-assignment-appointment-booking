@@ -30,7 +30,6 @@ class TerminToDtoMapperTest {
                 .bemerkung("arghhh")
                 .beratungsgrund(Beratungsgrund.ERSTBERATUNG)
                 .beratungsstelle(beratungsstelle)
-                .id("111111")
                 .bereitsMitglied("true")
                 .email("asd@asd.de")
                 .geschlecht(Anrede.FEMALE.getAnrede())
@@ -56,7 +55,6 @@ class TerminToDtoMapperTest {
                 // bemerkung is missing
                 .beratungsgrund(Beratungsgrund.ERSTBERATUNG)
                 .beratungsstelle(beratungsstelle)
-                .id("111111")
                 .bereitsMitglied("true")
                 .email("asd@asd.de")
                 .geschlecht(Anrede.FEMALE.getAnrede())
@@ -76,7 +74,6 @@ class TerminToDtoMapperTest {
                 .bemerkung("arghhh")
                 .beratungsgrund(Beratungsgrund.ERSTBERATUNG)
                 .beratungsstelle(beratungsstelle)
-                .id("111111")
                 .kundeninformationen(
                         Kundeninformationen.builder()
                                 .bereitsMitglied(true)
@@ -94,7 +91,6 @@ class TerminToDtoMapperTest {
     private Beratungsstelle createBeratungsstelle() {
         Beratungsstelle beratungsstelle = Beratungsstelle.builder()
                 .strasse("Lübecker Straße")
-                .id("unique_id12345")
                 .ansprechpartner("Ich")
                 .hausnummer("11")
                 .ort("HH")

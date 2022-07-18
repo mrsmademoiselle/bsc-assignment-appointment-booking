@@ -34,14 +34,12 @@ public class PackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Beratungsstelle preetz = Beratungsstelle.builder()
-                .id("1")
                 .ansprechpartner("Jannika Loof")
                 .hausnummer("5")
                 .strasse("Mühlenstraße")
                 .ort("Preetz")
                 .plz("24211").build();
         Beratungsstelle eutin = Beratungsstelle.builder()
-                .id("2")
                 .ansprechpartner("Claudia Loof")
                 .hausnummer("36")
                 .strasse("Lübecker Straße")
@@ -65,7 +63,6 @@ public class PackendApplication implements CommandLineRunner {
                     .bemerkung(generateString())
                     .beratungsgrund(Beratungsgrund.BERATUNG)
                     .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
-                    .id(generateString())
                     .uhrzeit(LocalTime.of(i, 0))
                     .beratungsstelle(istEutin ? eutin : preetz)
                     .kundeninformationen(kundeninformationen).build();
@@ -86,7 +83,6 @@ public class PackendApplication implements CommandLineRunner {
                     .bemerkung(generateString())
                     .beratungsgrund(Beratungsgrund.BERATUNG)
                     .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
-                    .id(generateString())
                     .uhrzeit(LocalTime.of(i, 0))
                     .beratungsstelle(istEutin ? eutin : preetz)
                     .kundeninformationen(kundeninformationen).build();
@@ -104,6 +100,5 @@ public class PackendApplication implements CommandLineRunner {
         }
         return new String(text);
     }
-
 
 }

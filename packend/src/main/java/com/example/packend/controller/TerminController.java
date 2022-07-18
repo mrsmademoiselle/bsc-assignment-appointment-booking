@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -78,7 +79,7 @@ public class TerminController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<TerminDto> getById(@PathVariable String id) {
+    public ResponseEntity<TerminDto> getById(@PathVariable Long id) {
         LOGGER.info("Calling getById");
 
         Optional<Termin> terminOptional = terminRepository.findById(id);
@@ -97,7 +98,7 @@ public class TerminController {
     }
 
     @PostMapping("/post")
-    public String saveTermin(@RequestBody Termin data) {
+    public String saveTermin(@RequestBody @Validated Termin data) {
         LOGGER.info("Calling saveTermin with data " + data.toString());
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
 
@@ -132,7 +133,7 @@ public class TerminController {
     }
 
     @PostMapping("/cancel/{id}")
-    public ResponseEntity<String> cancelAppointment(@PathVariable String id) {
+    public ResponseEntity<String> cancelAppointment(@PathVariable Long id) {
         LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
 
         Optional<Termin> terminOptional = terminRepository.findById(id);

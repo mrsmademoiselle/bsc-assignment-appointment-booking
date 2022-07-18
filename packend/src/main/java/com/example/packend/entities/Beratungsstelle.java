@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
@@ -14,8 +16,9 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Entity
 public class Beratungsstelle {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private String id;
+    private Long id;
     private String ansprechpartner;
     private String hausnummer;
     private String ort;

@@ -51,9 +51,14 @@ export class TerminService {
     }
 
     static async legeTerminAn(termin) {
-        let status = (await myApi.post("public/termin/post", termin)).status;
-        if (status !== 200) {
-            alert("something went wrong: " + status);
+        try {
+            let status = (await myApi.post("public/termin/post", termin)).status;
+            if (status === 200) {
+                alert("Termin erfolgreich angelegt!\n" + JSON.stringify(termin))
+
+            }
+        } catch (e) {
+            alert("something went wrong: " + e);
         }
     }
 }

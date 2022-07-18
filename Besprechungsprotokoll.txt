@@ -1,3 +1,17 @@
+- Clietn-Server-Architektur eine Möglichkeit
+- Schichtenarchitektur
+- monolithisch, microservice
+- ich werde nachfolgend die drei Architekturen betrachten, weil das und das nicht infrage kommt
+    - danach entscheidung treffen wie ich das system strukturiere
+- Entwurfsmuster sind abhängig von den Tools
+    - einzelne Komponenten wie strukturieren?
+- bei Tool-Asuwahl evtl Kriterium, ob es entgegen der gewählten Arcfhitektur steht
+
+---------------------- Fragen zum 22.06.
+- Datensätze für Statistiken analysiert
+    - Analyse erklären als kurzer Text reicht?
+    - oder  Vorgehensweise & Skripte mit einführen
+
 
 ---------------------- Notizen vom 15.06.
 - Zu den Fragen:
