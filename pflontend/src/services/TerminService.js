@@ -11,7 +11,7 @@ export class TerminService {
         if (date !== null) {
             let verfuegbareUhrzeiten = [];
 
-            verfuegbareUhrzeiten = ((await (apiService.get("public/termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
+            verfuegbareUhrzeiten = ((await (apiService.get("termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
             return verfuegbareUhrzeiten;
         }
     }
@@ -21,13 +21,13 @@ export class TerminService {
      */
     static async getKomplettBelegteDatuemer() {
         let komplettBelegteDatuemer = [];
-        komplettBelegteDatuemer = ((await (apiService.get("public/termin/komplett-belegt/all/"))).data);
+        komplettBelegteDatuemer = ((await (apiService.get("termin/komplett-belegt/all/"))).data);
         return komplettBelegteDatuemer;
     }
 
     static async getAllAppointments() {
         let allAppointments = [];
-        let data = (await apiService.get("public/termin/get/all")).data;
+        let data = (await apiService.get("termin/get/all")).data;
         data.forEach(appointment => {
             let appointment1 = new Appointment(appointment);
             allAppointments.push(appointment1);
@@ -37,14 +37,14 @@ export class TerminService {
 
     static async getAppointmentForCancellationToken(token) {
         let appointment;
-        let data = (await apiService.get("public/termin/cancel/" + token)).data;
+        let data = (await apiService.get("termin/cancel/" + token)).data;
         appointment = new Appointment(data);
         return appointment;
     }
 
     static async cancelAppointment(id) {
         try {
-            await apiService.post("public/termin/cancel/" + id);
+            await apiService.post("termin/cancel/" + id);
         } catch (e) {
             console.log("Could not cancel appointment", e)
         }
@@ -52,7 +52,7 @@ export class TerminService {
 
     static async legeTerminAn(termin) {
         try {
-            let status = (await apiService.post("public/termin/post", termin)).status;
+            let status = (await apiService.post("termin/post", termin)).status;
             if (status === 200) {
                 alert("Termin erfolgreich angelegt!\n" + JSON.stringify(termin))
 

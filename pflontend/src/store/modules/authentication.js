@@ -16,7 +16,7 @@ const actions = { // asynchronous
         return new Promise((resolve, reject) => {
             console.log("Accessing backend with user: " + username);
 
-            apiService.post("login", {username, password})
+            apiService.post("auth/login", {username, password})
                 .then(response => {
                     console.log("Response: '" + response.data + "' with Statuscode " + response.status);
                     if (response.status === 200) {

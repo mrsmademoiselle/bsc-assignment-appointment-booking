@@ -7,25 +7,16 @@ export default class ApiService {
     });
 
     static authenticatedPost(endpoint, body, token) {
-        return this.instance.post(endpoint, {
-            method: 'POST',
-            headers: {
-                'Authorization': token
-            },
-            data: body,
-        })
+        return this.instance.post(endpoint, body,
+            {headers: {'Authorization': token}})
     }
 
     static post(endpoint, body) {
-        return this.instance.post(endpoint, {
-            method: 'POST',
-            data: body,
-        })
+        return this.instance.post('public/' + endpoint, body)
     }
 
     static authenticatedGet(endpoint, token) {
         return this.instance.get(endpoint, {
-            method: 'GET',
             headers: {
                 'Authorization': token
             }
@@ -33,8 +24,6 @@ export default class ApiService {
     }
 
     static get(endpoint) {
-        return this.instance.get(endpoint, {
-            method: 'GET',
-        })
+        return this.instance.get('public/' + endpoint)
     }
 }
