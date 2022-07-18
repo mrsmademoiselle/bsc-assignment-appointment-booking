@@ -3,11 +3,13 @@ package com.example.packend;
 import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.entities.Kundeninformationen;
 import com.example.packend.entities.Termin;
+import com.example.packend.entities.User;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.enums.Terminerinnerung;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.TerminRepository;
+import com.example.packend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +25,8 @@ import java.util.Random;
 public class PackendApplication implements CommandLineRunner {
 
     @Autowired
+    UserService userService;
+    @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
     TerminRepository terminRepository;
@@ -33,6 +37,10 @@ public class PackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // Default AdminUser
+        User adminUser = User.builder().password("adminPass").username("admin").build();
+        userService.saveUser(adminUser);
+
         Beratungsstelle preetz = Beratungsstelle.builder()
                 .ansprechpartner("Jannika Loof")
                 .hausnummer("5")

@@ -10,8 +10,8 @@ export default {
   name: "LoginView",
   data: function () {
     return {
-      username: "asd",
-      password: "asd",
+      username: "admin",
+      password: "adminPass",
 
       error: false,
       errors: []
