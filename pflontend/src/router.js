@@ -21,9 +21,8 @@ const routes = [
 const router = createRouter({
     // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
     history: createWebHistory(),
-    routes, // short for `routes: routes`
+    routes: routes,
 })
-
 
 // Leitet einen Nutzer auf /login weiter, wenn er dabei ist, unauthorisiert auf eine Seite zuzugreifen
 router.beforeEach((to, from, next) => {
@@ -40,4 +39,5 @@ router.beforeEach((to, from, next) => {
         next();
     }
 })
+
 export default router;

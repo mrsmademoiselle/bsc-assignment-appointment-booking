@@ -34,13 +34,13 @@ const actions = { // asynchronous
                         console.log("Login successful");
                         commit('login', response.data);
                     }
-                    resolve(response)
+                    resolve()
                 })
                 .catch(error => {
                     console.log("Error: " + error);
                     // place the loginError state into our vuex store
                     commit('logout');
-                    reject("Invalid credentials!")
+                    reject("Nutzername und Passwort stimmen nicht überein.")
                 })
         })
     },

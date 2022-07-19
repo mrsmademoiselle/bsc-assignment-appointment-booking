@@ -1,7 +1,35 @@
 <template>
-  <div>I am login</div>
-  <div>Dispatch Username and Password:</div>
-  <button v-on:click="callLogin">Dispatch</button>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-3 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Anmelden</h5>
+            <form>
+              <div class="form-floating mb-3">
+                <input id="floatingInput" v-model="username" class="form-control"
+                       placeholder="Bitte Nutzernamen eingeben"
+                       type="text">
+              </div>
+              <div class="form-floating mb-3">
+                <input id="floatingPassword" v-model="password" class="form-control"
+                       placeholder="Bitte Passwort eingeben" type="password">
+              </div>
+
+              <div v-if="errors.length > 0" class="mt-4">
+                <div v-for="err in errors" :key="err" class="alert alert-danger" role="alert">
+                  {{ err }}
+                </div>
+              </div>
+              <div class="d-grid pt-4">
+                <button class="btn btn-primary btn-login fw-bold" type="button" v-on:click="callLogin">Anmelden</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,8 +38,8 @@ export default {
   name: "LoginView",
   data: function () {
     return {
-      username: "admin",
-      password: "adminPass",
+      username: "",
+      password: "",
 
       error: false,
       errors: []
@@ -35,5 +63,10 @@ export default {
 </script>
 
 <style scoped>
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+}
 
 </style>
