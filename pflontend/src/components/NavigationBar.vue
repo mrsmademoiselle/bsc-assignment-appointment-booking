@@ -4,10 +4,13 @@
       <router-link class="navbar-link" to="/">
         VLH
       </router-link>
-      <div class="d-flex">
+      <div v-if="isLoggedIn" class="d-flex">
+        <router-link class="navbar-link" to="/overview">Appointments</router-link>
+        <a class="navbar-link" v-on:click="logout">Logout</a>
+      </div>
+      <div v-else class="d-flex">
         <router-link class="navbar-link" to="/book-appointment">Termin buchen</router-link>
         <router-link class="navbar-link" to="/login">Login</router-link>
-        <router-link class="navbar-link" to="/overview">Appointments</router-link>
       </div>
     </div>
 
@@ -18,6 +21,20 @@
 
 export default {
   name: "NavigationBar",
+  methods: {
+    logout() {
+      this.$store.commit('logout');
+      this.$router.push('/login')
+    }
+  },
+  computed: {
+    isLoggedIn: {
+      get() {
+        let token = this.$store.getters.token;
+        return token !== null && token.length > 0;
+      }
+    }
+  }
 }
 </script>
 

@@ -58,7 +58,7 @@ const mutations = { // synchronous
     },
     logout(state) {
         console.log("logging out...")
-        state.token = "";
+        state.token = null;
         state.loginSuccess = false;
         sessionStorage.removeItem("jwt");
     },

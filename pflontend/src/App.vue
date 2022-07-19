@@ -32,5 +32,6 @@ export default {
   text-decoration: none;
   color: inherit;
   margin: 10px 20px 10px 20px;
+  cursor: pointer;
 }
 </style>
