@@ -7,16 +7,13 @@ import com.example.packend.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
 @Transactional
 @RestController
-@RequestMapping("/public/auth")
+@RequestMapping
 public class AuthenticationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
     @Autowired
@@ -24,12 +21,12 @@ public class AuthenticationController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("/public/auth/login")
     public String login(@RequestBody LoginRequest userData) {
         LOGGER.warn("Login try from User " + userData.getUsername());
 
         final String token = userAuthService.authenticateAndGetTokenForUserCredentials(userData.getUsername(), userData.getPassword());
-        LOGGER.info("Login erfolgreich.");
+        LOGGER.info("Login erfolgreich. Token: " + token);
 
         return token;
     }
@@ -38,7 +35,7 @@ public class AuthenticationController {
      * Registrierung
      * Wenn Username bereits vorhanden gebe 400 wenn User noch nicht vorhanden 200
      */
-    @PostMapping("/register")
+    @PostMapping("/public/auth/register")
     public String register(@RequestBody LoginRequest userAuthDto) {
 
         // return new ResponseEntity<>("Benutzername oder Passwort sind nicht valide.", HttpStatus.BAD_REQUEST);
@@ -51,5 +48,10 @@ public class AuthenticationController {
             LOGGER.warn("Benutzername ist bereits vergeben.");
             return "Der Benutzername ist bereits vergeben";
         }
+    }
+
+    @GetMapping("/auth/check")
+    public void checkValidityOfToken() {
+        LOGGER.info("Called auth/check successfully.");
     }
 }

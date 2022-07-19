@@ -83,6 +83,10 @@ export default {
       }
     }
   },
+  /* Nur im Fall der Fälle, dass die Daten vor dem Weiterleiten aus irgendeinem Grund nicht geladen wurden */
+  beforeMount: function () {
+    this.$store.dispatch('fetchAppointments', this.$store.getters.token)
+  },
   errorCaptured: function (err) {
     console.log(err)
     this.$router.push("/")

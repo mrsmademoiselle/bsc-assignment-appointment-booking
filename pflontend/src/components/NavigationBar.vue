@@ -7,6 +7,7 @@
       <div class="d-flex">
         <router-link class="navbar-link" to="/book-appointment">Termin buchen</router-link>
         <router-link class="navbar-link" to="/login">Login</router-link>
+        <router-link class="navbar-link" to="/overview">Appointments</router-link>
       </div>
     </div>
 
