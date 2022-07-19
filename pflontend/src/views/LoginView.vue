@@ -22,6 +22,7 @@ export default {
       this.errors = [];
       this.$store.dispatch('login', {username: this.username, password: this.password})
           .then(() => {
+            this.$store.dispatch('fetchAppointments', this.$store.getters.token);
             this.$router.push('/')
           })
           .catch((e) => {

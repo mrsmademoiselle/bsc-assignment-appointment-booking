@@ -22,7 +22,7 @@
         <td>
           <button class="btn btn-danger px-2 py-0" data-target="#myModal" data-toggle="modal"
                   type="button"
-                  v-on:click="saveAppointment(appointment)">x
+                  v-on:click="selectAppointment(appointment)">x
           </button>
         </td>
       </tr>
@@ -60,30 +60,28 @@
 </template>
 
 <script>
-import {TerminService} from "@/services/TerminService";
 
 export default {
   name: "AppointmentOverview",
   data: function () {
     return {
-      allAppointments: [],
       selectedAppointment: null
     }
   },
   methods: {
-    async getAppointments() {
-      this.allAppointments = await TerminService.getAllAppointments(this.$store.getters.token);
-    },
-    saveAppointment(appointment) {
+    selectAppointment(appointment) {
       this.selectedAppointment = appointment;
     },
     async cancelAppointment() {
-      await TerminService.cancelAppointmentAdmin(this.selectedAppointment.id, this.$store.getters.token)
-      await this.getAppointments();
+      this.$store.dispatch('removeAppointment', this.selectedAppointment.id, this.$store.getters.token);
     }
   },
-  beforeMount: function () {
-    this.getAppointments();
+  computed: {
+    allAppointments: {
+      get() {
+        return this.$store.getters.allAppointments;
+      }
+    }
   },
   errorCaptured: function (err) {
     console.log(err)
