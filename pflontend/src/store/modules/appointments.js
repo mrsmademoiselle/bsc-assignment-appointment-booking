@@ -21,7 +21,7 @@ const actions = { // asynchronous
             commit('fetch', response.data);
         }
     },
-    async removeAppointment({commit}, {id}, {token}) {
+    async removeAppointment({commit}, {id, token}) {
         console.log("Removing appointment with id " + id)
 
         let response = await apiService.authenticatedPost("termin/cancel/" + id, {}, token);
@@ -31,7 +31,7 @@ const actions = { // asynchronous
     },
     async addAppointment({commit}, {appointment}) {
         console.log("Adding appointment");
-        let response = await apiService.authenticatedPost("termin/post", {appointment});
+        let response = await apiService.post("termin/post", {appointment});
         console.log("Response: '" + response.data + "' with Statuscode " + response.status);
         if (response.status === 200) {
             commit('add', appointment);

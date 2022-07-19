@@ -72,8 +72,9 @@ export default {
     selectAppointment(appointment) {
       this.selectedAppointment = appointment;
     },
-    async cancelAppointment() {
-      this.$store.dispatch('removeAppointment', this.selectedAppointment.id, this.$store.getters.token);
+    cancelAppointment() {
+      alert("Token " + this.$store.getters.token)
+      this.$store.dispatch('removeAppointment', {id: this.selectedAppointment.id, token: this.$store.getters.token});
     }
   },
   computed: {

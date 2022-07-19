@@ -3,7 +3,6 @@ import {Beratungsstelle} from "@/entity/Beratungsstelle";
 export class Appointment {
     constructor(json) {
         if (Appointment.isValidAppointment(json)) {
-            console.log("is valid appointment!");
             this.id = json.id;
             this.vorname = json.vorname;
             this.nachname = json.nachname;
@@ -18,6 +17,7 @@ export class Appointment {
             this.ausgewaehlterTermin = json.ausgewaehlterTermin;
             this.uhrzeit = json.uhrzeit;
         } else {
+            console.log("is not a valid appointment!" + JSON.stringify(json));
             let e = {};
             throw e;
         }
