@@ -1,9 +1,9 @@
 <template>
-  <form class="mt-5">
+  <form class="mt-5 container bg-light rounded border p-4">
 
     <!-- Step1: Grund -->
-    <div v-if="step === 1 " class="container">
-      <div class="bg-light rounded border mb-4 justify-content-center">
+    <div v-if="step === 1 ">
+      <div class="mb-4 justify-content-center">
         <div class="h5 my-4">1. Welche Beratungsstelle möchten Sie besuchen?</div>
         <div v-for="beratungsstelle in alleBeratungsstellen" :key="beratungsstelle.id"
              class="form-check row">
@@ -43,9 +43,9 @@
     </div>
 
     <!-- Step2: Termin -->
-    <div v-if="step === 2" class="container">
+    <div v-if="step === 2">
       <div class="h4 mb-4">Wählen Sie einen Termin aus, der Ihnen passt.</div>
-      <div class="row justify-content-center bg-light rounded border">
+      <div class="row justify-content-center">
         <div class="col-5 my-4 mx-4">
           <Datepicker v-model="termin.ausgewaehlterTermin" :disabledDates="alleBelegtenTermine"
                       :disabledWeekDays="[6, 0]"
@@ -57,6 +57,7 @@
                       locale="de" name="date"
                       preventMinMaxNavigation></Datepicker>
         </div>
+
         <div class="col">
           <div class="h5 mt-4">{{
               this.termin.ausgewaehlterTermin !== null
@@ -67,16 +68,16 @@
           <div v-if="this.termin.ausgewaehlterTermin !== null">
             <div v-for="verfuegbareUhrzeit in verfuegbareUhrzeitenFuerDatum" :key="verfuegbareUhrzeit">
               <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-warning active">
-                  <input id="verfuegbareUhrzeit" v-model="termin.uhrzeit" autocomplete="off"
-                         name="verfuegbareUhrzeit" type="radio"
-                         v-bind:value="verfuegbareUhrzeit">
-                  {{ verfuegbareUhrzeit }} Uhr
-                </label>
+                <input id="verfuegbareUhrzeit" v-model="termin.uhrzeit" autocomplete="off"
+                       name="verfuegbareUhrzeit" type="radio"
+                       v-bind:value="verfuegbareUhrzeit">
+                {{ verfuegbareUhrzeit }} Uhr
               </div>
               <!-- TODO Alle Termine ziehen und darstellen-->
               <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
               </div>
+
+
             </div>
 
           </div>
@@ -85,7 +86,7 @@
     </div>
 
     <!-- Step3: persönliche Daten -->
-    <div v-if="step === 3" class="container">
+    <div v-if="step === 3">
       <div class="form-group row">
         <label class="col-3">Anrede:</label>
         <select v-model="termin.kundeninformationen.anrede" class="custom-select col-6">
@@ -126,10 +127,10 @@
     </div>
 
     <!-- Step4: Zusammenfassung -->
-    <div v-if="step === 4" class="container ">
+    <div v-if="step === 4">
 
       <div class="h4">Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit "Buchen".</div>
-      <div class="bg-light rounded border mb-4 justify-content-center">
+      <div class="mb-4 justify-content-center">
         <div class="row">
           <div class="form-group my-4 col-6">
             <div class="col-6">Anrede: {{ this.termin.kundeninformationen.anrede }}</div>
@@ -164,16 +165,13 @@
     </div>
 
     <!-- Step5: Vielen Dank -->
-    <div v-if="step === 5" class="container">
+    <div v-if="step === 5">
       <div>Vielen Dank für Ihre Buchung!</div>
     </div>
 
-
-    <button class="btn btn-outline-primary mx-2" type="button" v-on:click="sendData">Fire Dummy Data</button>
-    <button v-if="step > 1 && step < 5" class="btn btn-secondary mx-2" type="button" v-on:click="previous">Zurück
-    </button>
-    <button v-if="step < 4" class="btn btn-primary mx-2" type="button" v-on:click="nextStep">Weiter</button>
-    <button v-if="step === 4" class="btn btn-primary mx-2" type="button" v-on:click="submit">Buchen</button>
+    <CancelButton v-if="step > 1 && step < 5" title="Zurück" @onclick="previous"></CancelButton>
+    <SubmitButton v-if="step < 4" title="Weiter" @onclick="nextStep"></SubmitButton>
+    <SubmitButton v-if="step === 4" title="Buchen" @onclick="submit"></SubmitButton>
   </form>
 </template>
 
@@ -181,12 +179,16 @@
 import {BeratungsstellenService} from "@/services/BeratungsstellenService";
 import {TerminService} from "@/services/TerminService";
 import Datepicker from '@vuepic/vue-datepicker';
+import SubmitButton from "@/components/SubmitButton";
+import CancelButton from "@/components/CancelButton";
+
 
 export default {
   name: "AppointmentBookingView",
-  components: {Datepicker},
+  components: {Datepicker, CancelButton, SubmitButton},
   data: function () {
     return {
+
       // Data to API
       termin: {
         termingrund: null,
@@ -215,7 +217,7 @@ export default {
 
       verfuegbareUhrzeitenFuerDatum: [],
       minDate: null,
-      maxDate: null
+      maxDate: null,
     }
   },
   /**
@@ -284,6 +286,25 @@ export default {
           break;
       }
     },
+    customPickerOption() {
+      const results = [
+        {
+          label: '21:15',
+          value: {
+            hours: 21,
+            minutes: 15
+          }
+        },
+        {
+          label: '22:15',
+          value: {
+            hours: 22,
+            minutes: 15
+          }
+        }
+      ]
+      return results
+    },
     setMinAndMaxDate() {
       let date = new Date();
       this.minDate = date.toDateString();
@@ -297,7 +318,7 @@ export default {
     }
   }, beforeMount: function () {
     this.getApiInformation();
-  }
+  },
 }
 </script>
 

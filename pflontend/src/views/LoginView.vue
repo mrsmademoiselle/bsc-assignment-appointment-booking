@@ -22,7 +22,7 @@
                 </div>
               </div>
               <div class="d-grid pt-4">
-                <button class="btn btn-primary btn-login fw-bold" type="button" v-on:click="callLogin">Anmelden</button>
+                <FullButton title="Anmelden" @onclick="callLogin"></FullButton>
               </div>
             </form>
           </div>
@@ -34,8 +34,11 @@
 
 <script>
 
+import SubmitButton from "@/components/SubmitButton";
+
 export default {
   name: "LoginView",
+  components: {FullButton: SubmitButton},
   data: function () {
     return {
       username: "",

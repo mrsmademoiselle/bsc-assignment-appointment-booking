@@ -4,7 +4,7 @@ import HomepageClient from "@/views/HomepageClientView";
 import LoginView from "@/views/LoginView";
 import AppointmentBookingView from "@/views/AppointmentBookingView";
 import AppointmentDetails from "@/views/authenticated/AppointmentDetails";
-import AppointmentCancellation from "@/views/AppointmentCancellation";
+import AppointmentCancellation from "@/views/AppointmentCancellationView";
 import {createRouter, createWebHistory} from "vue-router";
 import store from "@/store";
 

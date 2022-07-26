@@ -1,3 +1,10 @@
+
+---------------------- Notizen
+- Hanemann anschreiben wegen Krankheitsattest
+
+
+---------------------- x
+
 - Clietn-Server-Architektur eine Möglichkeit
 - Schichtenarchitektur
 - monolithisch, microservice

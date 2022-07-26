@@ -20,10 +20,10 @@
           <router-link to="/appointment/{{appointment.id}}">zum Termin</router-link>
         </td>
         <td>
-          <button class="btn btn-danger px-2 py-0" data-target="#myModal" data-toggle="modal"
-                  type="button"
-                  v-on:click="selectAppointment(appointment)">x
-          </button>
+          <SubmitButton class="btn btn-danger px-2 py-0" data-target="#myModal" data-toggle="modal"
+                        onclick="selectAppointment(appointment)" title="x"
+                        type="button">x
+          </SubmitButton>
         </td>
       </tr>
       </tbody>
@@ -61,8 +61,11 @@
 
 <script>
 
+import SubmitButton from "@/components/SubmitButton";
+
 export default {
   name: "AppointmentOverview",
+  components: {SubmitButton},
   data: function () {
     return {
       selectedAppointment: null
