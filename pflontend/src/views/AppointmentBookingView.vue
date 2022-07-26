@@ -68,7 +68,7 @@
       <TextInput label="E-Mail" placeholder="max@mustermann.de"
                  type="email"
                  @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
-      
+
       <div class="form-group row">
         <label class="col-3" for="bemerkung">Bemerkung:</label>
         <textarea id="bemerkung" v-model="termin.bemerkung" class="form-control col-6"
@@ -78,8 +78,7 @@
 
     <!-- Step4: Zusammenfassung -->
     <div v-if="step === 4">
-
-      <div class="h4">Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit "Buchen".</div>
+      <TitleSecondary text="Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit 'Buchen'."></TitleSecondary>
       <div class="mb-4 justify-content-center">
         <div class="row">
           <div class="form-group my-4 col-6">
@@ -158,7 +157,7 @@ export default {
           anrede: null
         },
       },
-      step: 3,
+      step: 4,
       responseMessage: "No response yet.",
 
       // Data from API
