@@ -58,30 +58,17 @@
           </option>
         </select>
       </div>
-      <div class="form-group row">
-        <label class="col-3" for="vorname">Vorname:</label>
-        <input id="vorname" v-model="termin.kundeninformationen.vorname" class="form-control col-6"
-               placeholder="Vorname"
-               type="text">
-      </div>
-      <div class="form-group row">
-        <label class="col-3" for="nachname">Nachname:</label>
-        <input id="nachname" v-model="termin.kundeninformationen.nachname" class="form-control col-6"
-               placeholder="Nachname"
-               type="text">
-      </div>
-      <div class="form-group row">
-        <label class="col-3" for="telefon">Telefon:</label>
-        <input id="telefon" v-model="termin.kundeninformationen.telefon" class="form-control col-6"
-               placeholder="01234 56789"
-               type="text">
-      </div>
-      <div class="form-group row">
-        <label class="col-3" for="email">E-Mail:</label>
-        <input id="email" v-model="termin.kundeninformationen.email" class="form-control col-6"
-               placeholder="max@mustermann.de"
-               type="email">
-      </div>
+
+      <TextInput label="Vorname" placeholder="Vorname"
+                 @oninput="(input) => this.termin.kundeninformationen.vorname = input"></TextInput>
+      <TextInput label="Nachname" placeholder="Nachname"
+                 @oninput="(input) => this.termin.kundeninformationen.nachname = input"></TextInput>
+      <TextInput label="Telefon" placeholder="01234 56789"
+                 @oninput="(input) => this.termin.kundeninformationen.telefon = input"></TextInput>
+      <TextInput label="E-Mail" placeholder="max@mustermann.de"
+                 type="email"
+                 @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
+      
       <div class="form-group row">
         <label class="col-3" for="bemerkung">Bemerkung:</label>
         <textarea id="bemerkung" v-model="termin.bemerkung" class="form-control col-6"
@@ -146,11 +133,12 @@ import ButtonSubmit from "@/components/ButtonSubmit";
 import ButtonCancel from "@/components/ButtonCancel";
 import TitlePrimary from "@/components/TitlePrimary";
 import MultipleChoiceForm from "@/components/MultipleChoiceForm";
+import TextInput from "@/components/TextInput";
 
 
 export default {
   name: "AppointmentBookingView",
-  components: {MultipleChoiceForm, TitlePrimary, Datepicker, ButtonCancel, ButtonSubmit},
+  components: {TextInput, MultipleChoiceForm, TitlePrimary, Datepicker, ButtonCancel, ButtonSubmit},
   data: function () {
     return {
 
@@ -170,7 +158,7 @@ export default {
           anrede: null
         },
       },
-      step: 1,
+      step: 3,
       responseMessage: "No response yet.",
 
       // Data from API
