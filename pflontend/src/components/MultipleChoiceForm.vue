@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import TitleSecondary from "@/components/TitleSecondary";
+import TitleSecondary from "@/components/titles/TitleSecondary";
 
 export default {
   name: "MultipleChoiceForm",

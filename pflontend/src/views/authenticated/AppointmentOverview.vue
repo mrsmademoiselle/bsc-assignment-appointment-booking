@@ -60,7 +60,7 @@
 
 <script>
 
-import ButtonSubmit from "@/components/ButtonSubmit";
+import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 
 export default {
   name: "AppointmentOverview",

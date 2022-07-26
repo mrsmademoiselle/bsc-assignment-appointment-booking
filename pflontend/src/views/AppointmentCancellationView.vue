@@ -20,8 +20,8 @@
 
 <script>
 import {TerminService} from "@/services/TerminService";
-import ButtonCancel from "@/components/ButtonCancel";
-import ButtonSubmit from "@/components/ButtonSubmit";
+import ButtonCancel from "@/components/buttons/ButtonCancel";
+import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 
 export default {
   name: "AppointmentCancellation",

@@ -77,7 +77,7 @@
     </div>
 
     <!-- Step4: Zusammenfassung -->
-    <div v-if="step === 4">
+    <div v-if="step === 4 && this.termin.ausgewaehlterTermin !== null">
       <TitleSecondary text="Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit 'Buchen'."></TitleSecondary>
       <div class="mb-4 justify-content-center">
         <div class="row">
@@ -128,16 +128,17 @@
 import {BeratungsstellenService} from "@/services/BeratungsstellenService";
 import {TerminService} from "@/services/TerminService";
 import Datepicker from '@vuepic/vue-datepicker';
-import ButtonSubmit from "@/components/ButtonSubmit";
-import ButtonCancel from "@/components/ButtonCancel";
-import TitlePrimary from "@/components/TitlePrimary";
+import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import ButtonCancel from "@/components/buttons/ButtonCancel";
+import TitlePrimary from "@/components/titles/TitlePrimary";
 import MultipleChoiceForm from "@/components/MultipleChoiceForm";
 import TextInput from "@/components/TextInput";
+import TitleSecondary from "@/components/titles/TitleSecondary";
 
 
 export default {
   name: "AppointmentBookingView",
-  components: {TextInput, MultipleChoiceForm, TitlePrimary, Datepicker, ButtonCancel, ButtonSubmit},
+  components: {TitleSecondary, TextInput, MultipleChoiceForm, TitlePrimary, Datepicker, ButtonCancel, ButtonSubmit},
   data: function () {
     return {
 
