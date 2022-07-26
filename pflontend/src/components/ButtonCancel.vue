@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "CancelButton",
+  name: "ButtonCancel",
   props: ['title'],
 }
 </script>

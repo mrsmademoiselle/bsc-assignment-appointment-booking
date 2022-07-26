@@ -4,47 +4,21 @@
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
       <div class="mb-4 justify-content-center">
-        <div class="h5 my-4">1. Welche Beratungsstelle möchten Sie besuchen?</div>
-        <div v-for="beratungsstelle in alleBeratungsstellen" :key="beratungsstelle.id"
-             class="form-check row">
-          <input id="beratungsstelle" v-model="termin.beratungsstelle" class="form-check-input"
-                 name="beratungsstelle" type="radio"
-                 v-bind:value="beratungsstelle">
-          <label class="form-check-label" for="beratungsstelle">
-            {{ beratungsstelle.formatToReadableString() }}
-          </label>
-        </div>
-        <div>
-          <div class="h5 mt-4">2. Sind Sie bereits Mitglied der VLH?</div>
-          <div class="form-check form-check-inline">
-            <input id="ja" v-model="termin.kundeninformationen.bereitsMitglied" :value="true" class="form-check-input"
-                   name="bereitsMitglied"
-                   type="radio">
-            <label class="form-check-label" for="ja">ja</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input id="nein" v-model="termin.kundeninformationen.bereitsMitglied" :value="false"
-                   class="form-check-input"
-                   name="bereitsMitglied" type="radio">
-            <label class="form-check-label" for="nein">nein</label>
-          </div>
-        </div>
-        <div class="h5 mt-4">Worum geht es bei Ihrem Termin?</div>
-        <div v-for="termingrund in alleTermingruende" :key="termingrund" class="form-check my-2">
-          <input id="termingrund" v-model="termin.termingrund"
-                 class="form-check-input"
-                 name="termingrund"
-                 type="radio" v-bind:value="termingrund">
-          <label class="form-check-label" for="termingrund">
-            {{ termingrund }}
-          </label>
-        </div>
+        <MultipleChoiceForm :options="alleBeratungsstellen" for="beratungsstelle"
+                            header="1. Welche Beratungsstelle möchten Sie besuchen?"
+                            @onselect="(option) => this.termin.beratungsstelle = option"></MultipleChoiceForm>
+        <MultipleChoiceForm :options="['ja', 'nein']" for="bereitsMitglied"
+                            header="2. Sind Sie bereits Mitglied der VLH?"
+                            @onselect="(option) => termin.kundeninformationen.bereitsMitglied = option"></MultipleChoiceForm>
+        <MultipleChoiceForm :options="alleTermingruende" for="termingrund"
+                            header="3. Worum geht es bei Ihrem Termin?"
+                            @onselect="(option) => termin.termingrund= option"></MultipleChoiceForm>
       </div>
     </div>
 
     <!-- Step2: Termin -->
     <div v-if="step === 2">
-      <div class="h4 mb-4">Wählen Sie einen Termin aus, der Ihnen passt.</div>
+      <TitlePrimary text="Wählen Sie einen Termin aus, der Ihnen passt."></TitlePrimary>
       <div class="row justify-content-center">
         <div class="col-5 my-4 mx-4">
           <Datepicker v-model="termin.ausgewaehlterTermin" :disabledDates="alleBelegtenTermine"
@@ -55,31 +29,20 @@
                       class="mx-4 px-4"
                       inline
                       locale="de" name="date"
-                      preventMinMaxNavigation></Datepicker>
+                      preventMinMaxNavigation>
+          </Datepicker>
         </div>
 
         <div class="col">
-          <div class="h5 mt-4">{{
-              this.termin.ausgewaehlterTermin !== null
-                  ? "Ausgewähltes Datum: " + this.termin.ausgewaehlterTermin.toLocaleDateString("de-DE")
-                  : "Bitte wählen Sie ein Datum aus."
-            }}
-          </div>
           <div v-if="this.termin.ausgewaehlterTermin !== null">
-            <div v-for="verfuegbareUhrzeit in verfuegbareUhrzeitenFuerDatum" :key="verfuegbareUhrzeit">
-              <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <input id="verfuegbareUhrzeit" v-model="termin.uhrzeit" autocomplete="off"
-                       name="verfuegbareUhrzeit" type="radio"
-                       v-bind:value="verfuegbareUhrzeit">
-                {{ verfuegbareUhrzeit }} Uhr
-              </div>
-              <!-- TODO Alle Termine ziehen und darstellen-->
-              <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
-              </div>
-
-
+            <MultipleChoiceForm :header="this.termin.ausgewaehlterTermin !== null
+                                ? ' Ausgewähltes Datum:' + this.termin.ausgewaehlterTermin.toLocaleDateString('de-DE')
+                                : 'Bitte wählen Sie ein Datum aus.'" :options="verfuegbareUhrzeitenFuerDatum"
+                                for="verfuegbareUhrzeit"
+                                @onselect="(option) => termin.uhrzeit=option"></MultipleChoiceForm>
+            <!-- TODO Alle Termine ziehen und darstellen-->
+            <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
             </div>
-
           </div>
         </div>
       </div>
@@ -169,9 +132,9 @@
       <div>Vielen Dank für Ihre Buchung!</div>
     </div>
 
-    <CancelButton v-if="step > 1 && step < 5" title="Zurück" @onclick="previous"></CancelButton>
-    <SubmitButton v-if="step < 4" title="Weiter" @onclick="nextStep"></SubmitButton>
-    <SubmitButton v-if="step === 4" title="Buchen" @onclick="submit"></SubmitButton>
+    <ButtonCancel v-if="step > 1 && step < 5" title="Zurück" @onclick="previous"></ButtonCancel>
+    <ButtonSubmit v-if="step < 4" title="Weiter" @onclick="nextStep"></ButtonSubmit>
+    <ButtonSubmit v-if="step === 4" title="Buchen" @onclick="submit"></ButtonSubmit>
   </form>
 </template>
 
@@ -179,13 +142,15 @@
 import {BeratungsstellenService} from "@/services/BeratungsstellenService";
 import {TerminService} from "@/services/TerminService";
 import Datepicker from '@vuepic/vue-datepicker';
-import SubmitButton from "@/components/SubmitButton";
-import CancelButton from "@/components/CancelButton";
+import ButtonSubmit from "@/components/ButtonSubmit";
+import ButtonCancel from "@/components/ButtonCancel";
+import TitlePrimary from "@/components/TitlePrimary";
+import MultipleChoiceForm from "@/components/MultipleChoiceForm";
 
 
 export default {
   name: "AppointmentBookingView",
-  components: {Datepicker, CancelButton, SubmitButton},
+  components: {MultipleChoiceForm, TitlePrimary, Datepicker, ButtonCancel, ButtonSubmit},
   data: function () {
     return {
 

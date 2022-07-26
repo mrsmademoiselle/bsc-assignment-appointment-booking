@@ -34,11 +34,11 @@
 
 <script>
 
-import SubmitButton from "@/components/SubmitButton";
+import ButtonSubmit from "@/components/ButtonSubmit";
 
 export default {
   name: "LoginView",
-  components: {FullButton: SubmitButton},
+  components: {FullButton: ButtonSubmit},
   data: function () {
     return {
       username: "",

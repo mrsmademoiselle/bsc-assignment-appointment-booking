@@ -11,8 +11,8 @@
     <div class="h5 font-weight-bold">{{ appointment.beratungsstelle.plz }} {{ appointment.beratungsstelle.ort }}</div>
     <div class="mt-4 pb-4"> absagen möchten?</div>
     <div class="my-4 justify-content-center d-flex">
-      <CancelButton onclick="$router.push('/')" title="Nein, abbrechen"></CancelButton>
-      <SubmitButton onclick="cancelAppointment" title="Ja, absagen"></SubmitButton>
+      <ButtonCancel onclick="$router.push('/')" title="Nein, abbrechen"></ButtonCancel>
+      <ButtonSubmit onclick="cancelAppointment" title="Ja, absagen"></ButtonSubmit>
     </div>
   </div>
   <div v-if="abgesagt">Der Termin wurde erfolgreich abgesagt.</div>
@@ -20,12 +20,12 @@
 
 <script>
 import {TerminService} from "@/services/TerminService";
-import CancelButton from "@/components/CancelButton";
-import SubmitButton from "@/components/SubmitButton";
+import ButtonCancel from "@/components/ButtonCancel";
+import ButtonSubmit from "@/components/ButtonSubmit";
 
 export default {
   name: "AppointmentCancellation",
-  components: {SubmitButton, CancelButton},
+  components: {ButtonSubmit, ButtonCancel},
   data: function () {
     return {
       appointment: null,
