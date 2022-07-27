@@ -41,8 +41,7 @@
                                 for="verfuegbareUhrzeit"
                                 @onselect="(option) => termin.uhrzeit=option"></MultipleChoiceForm>
             <!-- TODO Alle Termine ziehen und darstellen-->
-            <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.
-            </div>
+            <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.</div>
           </div>
         </div>
       </div>
@@ -135,10 +134,18 @@ import MultipleChoiceForm from "@/components/MultipleChoiceForm";
 import TextInput from "@/components/TextInput";
 import TitleSecondary from "@/components/titles/TitleSecondary";
 
-
 export default {
   name: "AppointmentBookingView",
-  components: {TitleSecondary, TextInput, MultipleChoiceForm, TitlePrimary, Datepicker, ButtonCancel, ButtonSubmit},
+  components: {
+    TitleSecondary,
+    TextInput,
+    MultipleChoiceForm,
+    TitlePrimary,
+    Datepicker,
+    ButtonCancel,
+    ButtonSubmit,
+    
+  },
   data: function () {
     return {
 
@@ -158,7 +165,7 @@ export default {
           anrede: null
         },
       },
-      step: 4,
+      step: 1,
       responseMessage: "No response yet.",
 
       // Data from API
