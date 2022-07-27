@@ -1,220 +1,308 @@
-<template lang="pug">
-.step-progress__wrapper
-  .step-progress__wrapper-before(
-    :style='{"background-color": passiveColor, height: lineThickness + "px" }'
-  )
-  .step-progress__bar
-    .step-progress__step(
-      v-for='(step, index) in steps'
-      :style=`{
-        "--activeColor" : activeColor,
-        "--passiveColor" : passiveColor,
-        "--activeBorder" : activeThickness + "px",
-        "--passiveBorder" : passiveThickness + "px"
-      }`
-      :class=`{
-        "step-progress__step--active": index === currentStep,
-        "step-progress__step--valid": index < currentStep
-      }`
-    )
-      span {{
-    index + 1
-  }}
-       .step-progress__step-icon(:class='iconClass')
-       .step-progress__step-label {{
-    step
-  }}
-   .step-progress__wrapper-after(
-     :style=`{
-       transform: "scaleX(" + scaleX + ") translateY(-50%) perspective(1000px)",
-       "background-color": activeColor,
-       height: lineThickness + "px"
-     }`
-   )
-
-
+<!-- NOT MINE! CREDIT TO https://github.com/pokhrelashok/vue-step-progress-indicator-->
+<template>
+  <div :style="styleData['progress__wrapper']" class="progress__wrapper">
+    <span
+        v-for="(step, index) in steps"
+        :key="'step_' + step"
+        :style="styleData['progress__block']"
+        class="progress__block"
+    >
+      <div
+          :style="{
+          ...styleData['progress__bubble'],
+          ...getColors('progress__bubble', index),
+        }"
+          class="progress__bubble"
+          v-bind:class="{
+          clickable: isReactive && checkIfStepIsReactive(index),
+        }"
+          @click="callPageChange(index)"
+      >
+        {{ index + 1 }}
+      </div>
+      <span
+          v-if="showLabel"
+          :style="{
+          ...styleData['progress__label'],
+          ...getColors('progress__label', index),
+        }"
+          class="progress__label"
+          v-bind:class="{
+          clickable: isReactive && checkIfStepIsReactive(index),
+        }"
+          @click="callPageChange(index)"
+      >{{ step }}</span
+      >
+      <div
+          v-if="
+          (showBridge || showBridgeOnSmallDevices) && index != steps.length - 1
+        "
+          :style="{
+          ...styleData['progress__bridge'],
+          ...getColors('progress__bridge', index),
+        }"
+          class="progress__bridge"
+          v-bind:class="{
+          'hide-on-large': !showBridge,
+          'display-on-small': showBridgeOnSmallDevices,
+        }"
+      ></div>
+    </span>
+  </div>
 </template>
+
 
 <script>
 export default {
-  name: 'ProgressBar',
+  name: "ProgressBar",
   props: {
     steps: {
       type: Array,
-      default() {
-        return [];
+      required: true,
+    },
+    activeStep: {
+      type: Number,
+      required: true,
+    },
+    isReactive: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    reactivityType: {
+      type: String,
+      required: false,
+      default: "all",
+      validator: (propValue) => {
+        const types = ["all", "backward", "forward", "single-step"];
+        return types.includes(propValue);
       },
-      validator(val) {
-        return val && val.length > 0;
-      }
     },
-    currentStep: {
-      type: Number,
-      default: 0
+    showLabel: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
-    iconClass: {
-      type: String,
-      default: 'fa fa-check'
+    showBridge: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
-    activeColor: {
-      type: String,
-      default: 'red'
+    showBridgeOnSmallDevices: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
-    passiveColor: {
-      type: String,
-      default: 'gray'
+    colors: {
+      type: Object,
+      required: false,
+      default: function () {
+        return {};
+      },
     },
-    activeThickness: {
-      type: Number,
-      default: 5
+    styles: {
+      type: Object,
+      required: false,
+      default: function () {
+        return {};
+      },
     },
-    passiveThickness: {
-      type: Number,
-      default: 5
-    },
-    lineThickness: {
-      type: Number,
-      default: 12
-    }
   },
-  computed: {
-    scaleX() {
-      let step = this.currentStep;
-      if (step < 0) {
-        step = 0;
-      } else if (step >= this.steps.length) {
-        step = this.steps.length - 1;
+  data() {
+    return {
+      currentStep: this.activeStep,
+      styleData: {
+        progress__wrapper: {
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+          margin: "1rem 0",
+        },
+        progress__block: {
+          display: "flex",
+          alignItems: "center",
+        },
+        progress__bridge: {
+          backgroundColor: "grey",
+          height: "4px",
+          flexGrow: "1",
+          width: "70px",
+        },
+        progress__bubble: {
+          margin: "0",
+          padding: "0",
+          lineHeight: "35px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "35px",
+          width: "35px",
+          borderRadius: "100%",
+          backgroundColor: "transparent",
+          border: "2px grey solid",
+          textAlign: "center",
+        },
+        progress__label: {
+          margin: "0 0.8rem",
+        },
+      },
+      colorData: {
+        progress__bubble: {
+          active: {
+            color: "#fff",
+            backgroundColor: "#2f90ff",
+            borderColor: "#2f90ff",
+          },
+          inactive: {
+            color: "#fff",
+            backgroundColor: "#34495e",
+            borderColor: "#34495e",
+          },
+          completed: {
+            color: "#fff",
+            borderColor: "#27ae60",
+            backgroundColor: "#27ae60",
+          },
+        },
+        progress__label: {
+          active: {
+            color: "#2f90ff",
+          },
+          inactive: {
+            color: "#34495e",
+          },
+          completed: {
+            color: "#27ae60",
+          },
+        },
+        progress__bridge: {
+          active: {
+            backgroundColor: "#2f90ff",
+          },
+          inactive: {
+            backgroundColor: "#34495e",
+          },
+          completed: {
+            backgroundColor: "#27ae60",
+          },
+        },
+      },
+    };
+  },
+  methods: {
+    callPageChange: function (step) {
+      if (!this.isReactive) return;
+      if (!this.checkIfStepIsReactive(step)) return;
+      this.currentStep = step;
+      this.$emit("onStepChanged", step);
+      if (step == this.steps.length - 1) this.$emit("onEnterFinalStep", step);
+    },
+    isActive: function (index) {
+      return index === this.currentStep;
+    },
+    checkIfStepIsReactive: function (index) {
+      switch (this.reactivityType) {
+        case "all":
+          return true;
+        case "backward":
+          return index < this.currentStep;
+        case "forward":
+          return index > this.currentStep;
+        case "single-step":
+          return index == this.currentStep - 1 || index == this.currentStep + 1;
+        default:
+          return false;
       }
-      return step / (this.steps.length - 1);
-    }
-  }
+    },
+    getColors: function (className, index) {
+      let styles = {};
+      if (index < this.currentStep) {
+        styles["color"] = this.colorData[className]["completed"]["color"];
+        styles["backgroundColor"] = this.inactiveColor
+            ? this.inactiveColor
+            : this.colorData[className]["completed"]["backgroundColor"];
+        styles["borderColor"] = this.colorData[className]["completed"][
+            "borderColor"
+            ];
+      } else if (index == this.currentStep) {
+        styles["color"] = this.colorData[className]["active"]["color"];
+        styles["backgroundColor"] = this.colorData[className]["active"][
+            "backgroundColor"
+            ];
+        styles["borderColor"] = this.colorData[className]["active"][
+            "borderColor"
+            ];
+      } else {
+        styles["color"] = this.colorData[className]["inactive"]["color"];
+        styles["backgroundColor"] = this.colorData[className]["inactive"][
+            "backgroundColor"
+            ];
+        styles["borderColor"] = this.colorData[className]["inactive"][
+            "borderColor"
+            ];
+      }
+      return styles;
+    },
+    overwriteStyle: function (style1, style2) {
+      for (const property in style1) {
+        if (Object.hasOwnProperty.call(style1, property)) {
+          const element = style1[property];
+          for (const value in element) {
+            if (Object.hasOwnProperty.call(element, value)) {
+              style2[property][value] = element[value];
+            }
+          }
+        }
+      }
+      return style2;
+    },
+  },
+  watch: {
+    activeStep: function (newVal) {
+      if (this.activeStep < this.steps.length) this.currentStep = newVal;
+    },
+  },
+  mounted() {
+    this.styleData = this.overwriteStyle(this.styles, this.styleData);
+    this.colorData = this.overwriteStyle(this.colors, this.colorData);
+  },
 };
 </script>
 
-<style lang="sass">
-.step-progress
-  &__wrapper
-    width: 90%
-    margin: 0 auto
-    position: relative
 
-  &__wrapper-before
-    content: ''
-    position: absolute
-    left: 0
-    top: 50%
-    height: 12px
-    width: 100%
-    background-color: gray
-    transform: translateY(-50%) perspective(1000px)
+<style scoped>
+.clickable {
+  cursor: pointer;
+}
 
-  &__wrapper-after
-    content: ''
-    position: absolute
-    left: 0
-    top: 50%
-    height: 12px
-    width: 100%
-    background-color: red
-    transform: scaleX(0) translateY(-50%) perspective(1000px)
-    transform-origin: left center
-    transition: transform .5s ease
+.hide-on-large {
+  display: none;
+}
 
-  &__bar
-    width: 100%
-    display: flex
-    height: 100px
-    justify-content: space-between
-    align-items: center
-    margin-bottom: 40px
+@media (max-width: 768px) {
+  .progress__wrapper {
+    justify-content: space-around;
+  }
 
-  &__step
-    z-index: 2
-    position: relative
-    --activeColor: red
-    --passiveColor: gray
-    --activeBorder: 5px
-    --passiveBorder: 5px
+  .progress__label {
+    display: none;
+  }
 
-    span
-      color: var(--passiveColor)
-      transition: .3s ease
-      display: block
-      font-size: 50px
-      transform: translate3d(0, 0, 0) scale(1) perspective(1000px)
-      font-weight: 900
-      text-align: center
-      opacity: 1
-      @media (max-width: 767px)
-        font-size: 28px
+  .progress__bubble {
+    margin: 0;
+  }
 
-    &--active
-      span
-        color: var(--activeColor)
+  .progress__block:not(:last-of-type) {
+    flex-grow: 1;
+    margin-right: 0;
+  }
 
-      .step-progress__step-label
-        color: var(--activeColor)
+  .display-on-small {
+    display: inline-block;
+  }
 
-      .step-progress__step-icon
-        opacity: 1
-
-    &--valid
-      .step-progress__step-icon
-      opacity: 1
-      transform: translate3d(-50%, -50%, 0) scale(1) perspective(1000px)
-
-      span
-        color: var(--activeColor)
-        opacity: 0
-        transform: translate3d(0, 0, 0) scale(2) perspective(1000px)
-
-      .step-progress__step-label
-        color: var(--activeColor)
-
-    &:after
-      content: ""
-      position: absolute
-      z-index: -1
-      left: 50%
-      top: 50%
-      transform: translate(-50%, -50%) perspective(1000px)
-      width: 75px
-      height: 75px
-      background-color: #fff
-      border-radius: 50%
-      border: var(--passiveBorder) solid var(--passiveColor)
-      transition: .3s ease
-      @media (max-width: 767px)
-        width: 40px
-        height: 40px
-
-    &--active:after
-      border: var(--activeBorder) solid var(--activeColor)
-
-    &--valid:after
-      background-color: var(--activeColor)
-      border: var(--activeBorder) solid var(--activeColor)
-
-  &__step-label
-    position: absolute
-    top: calc(100% + 25px)
-    left: 50%
-    transform: translateX(-50%) perspective(1000px)
-    white-space: nowrap
-    font-size: 18px
-    font-weight: 600
-    color: gray
-    transition: .3s ease
-
-  &__step-icon
-    font-size: 36px
-    color: #fff
-    position: absolute
-    left: 50%
-    top: 50%
-    transition: transform .3s ease
-    opacity: 0
-    transform: translate3d(-50%, -50%, 0) scale(0) perspective(1000px)
-    @media (max-width: 767px)
-      font-size: 22px
+  .progress__block {
+    margin: 0;
+  }
+}
 </style>

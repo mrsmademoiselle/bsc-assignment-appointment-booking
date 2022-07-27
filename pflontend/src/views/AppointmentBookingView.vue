@@ -1,6 +1,10 @@
 <template>
-  <form class="mt-5 container bg-light rounded border p-4">
-
+  <div class="justify-content-center d-flex mt-3 mb-0 container col-6">
+    <ProgressBar :active-step="step-1" :show-bridge="true"
+                 :show-label="false" :steps="alleSchritte"
+    ></ProgressBar>
+  </div>
+  <form class="mt-3 container bg-light rounded border p-4">
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
       <div class="mb-4 justify-content-center">
@@ -133,10 +137,12 @@ import TitlePrimary from "@/components/titles/TitlePrimary";
 import MultipleChoiceForm from "@/components/MultipleChoiceForm";
 import TextInput from "@/components/TextInput";
 import TitleSecondary from "@/components/titles/TitleSecondary";
+import ProgressBar from "@/components/ProgressBar";
 
 export default {
   name: "AppointmentBookingView",
   components: {
+    ProgressBar,
     TitleSecondary,
     TextInput,
     MultipleChoiceForm,
@@ -144,7 +150,7 @@ export default {
     Datepicker,
     ButtonCancel,
     ButtonSubmit,
-    
+
   },
   data: function () {
     return {
@@ -168,6 +174,7 @@ export default {
       step: 1,
       responseMessage: "No response yet.",
 
+      alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
       // Data from API
       alleBeratungsstellen: [],
       alleTermingruende: [],
