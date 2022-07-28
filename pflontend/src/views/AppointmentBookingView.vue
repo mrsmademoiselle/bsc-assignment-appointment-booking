@@ -5,6 +5,7 @@
                  @onStepChanged="(step) => switchTo(step+1)"></ProgressBar>
   </div>
   <form class="mt-3 container bg-light rounded border p-4">
+
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
       <div class="mb-2 justify-content-center">
@@ -18,7 +19,6 @@
                             for="termingrund"
                             header="3. Worum geht es bei Ihrem Termin?"
                             @onselect="(option) => termin.termingrund= option"></MultipleChoiceForm>
-
       </div>
     </div>
 
@@ -56,65 +56,58 @@
 
     <!-- Step3: persönliche Daten -->
     <div v-if="step === 3">
-      <div class="form-group row">
-        <label class="col-3">Anrede:</label>
-        <select v-model="termin.kundeninformationen.anrede" class="custom-select col-6">
-          <option v-for="anrede in alleAnreden" :key="anrede" :value="anrede">
-            {{ anrede }}
-          </option>
-        </select>
-      </div>
+      <TitleSecondary muted="true"
+                      text="Bitte teilen Sie uns Ihre Daten mit, damit wir sie erreichen können."></TitleSecondary>
+      <div class="pl-5 ml-5 mt-5">
+        <div class="form-group row">
+          <label class="col-3">Anrede:</label>
+          <select v-model="termin.kundeninformationen.anrede" class="custom-select col-6">
+            <option v-for="anrede in alleAnreden" :key="anrede" :value="anrede">
+              {{ anrede }}
+            </option>
+          </select>
+        </div>
+        <TextInput :input="this.termin.kundeninformationen.vorname" label="Vorname" placeholder="Vorname"
+                   @oninput="(input) => this.termin.kundeninformationen.vorname = input"></TextInput>
+        <TextInput :input="this.termin.kundeninformationen.nachname" label="Nachname" placeholder="Nachname"
+                   @oninput="(input) => this.termin.kundeninformationen.nachname = input"></TextInput>
+        <TextInput :input="this.termin.kundeninformationen.telefon" label="Telefon" placeholder="01234 56789"
+                   @oninput="(input) => this.termin.kundeninformationen.telefon = input"></TextInput>
+        <TextInput :input="this.termin.kundeninformationen.email" label="E-Mail" placeholder="max@mustermann.de"
+                   type="email"
+                   @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
 
-      <TextInput label="Vorname" placeholder="Vorname"
-                 @oninput="(input) => this.termin.kundeninformationen.vorname = input"></TextInput>
-      <TextInput label="Nachname" placeholder="Nachname"
-                 @oninput="(input) => this.termin.kundeninformationen.nachname = input"></TextInput>
-      <TextInput label="Telefon" placeholder="01234 56789"
-                 @oninput="(input) => this.termin.kundeninformationen.telefon = input"></TextInput>
-      <TextInput label="E-Mail" placeholder="max@mustermann.de"
-                 type="email"
-                 @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
-
-      <div class="form-group row">
-        <label class="col-3" for="bemerkung">Bemerkung:</label>
-        <textarea id="bemerkung" v-model="termin.bemerkung" class="form-control col-6"
-                  placeholder="Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!"></textarea>
+        <div class="form-group row">
+          <label class="col-3" for="bemerkung">Bemerkung:</label>
+          <textarea id="bemerkung" v-model="termin.bemerkung" class="form-control col-6"
+                    placeholder="Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!"></textarea>
+        </div>
       </div>
     </div>
 
     <!-- Step4: Zusammenfassung -->
     <div v-if="step === 4 && this.termin.ausgewaehlterTermin !== null">
-      <TitleSecondary text="Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit 'Buchen'."></TitleSecondary>
-      <div class="mb-4 justify-content-center">
-        <div class="row">
-          <div class="form-group my-4 col-6">
-            <div class="col-6">Anrede: {{ this.termin.kundeninformationen.anrede }}</div>
-            <div class="col-6">Vorname: {{ this.termin.kundeninformationen.vorname }}</div>
-            <div class="col-6">Nachname: {{ this.termin.kundeninformationen.nachname }}</div>
-            <!-- ... -->
-          </div>
-          <div class="form-group my-4 col-6">
-            <div class="col-6">bereitsMitglied: {{
-                this.termin.kundeninformationen.bereitsMitglied ? "ja" : "nein"
-              }}
-            </div>
-            <!-- ... -->
-          </div>
+      <TitleSecondary muted="true"
+                      text="Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit 'Buchen'."></TitleSecondary>
+      <div class="row container m-5 justify-content-center d-flex">
+        <div class="col-6">
+          <TextLabel :input="this.termin.kundeninformationen.ausgewaehlterTermin" label="Termin"></TextLabel>
+          <TextLabel :input="this.termin.kundeninformationen.beratungsstelle" label="Beratungsstelle"></TextLabel>
+          <TextLabel
+              :input="this.termin.termingrund+ ', '+this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn'"
+              label="Terminart"></TextLabel>
+          <TextLabel :input="this.termin.bemerkung" label="Bemerkung"></TextLabel>
+
         </div>
-        <div class="row">
+        <div class="col-6">
 
-          <div class="form-group my-4 col-6">
-            <div class="col-6">Termin: {{ this.termin.ausgewaehlterTermin.toDateString() }} {{ this.termin.uhrzeit }}
-              Uhr
-            </div>
-            <div class="col-6">Beratungsstelle: {{ this.termin.beratungsstelle.formatToReadableString() }}</div>
+          <TextLabel :input="this.termin.kundeninformationen.anrede + ' '+this.termin.kundeninformationen.vorname +
+                ' '+this.termin.kundeninformationen.nachname"
+                     label="Name"></TextLabel>
+          <TextLabel :input="this.termin.kundeninformationen.telefon" label="Telefon"></TextLabel>
+          <TextLabel :input="this.termin.kundeninformationen.email" label="E-Mail"></TextLabel>
 
-          </div>
-          <div class="form-group my-4 col-6">
-            <div class="col-6">Termingrund: {{ this.termin.termingrund }}</div>
-            <div class="col-6">Bemerkung: {{ this.termin.bemerkung }}</div>
 
-          </div>
         </div>
       </div>
     </div>
@@ -124,10 +117,10 @@
       <div>Vielen Dank für Ihre Buchung!</div>
     </div>
     <ErrorBanner v-if="this.errors.length > 0" :message="getErrorMessage()"></ErrorBanner>
-    <div class="d-flex justify-content-end">
+    <div :class="step > 1 ? 'justify-content-between' : 'justify-content-end'" class=" d-flex px-4 pt-4 mx-5 pb-2">
       <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück"
                     @onclick="switchTo(this.step-1)"></ButtonCancel>
-      <ButtonSubmit v-if="step < 4" class="px-4" title="Weiter" @onclick="switchTo(step+1)"></ButtonSubmit>
+      <ButtonSubmit v-if="step < 4" class="px-4 float-right" title="Weiter" @onclick="switchTo(step+1)"></ButtonSubmit>
       <ButtonSubmit v-if="step === 4" class="px-4" title="Buchen" @onclick="submit"></ButtonSubmit>
     </div>
   </form>
@@ -146,10 +139,12 @@ import TitleSecondary from "@/components/titles/TitleSecondary";
 import ProgressBar from "@/components/ProgressBar";
 import TimePicker from "@/components/TimePicker";
 import ErrorBanner from "@/components/ErrorBanner";
+import TextLabel from "@/components/TextLabel";
 
 export default {
   name: "AppointmentBookingView",
   components: {
+    TextLabel,
     ErrorBanner,
     TimePicker,
     ProgressBar,
@@ -164,6 +159,7 @@ export default {
   },
   data: function () {
     return {
+      step: 4,
 
       // Data to API
       termin: {
@@ -181,7 +177,6 @@ export default {
           anrede: null
         },
       },
-      step: 1,
       responseMessage: "No response yet.",
 
       alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
@@ -339,9 +334,30 @@ export default {
           }
           break;
         case 3:
+        case 4:
+        case 5:
           if (this.alleAnreden.length === 0) {
             this.alleAnreden = await BeratungsstellenService.getAlleAnreden();
+            this.termin.kundeninformationen.anrede = this.alleAnreden[0]
           }
+          if (this.alleBeratungsstellen.length === 0) {
+            this.alleBeratungsstellen = await BeratungsstellenService.getAlleBeratungsstellen();
+            this.termin.beratungsstelle = this.alleBeratungsstellen[0];
+          }
+          if (this.alleTermingruende.length === 0) {
+            this.alleTermingruende = await BeratungsstellenService.getAlleTermingruende();
+            this.termin.termingrund = this.alleTermingruende[0];
+          }
+          this.termin.kundeninformationen.anrede = this.alleAnreden[0];
+          this.termin.termingrund = this.alleTermingruende[0];
+          this.termin.beratungsstelle = this.alleBeratungsstellen[0];
+          this.termin.kundeninformationen.vorname = "Max";
+          this.termin.kundeninformationen.nachname = "Max";
+          this.termin.kundeninformationen.email = "Max";
+          this.termin.kundeninformationen.telefon = "Max";
+          this.termin.kundeninformationen.bereitsMitglied = false;
+          this.termin.ausgewaehlterTermin = new Date();
+          this.termin.uhrzeit = "9"
           break;
       }
     },

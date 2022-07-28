@@ -56,6 +56,7 @@
 export default {
   name: "ProgressBar",
   props: {
+    inactiveColor: String,
     steps: {
       type: Array,
       required: true,
