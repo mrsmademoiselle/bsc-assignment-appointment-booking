@@ -1,7 +1,7 @@
 <template>
   <div class="justify-content-center d-flex mt-3 mb-0 container">
-    <ProgressBar :active-step="this.step-1" :show-bridge="true" :show-label="false" :steps="alleSchritte"
-                 is-reactive="true" reactivity-type="single-step"
+    <ProgressBar :active-step="this.step-1" :show-label="false" :steps="alleSchritte" is-reactive
+                 reactivity-type="single-step" show-bridge
                  @onStepChanged="(step) => switchTo(step+1)"></ProgressBar>
   </div>
   <form class="mt-3 container bg-light rounded border p-4">
@@ -14,9 +14,9 @@
         <MultipleChoiceForm :options="['ja', 'nein']" for="bereitsMitglied"
                             header="2. Sind Sie bereits Mitglied der VLH?"
                             @onselect="(option) => termin.kundeninformationen.bereitsMitglied = option"></MultipleChoiceForm>
-        <MultipleChoiceForm :options="alleTermingruende" for="termingrund"
+        <MultipleChoiceForm :hinweis="hinweistext" :options="alleTermingruende"
+                            for="termingrund"
                             header="3. Worum geht es bei Ihrem Termin?"
-                            hinweis="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut  labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
                             @onselect="(option) => termin.termingrund= option"></MultipleChoiceForm>
 
       </div>
@@ -192,6 +192,7 @@ export default {
       alleBelegtenTermine: [],
       alleAnreden: [],
 
+      hinweistext: "",
       verfuegbareUhrzeitenFuerDatum: [],
       minDate: null,
       maxDate: null,
@@ -211,8 +212,17 @@ export default {
     'termin.ausgewaehlterTermin'(newValue) {
       this.getAlleVerfuegbarenUhrzeiten(newValue);
     },
+    'termin.termingrund'(newValue) {
+      this.aendereHinweistext(newValue);
+    }
   },
   methods: {
+    aendereHinweistext(ausgewaehlterTermingrund) {
+      this.hinweistext = "";
+      if (ausgewaehlterTermingrund === "Erstberatung") {
+        this.hinweistext = "Bitte bringen Sie Ihren Personalausweis und Ihre Steuerunterlagen mit. Falls Sie verheiratet sind, benötigen wir auch den Ausweis Ihres Ehepartners.";
+      }
+    },
     getErrorMessage() {
       let message = "Bitte ";
       for (let i = 0; i < this.errors.length; i++) {
@@ -246,13 +256,13 @@ export default {
       }
     },
     validateStep1() {
-      if (this.termin.beratungsstelle === null) {
+      if (this.termin.beratungsstelle === null && !this.alleBeratungsstellen.find(e => e.id === this.termin.beratungsstelle.id)) {
         this.errors.push("Beratungsstelle")
       }
       if (this.termin.kundeninformationen.bereitsMitglied === null) {
         this.errors.push("Mitgliedsstatus")
       }
-      if (this.termin.termingrund === null) {
+      if (this.termin.termingrund === null && !this.alleTermingruende.find(e => e === this.termin.termingrund)) {
         this.errors.push("Termingrund")
       }
       return this.errors.length === 0;
