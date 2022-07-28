@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-content-center d-flex mt-3 mb-0 container col-6">
+  <div class="justify-content-center d-flex mt-3 mb-0 container">
     <ProgressBar :active-step="step-1" :show-bridge="true"
                  :show-label="false" :steps="alleSchritte"
     ></ProgressBar>
@@ -7,7 +7,7 @@
   <form class="mt-3 container bg-light rounded border p-4">
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
-      <div class="mb-4 justify-content-center">
+      <div class="mb-2 justify-content-center">
         <MultipleChoiceForm :options="alleBeratungsstellen" for="beratungsstelle"
                             header="1. Welche Beratungsstelle möchten Sie besuchen?"
                             @onselect="(option) => this.termin.beratungsstelle = option"></MultipleChoiceForm>
@@ -16,7 +16,9 @@
                             @onselect="(option) => termin.kundeninformationen.bereitsMitglied = option"></MultipleChoiceForm>
         <MultipleChoiceForm :options="alleTermingruende" for="termingrund"
                             header="3. Worum geht es bei Ihrem Termin?"
+                            hinweis="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut  labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
                             @onselect="(option) => termin.termingrund= option"></MultipleChoiceForm>
+
       </div>
     </div>
 
@@ -120,10 +122,11 @@
     <div v-if="step === 5">
       <div>Vielen Dank für Ihre Buchung!</div>
     </div>
-
-    <ButtonCancel v-if="step > 1 && step < 5" title="Zurück" @onclick="previous"></ButtonCancel>
-    <ButtonSubmit v-if="step < 4" title="Weiter" @onclick="nextStep"></ButtonSubmit>
-    <ButtonSubmit v-if="step === 4" title="Buchen" @onclick="submit"></ButtonSubmit>
+    <div class="d-flex justify-content-end">
+      <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück" @onclick="previous"></ButtonCancel>
+      <ButtonSubmit v-if="step < 4" class="px-4" title="Weiter" @onclick="nextStep"></ButtonSubmit>
+      <ButtonSubmit v-if="step === 4" class="px-4" title="Buchen" @onclick="submit"></ButtonSubmit>
+    </div>
   </form>
 </template>
 
