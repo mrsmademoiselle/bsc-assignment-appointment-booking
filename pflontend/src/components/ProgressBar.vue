@@ -1,54 +1,45 @@
 <!-- NOT MINE! CREDIT TO https://github.com/pokhrelashok/vue-step-progress-indicator-->
 <template>
+
   <div :style="styleData['progress__wrapper']" class="progress__wrapper">
-    <span
-        v-for="(step, index) in steps"
-        :key="'step_' + step"
-        :style="styleData['progress__block']"
-        class="progress__block"
-    >
-      <div
-          :style="{
+    <!-- One Block -->
+    <span v-for="(step, index) in steps"
+          :key="'step_' + step"
+          :style="styleData['progress__block']"
+          class="progress__block">
+
+      <!-- Bubble-->
+      <div :style="{
           ...styleData['progress__bubble'],
-          ...getColors('progress__bubble', index),
-        }"
-          class="progress__bubble"
-          v-bind:class="{
-          clickable: isReactive && checkIfStepIsReactive(index),
-        }"
-          @click="callPageChange(index)"
-      >
+          ...getColors('progress__bubble', index), }"
+           class="progress__bubble"
+           v-bind:class="{
+          clickable: isReactive && checkIfStepIsReactive(index), }"
+           @click="callPageChange(index)">
         {{ index + 1 }}
       </div>
-      <span
-          v-if="showLabel"
-          :style="{
+
+      <span v-if="showLabel"
+            :style="{
           ...styleData['progress__label'],
-          ...getColors('progress__label', index),
-        }"
-          class="progress__label"
-          v-bind:class="{
-          clickable: isReactive && checkIfStepIsReactive(index),
-        }"
-          @click="callPageChange(index)"
-      >{{ step }}</span
-      >
-      <div
-          v-if="
-          (showBridge || showBridgeOnSmallDevices) && index != steps.length - 1
-        "
-          :style="{
+          ...getColors('progress__label', index), }"
+            class="progress__label"
+            v-bind:class="{
+          clickable: isReactive && checkIfStepIsReactive(index),}"
+            @click="callPageChange(index)">{{ step }}</span>
+      <div v-if="
+          (showBridge || showBridgeOnSmallDevices) && index != steps.length - 1 " :style="{
           ...styleData['progress__bridge'],
-          ...getColors('progress__bridge', index),
-        }"
-          class="progress__bridge"
-          v-bind:class="{
+          ...getColors('progress__bridge', index), }"
+           class="progress__bridge"
+           v-bind:class="{
           'hide-on-large': !showBridge,
-          'display-on-small': showBridgeOnSmallDevices,
-        }"
-      ></div>
+          'display-on-small': showBridgeOnSmallDevices, }">
+</div>
     </span>
+
   </div>
+
 </template>
 
 

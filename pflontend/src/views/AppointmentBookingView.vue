@@ -1,8 +1,21 @@
 <template>
   <div class="justify-content-center d-flex mt-3 mb-0 container">
-    <ProgressBar :active-step="this.step-1" :show-label="false" :steps="alleSchritte" is-reactive
-                 reactivity-type="single-step" show-bridge
+    <ProgressBar :active-step="this.step-1"
+                 :show-label="false" :steps="alleSchritte"
+                 is-reactive reactivity-type="single-step"
+                 show-bridge
                  @onStepChanged="(step) => switchTo(step+1)"></ProgressBar>
+  </div>
+  <div class="py-3 container bg-light d-flex text-muted justify-content-between rounded">
+    <LogoText v-if="this.termin.ausgewaehlterTermin !== null && this.termin.uhrzeit !== null"
+              :text="this.termin.ausgewaehlterTermin.toLocaleDateString('de') + ', ' + this.termin.uhrzeit + ':00 Uhr' "
+              logo="fa-clock"></LogoText>
+    <LogoText v-if="this.termin.termingrund !== null"
+              :text="this.termin.termingrund + ', ' + (this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
+              logo="fa-user"></LogoText>
+    <LogoText v-if="this.termin.beratungsstelle !== null"
+              :text="this.termin.beratungsstelle.formatToReadableString()"
+              logo="fa-house"></LogoText>
   </div>
   <form class="mt-3 container bg-light rounded border p-4">
 
@@ -43,7 +56,8 @@
           <div v-if="this.termin.ausgewaehlterTermin !== null">
             <TitleSecondary :muted="true" :text="this.termin.ausgewaehlterTermin !== null
                                 ? ' Ausgewähltes Datum: ' + this.termin.ausgewaehlterTermin.toLocaleDateString('de-DE')
-                                : 'Bitte wählen Sie ein Datum aus.'"></TitleSecondary>
+                                : 'Bitte wählen Sie ein Datum aus.'"
+                            class="border-bottom pb-2"></TitleSecondary>
 
             <TimePicker :times="verfuegbareUhrzeitenFuerDatum" class="mt-3 p-5"
                         @onselect="(option) => this.termin.uhrzeit = option"></TimePicker>
@@ -140,10 +154,12 @@ import ProgressBar from "@/components/ProgressBar";
 import TimePicker from "@/components/TimePicker";
 import ErrorBanner from "@/components/ErrorBanner";
 import TextLabel from "@/components/TextLabel";
+import LogoText from "@/components/LogoText";
 
 export default {
   name: "AppointmentBookingView",
   components: {
+    LogoText,
     TextLabel,
     ErrorBanner,
     TimePicker,
