@@ -20,7 +20,7 @@
           <router-link to="/appointment/{{appointment.id}}">zum Termin</router-link>
         </td>
         <td>
-          <ButtonSubmit data-target="#myModal" data-toggle="modal"
+          <ButtonSubmit danger="true" data-target="#myModal" data-toggle="modal"
                         title="x" type="button" @onclick="selectAppointment(appointment)">
           </ButtonSubmit>
         </td>
@@ -75,7 +75,6 @@ export default {
       this.selectedAppointment = appointment;
     },
     cancelAppointment() {
-      alert("Token " + this.$store.getters.token)
       this.$store.dispatch('removeAppointment', {id: this.selectedAppointment.id, token: this.$store.getters.token});
     }
   },

@@ -1,5 +1,6 @@
 <template>
-  <button class="btn btn-primary btn-login fw-bold" type="button" v-on:click="this.$emit('onclick')">{{
+  <button :class="(danger ? 'btn-danger' : 'btn-primary') " class="btn btn-login fw-bold" type="button"
+          v-on:click="this.$emit('onclick')">{{
       title
     }}
   </button>
@@ -8,7 +9,7 @@
 <script>
 export default {
   name: "ButtonSubmit",
-  props: ['title'],
+  props: ['title', 'danger'],
   methods: {}
 }
 </script>

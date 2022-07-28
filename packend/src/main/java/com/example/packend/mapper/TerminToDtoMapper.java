@@ -2,6 +2,7 @@ package com.example.packend.mapper;
 
 import com.example.packend.dto.TerminDto;
 import com.example.packend.entities.Termin;
+import com.example.packend.enums.Anrede;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +16,12 @@ public class TerminToDtoMapper {
         terminDto.setVorname(termin.getKundeninformationen().getVorname());
         terminDto.setNachname(termin.getKundeninformationen().getNachname());
         terminDto.setEmail(termin.getKundeninformationen().getEmail());
-        terminDto.setGeschlecht(termin.getKundeninformationen().getGeschlecht().getAnrede());
+
+        if (termin.getKundeninformationen().getGeschlecht() != null) {
+            terminDto.setGeschlecht(termin.getKundeninformationen().getGeschlecht().getAnrede());
+        } else {
+            terminDto.setGeschlecht(Anrede.DIVERSE.getAnrede());
+        }
         terminDto.setBereitsMitglied(String.valueOf(termin.getKundeninformationen().isBereitsMitglied()));
         terminDto.setTelefon(termin.getKundeninformationen().getTelefon());
 
