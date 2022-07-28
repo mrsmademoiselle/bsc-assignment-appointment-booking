@@ -17,9 +17,7 @@
               </div>
 
               <div v-if="errors.length > 0" class="mt-4">
-                <div v-for="err in errors" :key="err" class="alert alert-danger" role="alert">
-                  {{ err }}
-                </div>
+                <ErrorBanner v-for="err in errors" :key="err" :message="err"></ErrorBanner>
               </div>
               <div class="d-grid pt-4">
                 <FullButton title="Anmelden" @onclick="callLogin"></FullButton>
@@ -35,10 +33,11 @@
 <script>
 
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import ErrorBanner from "@/components/ErrorBanner";
 
 export default {
   name: "LoginView",
-  components: {FullButton: ButtonSubmit},
+  components: {ErrorBanner, FullButton: ButtonSubmit},
   data: function () {
     return {
       username: "",

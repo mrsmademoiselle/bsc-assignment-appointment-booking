@@ -123,17 +123,7 @@
     <div v-if="step === 5">
       <div>Vielen Dank für Ihre Buchung!</div>
     </div>
-    <div v-if="this.errors.length > 0" class="d-flex alert alert-danger justify-content-center"> Bitte
-      <div v-for="(error,i) in errors" :key="error"> {{
-          (i === errors.length - 2
-              ? ('&nbsp;' + error + ' und ')
-              : ((i === errors.length - 1)
-                  ? ('&nbsp;' + error + '&nbsp;')
-                  : ('&nbsp;' + error + ', ')))
-        }}
-      </div>
-      eingeben.
-    </div>
+    <ErrorBanner v-if="this.errors.length > 0" :message="getErrorMessage()"></ErrorBanner>
     <div class="d-flex justify-content-end">
       <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück"
                     @onclick="switchTo(this.step-1)"></ButtonCancel>
@@ -155,10 +145,12 @@ import TextInput from "@/components/TextInput";
 import TitleSecondary from "@/components/titles/TitleSecondary";
 import ProgressBar from "@/components/ProgressBar";
 import TimePicker from "@/components/TimePicker";
+import ErrorBanner from "@/components/ErrorBanner";
 
 export default {
   name: "AppointmentBookingView",
   components: {
+    ErrorBanner,
     TimePicker,
     ProgressBar,
     TitleSecondary,
@@ -221,6 +213,19 @@ export default {
     },
   },
   methods: {
+    getErrorMessage() {
+      let message = "Bitte ";
+      for (let i = 0; i < this.errors.length; i++) {
+        message = message +
+            (i === this.errors.length - 2
+                ? (' ' + this.errors[i] + ' und ')
+                : ((i === this.errors.length - 1)
+                    ? (' ' + this.errors[i] + ' ')
+                    : (' ' + this.errors[i] + ', ')));
+      }
+      message = message + " eingeben."
+      return message;
+    },
     submit() {
       this.errors = [];
       if (this.validateAllInputs()) {
