@@ -33,7 +33,7 @@
 <script>
 
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
-import ErrorBanner from "@/components/ErrorBanner";
+import ErrorBanner from "@/components/banner/ErrorBanner";
 
 export default {
   name: "LoginView",

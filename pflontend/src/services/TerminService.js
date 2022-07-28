@@ -45,7 +45,6 @@ export class TerminService {
             let status = (await apiService.post("termin/post", termin)).status;
             if (status === 200) {
                 alert("Termin erfolgreich angelegt!\n" + JSON.stringify(termin))
-
             }
         } catch (e) {
             alert("something went wrong: " + e);

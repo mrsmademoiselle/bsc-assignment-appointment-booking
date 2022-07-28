@@ -1,7 +1,7 @@
 package com.example.packend.enums;
 
 public enum Anrede {
-    MALE("Herr"), FEMALE("Frau"), DIVERSE("keine Angabe");
+    MALE("Herr"), FEMALE("Frau"), DIVERSE("");
 
     private String anrede = "";
 

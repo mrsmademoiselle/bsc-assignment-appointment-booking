@@ -106,16 +106,19 @@
                       text="Bitte überprüfen Sie Ihre Angaben und bestätigen dann mit 'Buchen'."></TitleSecondary>
       <div class="row container m-5 justify-content-center d-flex">
         <div class="col-6">
-          <TextLabel :input="this.termin.kundeninformationen.ausgewaehlterTermin" label="Termin"></TextLabel>
-          <TextLabel :input="this.termin.kundeninformationen.beratungsstelle" label="Beratungsstelle"></TextLabel>
+          <div class="h5 float-left pl-2 text-muted border-bottom">Termininformationen</div>
           <TextLabel
-              :input="this.termin.termingrund+ ', '+this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn'"
+              :input="this.termin.ausgewaehlterTermin.toLocaleDateString('de') + ', '+this.termin.uhrzeit + ':00 Uhr'"
+              label="Termin"></TextLabel>
+          <TextLabel :input="this.termin.beratungsstelle.formatToReadableString()" label="Beratungsstelle"></TextLabel>
+          <TextLabel
+              :input="this.termin.termingrund+ ', '+(this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
               label="Terminart"></TextLabel>
           <TextLabel :input="this.termin.bemerkung" label="Bemerkung"></TextLabel>
 
         </div>
         <div class="col-6">
-
+          <div class="h5 float-left pl-2 text-muted border-bottom">Kundeninformationen</div>
           <TextLabel :input="this.termin.kundeninformationen.anrede + ' '+this.termin.kundeninformationen.vorname +
                 ' '+this.termin.kundeninformationen.nachname"
                      label="Name"></TextLabel>
@@ -128,9 +131,19 @@
     </div>
 
     <!-- Step5: Vielen Dank -->
-    <div v-if="step === 5">
-      <div>Vielen Dank für Ihre Buchung!</div>
+    <div v-if="step === 5" class="">
+      <div class="h5 mb-5">Ihr Termin wurde erfolgreich übermittelt.</div>
+      <div class="my-2">Eine Terminbestätigung wird Ihnen innerhalb der nächsten 30 Minuten per E-Mail übermittelt.
+        Sollten Sie Ihren
+        Termin nicht wahrnehmen können, stornieren Sie ihn bitte über den in der E-Mail verfassten Link.
+      </div>
+      <div class="mt-5">Bei weiteren Fragen oder Anmerkungen rufen Sie uns gerne an:</div>
+      <div>Beratungsstelle Preetz: 04342 7614690</div>
+      <div>Beratungsstelle Eutin: 04342 7614690</div>
+      <div class="my-2 mt-5">Wir freuen uns auf Ihren Termin!</div>
     </div>
+    <SuccessBanner v-for="successMessage in success" :key="successMessage"
+                   :message="successMessage"></SuccessBanner>
     <ErrorBanner v-if="this.errors.length > 0" :message="getErrorMessage()"></ErrorBanner>
     <div :class="step > 1 ? 'justify-content-between' : 'justify-content-end'" class=" d-flex px-4 pt-4 mx-5 pb-2">
       <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück"
@@ -153,13 +166,15 @@ import TextInput from "@/components/TextInput";
 import TitleSecondary from "@/components/titles/TitleSecondary";
 import ProgressBar from "@/components/ProgressBar";
 import TimePicker from "@/components/TimePicker";
-import ErrorBanner from "@/components/ErrorBanner";
+import ErrorBanner from "@/components/banner/ErrorBanner";
 import TextLabel from "@/components/TextLabel";
 import LogoText from "@/components/LogoText";
+import SuccessBanner from "@/components/banner/SuccessBanner";
 
 export default {
   name: "AppointmentBookingView",
   components: {
+    SuccessBanner,
     LogoText,
     TextLabel,
     ErrorBanner,
@@ -176,7 +191,7 @@ export default {
   },
   data: function () {
     return {
-      step: 1,
+      step: 5,
 
       // Data to API
       termin: {
@@ -226,6 +241,11 @@ export default {
     },
     'termin.termingrund'(newValue) {
       this.aendereHinweistext(newValue);
+    },
+    'termin.kundeninformationen.anrede'(newValue) {
+      if (newValue === 'keine Angabe') {
+        this.termin.kundeninformationen.anrede = '';
+      }
     }
   },
   methods: {
@@ -295,7 +315,7 @@ export default {
       if (!this.istStringVorhanden(this.termin.kundeninformationen.nachname)) {
         this.errors.push("Nachnamen")
       }
-      if (!this.istStringVorhanden(this.termin.kundeninformationen.anrede)) {
+      if (this.termin.kundeninformationen.anrede === null) {
         this.errors.push("Anrede")
       }
       if (!this.istStringVorhanden(this.termin.kundeninformationen.email)) {
@@ -304,7 +324,6 @@ export default {
       if (!this.istStringVorhanden(this.termin.kundeninformationen.telefon)) {
         this.errors.push("Telefonnummer")
       }
-
       return this.errors.length === 0;
     },
     validateAllInputs() {
@@ -351,54 +370,12 @@ export default {
           }
           break;
         case 3:
-          // case 4:
-          // case 5:
           if (this.alleAnreden.length === 0) {
             this.alleAnreden = await BeratungsstellenService.getAlleAnreden();
             this.termin.kundeninformationen.anrede = this.alleAnreden[0]
           }
-          /*
-          if (this.alleBeratungsstellen.length === 0) {
-            this.alleBeratungsstellen = await BeratungsstellenService.getAlleBeratungsstellen();
-            this.termin.beratungsstelle = this.alleBeratungsstellen[0];
-          }
-          if (this.alleTermingruende.length === 0) {
-            this.alleTermingruende = await BeratungsstellenService.getAlleTermingruende();
-            this.termin.termingrund = this.alleTermingruende[0];
-          }
-          this.termin.kundeninformationen.anrede = this.alleAnreden[0];
-          this.termin.termingrund = this.alleTermingruende[0];
-          this.termin.beratungsstelle = this.alleBeratungsstellen[0];
-          this.termin.kundeninformationen.vorname = "Max";
-          this.termin.kundeninformationen.nachname = "Max";
-          this.termin.kundeninformationen.email = "Max";
-          this.termin.kundeninformationen.telefon = "Max";
-          this.termin.kundeninformationen.bereitsMitglied = false;
-          this.termin.ausgewaehlterTermin = new Date();
-          this.termin.uhrzeit = "9"
-          break;
-           */
           break;
       }
-    },
-    customPickerOption() {
-      const results = [
-        {
-          label: '21:15',
-          value: {
-            hours: 21,
-            minutes: 15
-          }
-        },
-        {
-          label: '22:15',
-          value: {
-            hours: 22,
-            minutes: 15
-          }
-        }
-      ]
-      return results
     },
     setMinAndMaxDate() {
       let date = new Date();

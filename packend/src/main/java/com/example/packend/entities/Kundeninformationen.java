@@ -19,7 +19,6 @@ public class Kundeninformationen {
     private String vorname;
     @NotNull
     private String nachname;
-    @NotNull
     private Anrede geschlecht;
     @NotNull
     private String email;
