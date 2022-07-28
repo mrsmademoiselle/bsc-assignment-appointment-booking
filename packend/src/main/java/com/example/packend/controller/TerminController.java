@@ -110,14 +110,12 @@ public class TerminController {
      * Speichert einen Termin
      */
     @PostMapping("/public/termin/post")
-    public String saveTermin(@RequestBody @Validated Termin data) {
+    public void saveTermin(@RequestBody @Validated Termin data) {
         LOGGER.info("Calling saveTermin with data " + data.toString());
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
 
         emailService.sendeTerminbestaetigung(data, cancellationUrl);
         terminRepository.save(data);
-
-        return "This works!";
     }
 
     /**

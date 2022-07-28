@@ -71,12 +71,14 @@ public class EmailService {
             emailSender.send(template);
             LOGGER.info("Sending email with subject " + subject + " to " + to + ", " + cc);
         } catch (Exception e) {
-            LOGGER.error("Mail sending failed! Mail with subject " + subject + " to " + to + ", " + cc);
+            LOGGER.error("Mail sending failed! Mail with subject " + subject + " to email addresses " + to + ", " + cc);
         }
     }
 
     private String getOffizielleAnrede(Termin termin) {
-        Anrede geschlecht = termin.getKundeninformationen().getGeschlecht();
+        Anrede geschlecht = termin.getKundeninformationen().getGeschlecht() != null
+                ? termin.getKundeninformationen().getGeschlecht()
+                : Anrede.DIVERSE;
         String anrede = "";
 
         if (geschlecht == null || (!geschlecht.equals(Anrede.MALE) && !geschlecht.equals(Anrede.FEMALE))) {

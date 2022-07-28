@@ -177,7 +177,7 @@ import SuccessBanner from "@/components/banner/SuccessBanner";
  */
 function initialState() {
   return {
-    step: 5,
+    step: 1,
 
     // Data to API
     termin: {
@@ -286,6 +286,7 @@ export default {
       this.errors = [];
       if (this.validateAllInputs()) {
         this.step = this.step + 1;
+        if (this.termin.uhrzeit.length === 1) this.termin.uhrzeit = '0' + this.termin.uhrzeit;
         this.termin.uhrzeit += ":00";
         this.$store.dispatch('addAppointment', this.termin);
         this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
