@@ -37,15 +37,17 @@
                       locale="de" name="date"
                       preventMinMaxNavigation>
           </Datepicker>
-        </div>
 
-        <div class="col">
+        </div>
+        <div class="col-auto">
           <div v-if="this.termin.ausgewaehlterTermin !== null">
-            <MultipleChoiceForm :header="this.termin.ausgewaehlterTermin !== null
-                                ? ' Ausgewähltes Datum:' + this.termin.ausgewaehlterTermin.toLocaleDateString('de-DE')
-                                : 'Bitte wählen Sie ein Datum aus.'" :options="verfuegbareUhrzeitenFuerDatum"
-                                for="verfuegbareUhrzeit"
-                                @onselect="(option) => termin.uhrzeit=option"></MultipleChoiceForm>
+            <TitleSecondary :muted="true" :text="this.termin.ausgewaehlterTermin !== null
+                                ? ' Ausgewähltes Datum: ' + this.termin.ausgewaehlterTermin.toLocaleDateString('de-DE')
+                                : 'Bitte wählen Sie ein Datum aus.'"></TitleSecondary>
+
+            <TimePicker :times="verfuegbareUhrzeitenFuerDatum" class="mt-3 p-5"
+                        @onselect="(option) => this.termin.uhrzeit = option"></TimePicker>
+
             <!-- TODO Alle Termine ziehen und darstellen-->
             <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.</div>
           </div>
@@ -141,10 +143,12 @@ import MultipleChoiceForm from "@/components/MultipleChoiceForm";
 import TextInput from "@/components/TextInput";
 import TitleSecondary from "@/components/titles/TitleSecondary";
 import ProgressBar from "@/components/ProgressBar";
+import TimePicker from "@/components/TimePicker";
 
 export default {
   name: "AppointmentBookingView",
   components: {
+    TimePicker,
     ProgressBar,
     TitleSecondary,
     TextInput,
@@ -174,7 +178,7 @@ export default {
           anrede: null
         },
       },
-      step: 1,
+      step: 2,
       responseMessage: "No response yet.",
 
       alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
