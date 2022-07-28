@@ -48,7 +48,6 @@
             <TimePicker :times="verfuegbareUhrzeitenFuerDatum" class="mt-3 p-5"
                         @onselect="(option) => this.termin.uhrzeit = option"></TimePicker>
 
-            <!-- TODO Alle Termine ziehen und darstellen-->
             <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.</div>
           </div>
         </div>
@@ -288,7 +287,7 @@ export default {
 
     async getAlleVerfuegbarenUhrzeiten(datum) {
       this.verfuegbareUhrzeitenFuerDatum = await TerminService.getAlleVerfuegbarenUhrzeiten(datum);
-
+      this.termin.uhrzeit = this.verfuegbareUhrzeitenFuerDatum[0];
     }
   }, beforeMount: function () {
     this.getApiInformation();
