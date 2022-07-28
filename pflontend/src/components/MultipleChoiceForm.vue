@@ -2,11 +2,11 @@
   <div class="d-flex justify-content-start mx-3 my-1 pl-3">
     <div class="col-6 row">
       <TitleSecondary :muted="true" :text="header"></TitleSecondary>
-      <div v-for="option in options" :key="option.id"
+      <div v-for="(option,i) in options" :key="option.id"
            class="form-check row col-12 justify-content-start d-flex mx-3 pb-1">
-        <input id="{{this.for}}" class="form-check-input" name="{{this.for}}"
+        <input :id="this.for" :checked="i ===0" :name="this.for" class="form-check-input"
                type="radio" v-on:input="() => onselect(option)">
-        <label class="form-check-label" for="{{this.for}}">
+        <label :for="this.for" class="form-check-label">
           {{ displayLabel(option) }}
         </label>
       </div>
