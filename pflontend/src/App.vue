@@ -25,7 +25,7 @@ export default {
   color: #2c3e50;
   background-color: #f0f0f0;
   text-decoration: none;
-  height: 100vh;
+  height: 105vh;
 }
 
 .navbar-link {

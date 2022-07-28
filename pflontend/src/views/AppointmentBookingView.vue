@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-content-center d-flex mt-3 mb-0 container">
+  <div class="justify-content-center d-flex mt-3 container">
     <ProgressBar :active-step="this.step-1"
                  :show-label="false" :steps="alleSchritte"
                  is-reactive reactivity-type="single-step"
@@ -131,7 +131,7 @@
     </div>
 
     <!-- Step5: Vielen Dank -->
-    <div v-if="step === 5" class="">
+    <div v-if="step === 5">
       <div class="h5 mb-5">Ihr Termin wurde erfolgreich übermittelt.</div>
       <div class="my-2">Eine Terminbestätigung wird Ihnen innerhalb der nächsten 30 Minuten per E-Mail übermittelt.
         Sollten Sie Ihren
@@ -141,11 +141,12 @@
       <div>Beratungsstelle Preetz: 04342 7614690</div>
       <div>Beratungsstelle Eutin: 04342 7614690</div>
       <div class="my-2 mt-5">Wir freuen uns auf Ihren Termin!</div>
+      <ButtonSubmit class="my-3" title="Zurück zur Terminbuchung" v-on:click="resetForm"></ButtonSubmit>
     </div>
-    <SuccessBanner v-for="successMessage in success" :key="successMessage"
-                   :message="successMessage"></SuccessBanner>
+    <SuccessBanner v-for="successMessage in success" :key="successMessage" :message="successMessage"></SuccessBanner>
     <ErrorBanner v-if="this.errors.length > 0" :message="getErrorMessage()"></ErrorBanner>
-    <div :class="step > 1 ? 'justify-content-between' : 'justify-content-end'" class=" d-flex px-4 pt-4 mx-5 pb-2">
+    <div v-if="(step > 1 && step < 5) || (step < 4)|| (step ===4)"
+         :class="step > 1 ? 'justify-content-between' : 'justify-content-end'" class="d-flex px-4 pt-4 mx-5">
       <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück"
                     @onclick="switchTo(this.step-1)"></ButtonCancel>
       <ButtonSubmit v-if="step < 4" class="px-4 float-right" title="Weiter" @onclick="switchTo(step+1)"></ButtonSubmit>
@@ -171,6 +172,48 @@ import TextLabel from "@/components/TextLabel";
 import LogoText from "@/components/LogoText";
 import SuccessBanner from "@/components/banner/SuccessBanner";
 
+/**
+ *Diese Funktion wird verwendet, um nach Abschicken des Formulars die Daten zu löschen bzw. neu zu initialisieren, ohne, dass die Seite komplett neu geladen werden muss.
+ */
+function initialState() {
+  return {
+    step: 5,
+
+    // Data to API
+    termin: {
+      termingrund: null,
+      uhrzeit: null,
+      ausgewaehlterTermin: null,
+      bemerkung: "",
+      beratungsstelle: null,
+      kundeninformationen: {
+        vorname: null,
+        nachname: null,
+        bereitsMitglied: false,
+        email: null,
+        telefon: null,
+        anrede: null
+      },
+    },
+    responseMessage: "No response yet.",
+
+    alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
+    // Data from API
+    alleBeratungsstellen: [],
+    alleTermingruende: [],
+    // "anonymisiert"
+    alleBelegtenTermine: [],
+    alleAnreden: [],
+
+    hinweistext: "",
+    verfuegbareUhrzeitenFuerDatum: [],
+    minDate: null,
+    maxDate: null,
+    errors: [],
+    success: []
+  }
+}
+
 export default {
   name: "AppointmentBookingView",
   components: {
@@ -190,42 +233,7 @@ export default {
 
   },
   data: function () {
-    return {
-      step: 5,
-
-      // Data to API
-      termin: {
-        termingrund: null,
-        uhrzeit: null,
-        ausgewaehlterTermin: null,
-        bemerkung: "",
-        beratungsstelle: null,
-        kundeninformationen: {
-          vorname: null,
-          nachname: null,
-          bereitsMitglied: false,
-          email: null,
-          telefon: null,
-          anrede: null
-        },
-      },
-      responseMessage: "No response yet.",
-
-      alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
-      // Data from API
-      alleBeratungsstellen: [],
-      alleTermingruende: [],
-      // "anonymisiert"
-      alleBelegtenTermine: [],
-      alleAnreden: [],
-
-      hinweistext: "",
-      verfuegbareUhrzeitenFuerDatum: [],
-      minDate: null,
-      maxDate: null,
-      errors: [],
-      success: []
-    }
+    return initialState();
   },
   /**
    * Beobachter für das Feld termin.ausgewaehlterTermin. Verändert sich der Wert durch einen Klick aus den Kalender,
@@ -249,6 +257,12 @@ export default {
     }
   },
   methods: {
+    resetForm() {
+      Object.assign(this.$data, initialState());
+      this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
+
+      this.getApiInformation();
+    },
     aendereHinweistext(ausgewaehlterTermingrund) {
       this.hinweistext = "";
       if (ausgewaehlterTermingrund === "Erstberatung") {
@@ -273,7 +287,7 @@ export default {
       if (this.validateAllInputs()) {
         this.step = this.step + 1;
         this.termin.uhrzeit += ":00";
-        TerminService.legeTerminAn(this.termin);
+        this.$store.dispatch('addAppointment', this.termin);
         this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
       }
     },
@@ -392,6 +406,7 @@ export default {
     this.getApiInformation();
   },
 }
+
 </script>
 
 <style scoped>
