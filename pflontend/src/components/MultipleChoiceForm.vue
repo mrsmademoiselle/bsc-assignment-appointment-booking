@@ -27,6 +27,9 @@ export default {
   props: ['options', 'for', 'header', 'hinweis'],
   methods: {
     onselect(option) {
+      if (this.for === 'bereitsMitglied') {
+        option = option === 'ja';
+      }
       this.$emit('onselect', option)
     },
     displayLabel(option) {

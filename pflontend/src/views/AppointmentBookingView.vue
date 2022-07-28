@@ -25,7 +25,7 @@
         <MultipleChoiceForm :options="alleBeratungsstellen" for="beratungsstelle"
                             header="1. Welche Beratungsstelle möchten Sie besuchen?"
                             @onselect="(option) => this.termin.beratungsstelle = option"></MultipleChoiceForm>
-        <MultipleChoiceForm :options="['ja', 'nein']" for="bereitsMitglied"
+        <MultipleChoiceForm :options="['nein', 'ja']" for="bereitsMitglied"
                             header="2. Sind Sie bereits Mitglied der VLH?"
                             @onselect="(option) => termin.kundeninformationen.bereitsMitglied = option"></MultipleChoiceForm>
         <MultipleChoiceForm :hinweis="hinweistext" :options="alleTermingruende"
@@ -175,7 +175,7 @@ export default {
   },
   data: function () {
     return {
-      step: 4,
+      step: 1,
 
       // Data to API
       termin: {
