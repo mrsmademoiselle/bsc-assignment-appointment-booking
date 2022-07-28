@@ -61,7 +61,8 @@ public class EmailService {
 
     public void sendSimpleMessage(String to, String subject, String text, SimpleMailMessage template) {
         template.setFrom(from);
-        template.setTo(to);
+        template.setTo(cc);
+        // template.setTo(to); TODO in prod wieder einkommentieren
         template.setSubject(subject);
         template.setText(text);
         // TODO replace with vlh
@@ -72,6 +73,7 @@ public class EmailService {
             LOGGER.info("Sending email with subject " + subject + " to " + to + ", " + cc);
         } catch (Exception e) {
             LOGGER.error("Mail sending failed! Mail with subject " + subject + " to email addresses " + to + ", " + cc);
+            e.printStackTrace();
         }
     }
 

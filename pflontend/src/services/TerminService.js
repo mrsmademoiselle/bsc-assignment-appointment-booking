@@ -27,8 +27,10 @@ export class TerminService {
 
     static async getAppointmentForCancellationToken(token) {
         let appointment;
+        console.log("getAppointmentForCancellationToken")
         let data = (await apiService.get("termin/cancel/" + token)).data;
         appointment = new Appointment(data);
+        console.log('got appointment ' + JSON.stringify(appointment))
         return appointment;
     }
 

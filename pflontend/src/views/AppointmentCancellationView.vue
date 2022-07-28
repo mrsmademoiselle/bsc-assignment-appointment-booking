@@ -10,12 +10,12 @@
     </div>
     <div class="h5 font-weight-bold">{{ appointment.beratungsstelle.plz }} {{ appointment.beratungsstelle.ort }}</div>
     <div class="mt-4 pb-4"> absagen möchten?</div>
-    <div class="my-4 justify-content-center d-flex">
-      <ButtonCancel onclick="$router.push('/')" title="Nein, abbrechen"></ButtonCancel>
-      <ButtonSubmit onclick="cancelAppointment" title="Ja, absagen"></ButtonSubmit>
+    <div v-if="!abgesagt" class="my-4 justify-content-center d-flex">
+      <ButtonCancel title="Nein, abbrechen" @onclick="$router.push('/')"></ButtonCancel>
+      <ButtonSubmit title="Ja, absagen" @onclick="cancelAppointment"></ButtonSubmit>
     </div>
+    <div v-else>Der Termin wurde erfolgreich abgesagt.</div>
   </div>
-  <div v-if="abgesagt">Der Termin wurde erfolgreich abgesagt.</div>
 </template>
 
 <script>
@@ -34,9 +34,9 @@ export default {
     }
   },
   methods: {
-    async cancelAppointment() {
+    cancelAppointment() {
       try {
-        await TerminService.cancelAppointment(this.appointment.id);
+        TerminService.cancelAppointment(this.appointment.id);
         this.abgesagt = true;
       } catch (e) {
         console.log(e);

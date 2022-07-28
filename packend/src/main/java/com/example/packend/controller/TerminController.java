@@ -112,14 +112,15 @@ public class TerminController {
     @PostMapping("/public/termin/post")
     public void saveTermin(@RequestBody @Validated Termin data) {
         LOGGER.info("Calling saveTermin with data " + data.toString());
+        data = terminRepository.save(data); // needs to be saved first, so it receives an ID that is used for CancellationUrl generation
+
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
 
         emailService.sendeTerminbestaetigung(data, cancellationUrl);
-        terminRepository.save(data);
     }
 
     /**
-     * Generiert und gibt ein CancellationToken zurück, über das ein Termin storniert werden kann.
+     * Sucht nach dem Termin für das Cancellation Token und gibt diesen zurück.
      */
     @GetMapping("/public/termin/cancel/{token}")
     public ResponseEntity<TerminDto> getByCancellationToken(@PathVariable String token) {
@@ -195,6 +196,7 @@ public class TerminController {
     private CancellationUrl generateOneTimeUrl(Termin termin) {
         String randomString = generateString();
         CancellationUrl cancellationUrl = new CancellationUrl(termin.getId(), randomString);
+        LOGGER.warn("Created CancellationUrl with parameters terminId: " + termin.getId() + " and string " + randomString);
         cancellationLinkRepository.save(cancellationUrl);
         return cancellationUrl;
     }
