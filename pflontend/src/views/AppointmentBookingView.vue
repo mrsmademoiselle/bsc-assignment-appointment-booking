@@ -2,7 +2,7 @@
   <div class="justify-content-center d-flex mt-3 mb-0 container">
     <ProgressBar :active-step="this.step-1" :show-bridge="true" :show-label="false" :steps="alleSchritte"
                  is-reactive="true" reactivity-type="single-step"
-                 @onStepChanged="switchTo"></ProgressBar>
+                 @onStepChanged="(step) => switchTo(step+1)"></ProgressBar>
   </div>
   <form class="mt-3 container bg-light rounded border p-4">
     <!-- Step1: Grund -->
@@ -127,7 +127,7 @@
     <div class="d-flex justify-content-end">
       <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück"
                     @onclick="switchTo(this.step-1)"></ButtonCancel>
-      <ButtonSubmit v-if="step < 4" class="px-4" title="Weiter" @onclick="switchTo(this.step+1)"></ButtonSubmit>
+      <ButtonSubmit v-if="step < 4" class="px-4" title="Weiter" @onclick="switchTo(step+1)"></ButtonSubmit>
       <ButtonSubmit v-if="step === 4" class="px-4" title="Buchen" @onclick="submit"></ButtonSubmit>
     </div>
   </form>
@@ -181,7 +181,7 @@ export default {
           anrede: null
         },
       },
-      step: 2,
+      step: 1,
       responseMessage: "No response yet.",
 
       alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
@@ -241,7 +241,7 @@ export default {
       // should only trigger validation if navigating forward
       let isOk = navigatingBackwards || this.validatePreviousInput();
       if (isOk) {
-        this.step = step + 1;
+        this.step = step;
         this.getApiInformation();
       }
     },
