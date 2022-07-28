@@ -333,10 +333,12 @@ export default {
       if (this.termin.kundeninformationen.anrede === null) {
         this.errors.push("Anrede")
       }
-      if (!this.istStringVorhanden(this.termin.kundeninformationen.email)) {
+      let emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.email) || !emailRegex.test(this.termin.kundeninformationen.email)) {
         this.errors.push("E-Mail-Adresse")
       }
-      if (!this.istStringVorhanden(this.termin.kundeninformationen.telefon)) {
+      let phoneNumberRegex = /^\d+$/;
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.telefon) || !phoneNumberRegex.test(this.termin.kundeninformationen.telefon)) {
         this.errors.push("Telefonnummer")
       }
       return this.errors.length === 0;
