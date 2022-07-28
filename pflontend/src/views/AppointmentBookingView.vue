@@ -21,15 +21,16 @@
 
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
-      <div class="mb-2 justify-content-center">
-        <MultipleChoiceForm :options="alleBeratungsstellen" for="beratungsstelle"
-                            header="1. Welche Beratungsstelle möchten Sie besuchen?"
+      <div class=" justify-content-center">
+        <MultipleChoiceForm :options="alleBeratungsstellen" class="border-bottom pb-3"
+                            for="beratungsstelle" header="1. Welche Beratungsstelle möchten Sie besuchen?"
                             @onselect="(option) => this.termin.beratungsstelle = option"></MultipleChoiceForm>
-        <MultipleChoiceForm :options="['nein', 'ja']" for="bereitsMitglied"
-                            header="2. Sind Sie bereits Mitglied der VLH?"
+        <MultipleChoiceForm :options="['nein', 'ja']" class="border-bottom py-3"
+                            for="bereitsMitglied"
+                            header="2. Sind Sie bereits Mitglied der VLH?" inline="true"
                             @onselect="(option) => termin.kundeninformationen.bereitsMitglied = option"></MultipleChoiceForm>
         <MultipleChoiceForm :hinweis="hinweistext" :options="alleTermingruende"
-                            for="termingrund"
+                            class="pt-3" for="termingrund"
                             header="3. Worum geht es bei Ihrem Termin?"
                             @onselect="(option) => termin.termingrund= option"></MultipleChoiceForm>
       </div>
@@ -350,12 +351,13 @@ export default {
           }
           break;
         case 3:
-        case 4:
-        case 5:
+          // case 4:
+          // case 5:
           if (this.alleAnreden.length === 0) {
             this.alleAnreden = await BeratungsstellenService.getAlleAnreden();
             this.termin.kundeninformationen.anrede = this.alleAnreden[0]
           }
+          /*
           if (this.alleBeratungsstellen.length === 0) {
             this.alleBeratungsstellen = await BeratungsstellenService.getAlleBeratungsstellen();
             this.termin.beratungsstelle = this.alleBeratungsstellen[0];
@@ -374,6 +376,8 @@ export default {
           this.termin.kundeninformationen.bereitsMitglied = false;
           this.termin.ausgewaehlterTermin = new Date();
           this.termin.uhrzeit = "9"
+          break;
+           */
           break;
       }
     },
