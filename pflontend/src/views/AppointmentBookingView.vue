@@ -1,8 +1,8 @@
 <template>
   <div class="justify-content-center d-flex mt-3 mb-0 container">
-    <ProgressBar :active-step="step-1" :show-bridge="true"
-                 :show-label="false" :steps="alleSchritte"
-    ></ProgressBar>
+    <ProgressBar :active-step="this.step-1" :show-bridge="true" :show-label="false" :steps="alleSchritte"
+                 is-reactive="true" reactivity-type="single-step"
+                 @onStepChanged="switchTo"></ProgressBar>
   </div>
   <form class="mt-3 container bg-light rounded border p-4">
     <!-- Step1: Grund -->
@@ -123,9 +123,21 @@
     <div v-if="step === 5">
       <div>Vielen Dank für Ihre Buchung!</div>
     </div>
+    <div v-if="this.errors.length > 0" class="d-flex alert alert-danger justify-content-center"> Bitte
+      <div v-for="(error,i) in errors" :key="error"> {{
+          (i === errors.length - 2
+              ? ('&nbsp;' + error + ' und ')
+              : ((i === errors.length - 1)
+                  ? ('&nbsp;' + error + '&nbsp;')
+                  : ('&nbsp;' + error + ', ')))
+        }}
+      </div>
+      eingeben.
+    </div>
     <div class="d-flex justify-content-end">
-      <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück" @onclick="previous"></ButtonCancel>
-      <ButtonSubmit v-if="step < 4" class="px-4" title="Weiter" @onclick="nextStep"></ButtonSubmit>
+      <ButtonCancel v-if="step > 1 && step < 5" class="px-4" title="Zurück"
+                    @onclick="switchTo(this.step-1)"></ButtonCancel>
+      <ButtonSubmit v-if="step < 4" class="px-4" title="Weiter" @onclick="switchTo(this.step+1)"></ButtonSubmit>
       <ButtonSubmit v-if="step === 4" class="px-4" title="Buchen" @onclick="submit"></ButtonSubmit>
     </div>
   </form>
@@ -191,6 +203,8 @@ export default {
       verfuegbareUhrzeitenFuerDatum: [],
       minDate: null,
       maxDate: null,
+      errors: [],
+      success: []
     }
   },
   /**
@@ -207,28 +221,86 @@ export default {
     },
   },
   methods: {
-    nextStep() {
-      if (this.step === 2 && (this.termin.ausgewaehlterTermin == null || this.termin.uhrzeit == null)) {
-        alert("Bitte geben Sie einen Termin und eine Uhrzeit an!")
-        return;
+    submit() {
+      this.errors = [];
+      if (this.validateAllInputs()) {
+        this.step = this.step + 1;
+        this.termin.uhrzeit += ":00";
+        TerminService.legeTerminAn(this.termin);
+        this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
+      }
+    },
+    switchTo(step) {
+      this.errors = []
+      let navigatingBackwards = step < this.step;
+      // should only trigger validation if navigating forward
+      let isOk = navigatingBackwards || this.validatePreviousInput();
+      if (isOk) {
+        this.step = step + 1;
+        this.getApiInformation();
+      }
+    },
+    validateStep1() {
+      if (this.termin.beratungsstelle === null) {
+        this.errors.push("Beratungsstelle")
+      }
+      if (this.termin.kundeninformationen.bereitsMitglied === null) {
+        this.errors.push("Mitgliedsstatus")
+      }
+      if (this.termin.termingrund === null) {
+        this.errors.push("Termingrund")
+      }
+      return this.errors.length === 0;
+    },
+    validateStep2() {
+      if (this.termin.ausgewaehlterTermin === null) {
+        this.errors.push("Datum")
+      }
+      if (this.termin.uhrzeit === null) {
+        this.errors.push("Uhrzeit")
+      }
+      return this.errors.length === 0;
+    },
+    validateStep3() {
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.vorname)) {
+        this.errors.push("Vornamen")
+      }
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.nachname)) {
+        this.errors.push("Nachnamen")
+      }
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.anrede)) {
+        this.errors.push("Anrede")
+      }
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.email)) {
+        this.errors.push("E-Mail-Adresse")
+      }
+      if (!this.istStringVorhanden(this.termin.kundeninformationen.telefon)) {
+        this.errors.push("Telefonnummer")
       }
 
-      this.step = this.step + 1;
-      // get necessary information from api
-      this.getApiInformation();
+      return this.errors.length === 0;
     },
-    previous() {
-      this.step = this.step - 1;
-      // get necessary information from api
-      this.getApiInformation();
+    validateAllInputs() {
+      return this.validateStep1() && this.validateStep2() && this.validateStep3();
     },
-    submit() {
-      this.step = this.step + 1;
-      this.termin.uhrzeit += ":00";
-      TerminService.legeTerminAn(this.termin);
-      alert("submitted!")
+    istStringVorhanden(string) {
+      return string !== null && string.trim().length > 0;
     },
-
+    validatePreviousInput() {
+      let inputValid = false;
+      switch (this.step) {
+        case 1:
+          inputValid = this.validateStep1();
+          break;
+        case 2:
+          inputValid = this.validateStep2();
+          break;
+        case 3:
+          inputValid = this.validateStep3();
+          break;
+      }
+      return inputValid;
+    },
     /**
      * Switch case to prevent the user from having to fetch all data when the view mounts.
      * Instead, the data is being fetched piece by piece whenever it is needed.
@@ -243,7 +315,6 @@ export default {
           if (this.alleTermingruende.length === 0) {
             this.alleTermingruende = await BeratungsstellenService.getAlleTermingruende();
             this.termin.termingrund = this.alleTermingruende[0];
-
           }
           break;
         case 2:

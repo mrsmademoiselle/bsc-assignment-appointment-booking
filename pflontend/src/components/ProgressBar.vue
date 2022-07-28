@@ -193,7 +193,6 @@ export default {
     callPageChange: function (step) {
       if (!this.isReactive) return;
       if (!this.checkIfStepIsReactive(step)) return;
-      this.currentStep = step;
       this.$emit("onStepChanged", step);
       if (step == this.steps.length - 1) this.$emit("onEnterFinalStep", step);
     },
