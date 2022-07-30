@@ -1,7 +1,7 @@
 package com.example.packend.services;
 
 import com.example.packend.config.JwtTokenUtil;
-import com.example.packend.entities.User;
+import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,9 +56,9 @@ public class UserAuthenticationService {
     /**
      * Gibt den User zu einem jwt zurück. Wenn dieser nicht existiert, wird eine NotFoundException geworfen.
      */
-    public User getUserFromJwt(String jwtToken) {
+    public Mitarbeiter getUserFromJwt(String jwtToken) {
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<Mitarbeiter> userOptional = userRepository.findByUsername(username);
         return userOptional.orElseThrow(RuntimeException::new);
     }
 }

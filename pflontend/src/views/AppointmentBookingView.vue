@@ -12,7 +12,7 @@
               logo="fa-clock"></LogoText>
     <LogoText v-if="this.termin.termingrund !== null"
               :text="this.termin.termingrund + ', ' + (this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
-              logo="fa-user"></LogoText>
+              logo="fa-mitarbeiter"></LogoText>
     <LogoText v-if="this.termin.beratungsstelle !== null"
               :text="this.termin.beratungsstelle.formatToReadableString()"
               logo="fa-house"></LogoText>
@@ -365,7 +365,7 @@ export default {
       return inputValid;
     },
     /**
-     * Switch case to prevent the user from having to fetch all data when the view mounts.
+     * Switch case to prevent the mitarbeiter from having to fetch all data when the view mounts.
      * Instead, the data is being fetched piece by piece whenever it is needed.
      */
     async getApiInformation() {

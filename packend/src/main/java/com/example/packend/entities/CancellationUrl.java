@@ -12,8 +12,8 @@ import javax.persistence.Id;
 public class CancellationUrl {
     // TODO to be adjusted if live
     private static final String PREFIX = "http://localhost:8080/appointment/cancel/";
-    private Long terminId;
     @Id
+    private Long terminId;
     private String token;
 
     public CancellationUrl(Long terminId, String token) {

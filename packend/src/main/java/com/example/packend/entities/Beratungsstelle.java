@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,10 +17,20 @@ public class Beratungsstelle {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
-    private String ansprechpartner;
-    private String hausnummer;
-    private String ort;
-    private String plz;
-    private String strasse;
+    @OneToOne
+    private Mitarbeiter ansprechpartner;
+    @Embedded
+    private Adresse adresse;
+    @OneToMany
+    private List<Mitarbeiter> mitarbeiterListe;
+
+    public void addMitarbeiter(Mitarbeiter mitarbeiter) {
+        mitarbeiterListe.add(mitarbeiter);
+    }
+
+    public String getFormattedAnsprechpartner() {
+        return ansprechpartner.getVorname() + " " + ansprechpartner.getNachname();
+    }
 }
+
 

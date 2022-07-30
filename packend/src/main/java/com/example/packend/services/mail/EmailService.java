@@ -98,9 +98,9 @@ public class EmailService {
         final String SPACE = " ";
 
         Beratungsstelle beratungsstelle = termin.getBeratungsstelle();
-        String ansprechpartner = beratungsstelle.getAnsprechpartner();
-        String strasseHausnummer = beratungsstelle.getStrasse() + SPACE + beratungsstelle.getHausnummer();
-        String plzOrt = beratungsstelle.getPlz() + SPACE + beratungsstelle.getOrt();
+        String ansprechpartner = beratungsstelle.getFormattedAnsprechpartner();
+        String strasseHausnummer = beratungsstelle.getAdresse().getStrasse() + SPACE + beratungsstelle.getAdresse().getHausnummer();
+        String plzOrt = beratungsstelle.getAdresse().getPlz() + SPACE + beratungsstelle.getAdresse().getOrt();
 
         return LINEBREAK + LINEBREAK + ansprechpartner +
                 LINEBREAK + "Vereinigte Lohnsteuerhilfe e.V." +

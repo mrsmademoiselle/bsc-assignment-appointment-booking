@@ -1,7 +1,36 @@
+- das gedruckte bis zum kolloquium,
+- die digitale version bis zur deadline
+
+---------------------- Fragen
+KOMPLETT NEU
+- 2 Grundlagen
+- 3.1
+- 4.1
+- 4.2.1
+- 4.2.3
+- 4.4.1
+
+
+FRAGEN
+- 5 Konzeption
+    - Tabellarische Übersicht aller relevanten Anforderungen für diese Ansicht + Element, in dem es umgesetzt wurde?
+- Nielsens Heuristiken
+    - Tabelle einfach in Fließtext umwandeln?
+
+- S. 14 Stichpunktartig ok oder als Fließtext ausformulieren
+- S. 13 Relevanz?
+- S. 10, 11 Stichpunkt artig ok oder ausformulieren
+
+
+PLAN
+- Diagramme (Komponenten-, ER-, Use-Case-, Klassendiagramm)
+- Kapitel 4.2.1 ausformulieren
+- Heuristika-Texte ausformulieren
+- Quellen zitieren
+- Bildunterschriften
 
 ---------------------- Notizen
 - Hanemann anschreiben wegen Krankheitsattest
-
 
 ---------------------- x
 

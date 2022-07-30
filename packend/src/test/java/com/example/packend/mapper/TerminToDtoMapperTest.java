@@ -1,9 +1,7 @@
 package com.example.packend.mapper;
 
 import com.example.packend.dto.TerminDto;
-import com.example.packend.entities.Beratungsstelle;
-import com.example.packend.entities.Kundeninformationen;
-import com.example.packend.entities.Termin;
+import com.example.packend.entities.*;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.enums.Terminerinnerung;
@@ -90,11 +88,13 @@ class TerminToDtoMapperTest {
 
     private Beratungsstelle createBeratungsstelle() {
         Beratungsstelle beratungsstelle = Beratungsstelle.builder()
-                .strasse("Lübecker Straße")
-                .ansprechpartner("Ich")
-                .hausnummer("11")
-                .ort("HH")
-                .plz("12345")
+                .ansprechpartner(Mitarbeiter.builder().build())
+                .adresse(Adresse.builder().strasse("Lübecker Straße")
+                        .hausnummer("11")
+                        .ort("HH")
+                        .plz("12345")
+                        .build())
+
                 .build();
         return beratungsstelle;
     }

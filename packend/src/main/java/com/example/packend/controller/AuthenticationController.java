@@ -1,7 +1,7 @@
 package com.example.packend.controller;
 
 import com.example.packend.dto.LoginRequest;
-import com.example.packend.entities.User;
+import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.services.UserAuthenticationService;
 import com.example.packend.services.UserService;
 import org.slf4j.Logger;
@@ -40,8 +40,8 @@ public class AuthenticationController {
 
         // return new ResponseEntity<>("Benutzername oder Passwort sind nicht valide.", HttpStatus.BAD_REQUEST);
 
-        User user = new User(userAuthDto.getUsername(), userAuthDto.getPassword());
-        if (userService.saveUser(user)) {
+        Mitarbeiter mitarbeiter = new Mitarbeiter(userAuthDto.getUsername(), userAuthDto.getPassword());
+        if (userService.saveUser(mitarbeiter)) {
             LOGGER.info("Registrierung war erfolgreich.");
             return login(userAuthDto);
         } else {

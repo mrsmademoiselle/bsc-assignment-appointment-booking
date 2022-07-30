@@ -1,9 +1,6 @@
 package com.example.packend;
 
-import com.example.packend.entities.Beratungsstelle;
-import com.example.packend.entities.Kundeninformationen;
-import com.example.packend.entities.Termin;
-import com.example.packend.entities.User;
+import com.example.packend.entities.*;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.enums.Terminerinnerung;
@@ -38,21 +35,21 @@ public class PackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Default AdminUser
-        User adminUser = User.builder().password("adminPass").username("admin").build();
-        userService.saveUser(adminUser);
+        Mitarbeiter adminMitarbeiter = Mitarbeiter.builder().password("adminPass").username("admin").nachname("admin nachname").vorname("admin vorname").build();
+        userService.saveUser(adminMitarbeiter);
 
         Beratungsstelle preetz = Beratungsstelle.builder()
-                .ansprechpartner("Jannika Loof")
-                .hausnummer("5")
-                .strasse("Mühlenstraße")
-                .ort("Preetz")
-                .plz("24211").build();
+                .ansprechpartner(Mitarbeiter.builder().vorname("Jannika").nachname("Loof").username("janni").password("janni").build())
+                .adresse(Adresse.builder().hausnummer("5")
+                        .strasse("Mühlenstraße")
+                        .ort("Preetz")
+                        .plz("24211").build()).build();
         Beratungsstelle eutin = Beratungsstelle.builder()
-                .ansprechpartner("Claudia Loof")
-                .hausnummer("36")
-                .strasse("Lübecker Straße")
-                .ort("Eutin")
-                .plz("23701").build();
+                .ansprechpartner(Mitarbeiter.builder().vorname("Claudia").nachname("Loof").username("claudi").password("claudi").build())
+                .adresse(Adresse.builder().hausnummer("36")
+                        .strasse("Lübecker Straße")
+                        .ort("Eutin")
+                        .plz("23701").build()).build();
 
         beratungsstellenRepository.save(eutin);
         beratungsstellenRepository.save(preetz);

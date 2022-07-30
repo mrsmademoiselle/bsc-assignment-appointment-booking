@@ -1,6 +1,6 @@
 package com.example.packend.services;
 
-import com.example.packend.entities.User;
+import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,16 +47,16 @@ public class UserService implements UserDetailsService {
     /**
      * Persistiert User
      *
-     * @param user Zu speichernden User
+     * @param mitarbeiter Zu speichernden User
      * @return true wenn Objekt persistiert, false wenn Exception eintritt
      */
-    public boolean saveUser(User user) {
-        if (this.userRepository.existsByUsername(user.getUsername())) {
+    public boolean saveUser(Mitarbeiter mitarbeiter) {
+        if (this.userRepository.existsByUsername(mitarbeiter.getUsername())) {
             return false;
         }
         try {
-            User newUser = new User(user.getUsername(), bcryptEncoder.encode(user.getPassword()));
-            userRepository.save(newUser);
+            Mitarbeiter newMitarbeiter = new Mitarbeiter(mitarbeiter.getUsername(), bcryptEncoder.encode(mitarbeiter.getPassword()));
+            userRepository.save(newMitarbeiter);
             return true;
         } catch (Exception e) {
             return false;
@@ -72,13 +72,13 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optional = userRepository.findByUsername(username);
+        Optional<Mitarbeiter> optional = userRepository.findByUsername(username);
 
         if (optional.isEmpty())
             throw new UsernameNotFoundException("Kein Benutzer mit dem Namen " + username + " gefunden");
 
-        User user = optional.get();
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        Mitarbeiter mitarbeiter = optional.get();
+        return new org.springframework.security.core.userdetails.User(mitarbeiter.getUsername(), mitarbeiter.getPassword(),
                 new ArrayList<>());
     }
 }
