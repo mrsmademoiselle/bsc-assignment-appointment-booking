@@ -197,7 +197,7 @@ public class TerminController {
         String randomString = generateString();
         CancellationUrl cancellationUrl = new CancellationUrl(termin.getId(), randomString);
         LOGGER.warn("Created CancellationUrl with parameters terminId: " + termin.getId() + " and string " + randomString);
-        cancellationLinkRepository.save(cancellationUrl);
+        cancellationUrl = cancellationLinkRepository.save(cancellationUrl);
         return cancellationUrl;
     }
 

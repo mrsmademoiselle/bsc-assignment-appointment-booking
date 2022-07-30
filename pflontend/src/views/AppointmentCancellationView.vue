@@ -4,7 +4,10 @@
     <div class="mt-3 mb-4">Sind Sie sicher, dass Sie Ihren Termin am</div>
     <div class="h5 font-weight-bold">{{ appointment.formatDateToGermanLocale() }} um {{ appointment.uhrzeit }} Uhr</div>
     <div class="my-4">in der Beratungsstelle</div>
-    <div class="h5 mt-4 font-weight-bold">{{ appointment.beratungsstelle.ansprechpartner }}</div>
+    <div class="h5 mt-4 font-weight-bold">{{
+        appointment.beratungsstelle.formatToReadableString()
+      }}
+    </div>
     <div class="h5 font-weight-bold">{{ appointment.beratungsstelle.strasse }}
       {{ appointment.beratungsstelle.hausnummer }}
     </div>
@@ -14,7 +17,8 @@
       <ButtonCancel title="Nein, abbrechen" @onclick="$router.push('/')"></ButtonCancel>
       <ButtonSubmit title="Ja, absagen" @onclick="cancelAppointment"></ButtonSubmit>
     </div>
-    <div v-else>Der Termin wurde erfolgreich abgesagt.</div>
+    <SuccessBanner v-for="successMessage in success" v-else :key="successMessage"
+                   :message="successMessage"></SuccessBanner>
   </div>
 </template>
 
@@ -22,15 +26,17 @@
 import {TerminService} from "@/services/TerminService";
 import ButtonCancel from "@/components/buttons/ButtonCancel";
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import SuccessBanner from "@/components/banner/SuccessBanner";
 
 export default {
   name: "AppointmentCancellation",
-  components: {ButtonSubmit, ButtonCancel},
+  components: {ButtonSubmit, ButtonCancel, SuccessBanner},
   data: function () {
     return {
       appointment: null,
       abgesagt: false,
-      token: ""
+      token: "",
+      success: []
     }
   },
   methods: {
@@ -38,6 +44,7 @@ export default {
       try {
         TerminService.cancelAppointment(this.appointment.id);
         this.abgesagt = true;
+        this.success.push('Der Termin wurde erfolgreich abgesagt.')
       } catch (e) {
         console.log(e);
       }

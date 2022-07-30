@@ -65,6 +65,7 @@ public class EmailService {
         // template.setTo(to); TODO in prod wieder einkommentieren
         template.setSubject(subject);
         template.setText(text);
+        LOGGER.debug("##### EMAIL TEXT: " + text);
         // TODO replace with vlh
         template.setCc(cc);
 

@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
         try {
-            Mitarbeiter newMitarbeiter = new Mitarbeiter(mitarbeiter.getUsername(), bcryptEncoder.encode(mitarbeiter.getPassword()));
+            Mitarbeiter newMitarbeiter = new Mitarbeiter(mitarbeiter.getUsername(), bcryptEncoder.encode(mitarbeiter.getPassword()), mitarbeiter.getVorname(), mitarbeiter.getNachname());
             userRepository.save(newMitarbeiter);
             return true;
         } catch (Exception e) {

@@ -12,7 +12,7 @@
               logo="fa-clock"></LogoText>
     <LogoText v-if="this.termin.termingrund !== null"
               :text="this.termin.termingrund + ', ' + (this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
-              logo="fa-mitarbeiter"></LogoText>
+              logo="fa-user"></LogoText>
     <LogoText v-if="this.termin.beratungsstelle !== null"
               :text="this.termin.beratungsstelle.formatToReadableString()"
               logo="fa-house"></LogoText>

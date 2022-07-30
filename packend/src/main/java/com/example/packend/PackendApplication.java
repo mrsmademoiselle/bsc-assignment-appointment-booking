@@ -38,14 +38,20 @@ public class PackendApplication implements CommandLineRunner {
         Mitarbeiter adminMitarbeiter = Mitarbeiter.builder().password("adminPass").username("admin").nachname("admin nachname").vorname("admin vorname").build();
         userService.saveUser(adminMitarbeiter);
 
+        Mitarbeiter janni = Mitarbeiter.builder().vorname("Jannika").nachname("Loof").username("janni").password("janni").build();
+        userService.saveUser(janni);
+
         Beratungsstelle preetz = Beratungsstelle.builder()
-                .ansprechpartner(Mitarbeiter.builder().vorname("Jannika").nachname("Loof").username("janni").password("janni").build())
+                .ansprechpartner(janni)
                 .adresse(Adresse.builder().hausnummer("5")
                         .strasse("Mühlenstraße")
                         .ort("Preetz")
                         .plz("24211").build()).build();
+        Mitarbeiter claudia = Mitarbeiter.builder().vorname("Claudia").nachname("Loof").username("claudi").password("claudi").build();
+        userService.saveUser(claudia);
+
         Beratungsstelle eutin = Beratungsstelle.builder()
-                .ansprechpartner(Mitarbeiter.builder().vorname("Claudia").nachname("Loof").username("claudi").password("claudi").build())
+                .ansprechpartner(claudia)
                 .adresse(Adresse.builder().hausnummer("36")
                         .strasse("Lübecker Straße")
                         .ort("Eutin")
