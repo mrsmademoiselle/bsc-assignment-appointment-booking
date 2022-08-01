@@ -3,6 +3,7 @@ export class Abwesenheit {
         if (Abwesenheit.isValidAbwesenheit(json)) {
             this.startDatum = json.startDatum;
             this.endDatum = json.endDatum;
+            this.id = json.id;
 
         } else {
             console.log("is not a valid Abwesenheit!" + JSON.stringify(json));
@@ -13,7 +14,7 @@ export class Abwesenheit {
 
     static isValidAbwesenheit(jsonObject) {
         return this.hasField(jsonObject, "startDatum") &&
-            this.hasField(jsonObject, "endDatum");
+            this.hasField(jsonObject, "endDatum") && this.hasField(jsonObject, "id")
     }
 
     static hasField(object, field) {

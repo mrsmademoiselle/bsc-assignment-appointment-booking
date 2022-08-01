@@ -71,7 +71,7 @@ export default {
       this.selectedAbwesenheit = abwesenheit;
     },
     deleteAbwesenheit() {
-      alert("deleted")
+      this.$store.dispatch('removeAbwesenheit', {id: this.selectedAbwesenheit.id, token: this.$store.getters.token});
     }
   }
 }
