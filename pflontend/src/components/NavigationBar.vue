@@ -5,7 +5,8 @@
         VLH
       </router-link>
       <div v-if="isLoggedIn" class="d-flex">
-        <router-link class="navbar-link" to="/overview">Appointments</router-link>
+        <router-link class="navbar-link" to="/overview">Terminübersicht</router-link>
+        <router-link class="navbar-link" to="/absence">Abwesenheit</router-link>
         <a class="navbar-link" v-on:click="logout">Logout</a>
       </div>
       <div v-else class="d-flex">

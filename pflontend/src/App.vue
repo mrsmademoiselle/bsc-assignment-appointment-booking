@@ -34,4 +34,17 @@ export default {
   margin: 10px 20px 10px 20px;
   cursor: pointer;
 }
+
+.navbar-link:hover {
+  text-decoration: none;
+  color: inherit;
+
+  border-bottom: solid #5fb75f;
+  margin: 10px 20px 10px 20px;
+  cursor: pointer;
+}
+
+.router-link-active {
+  border-bottom: solid darkgreen;
+}
 </style>
