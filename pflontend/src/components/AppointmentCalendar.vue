@@ -7,6 +7,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import {Appointment} from "@/entity/Appointment";
+import {Abwesenheit} from "@/entity/Abwesenheit";
 
 export default {
   name: "AppointmentCalendar",
@@ -35,6 +36,7 @@ export default {
         events.push(newEvent)
       }
       for (let counter in abwesenheiten) {
+        if (!Abwesenheit.isValidAbwesenheit(abwesenheiten[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
         let date = new Date(abwesenheiten[counter].ausgewaehlterTermin + " " + abwesenheiten[counter].uhrzeit);
 
         events.push({
