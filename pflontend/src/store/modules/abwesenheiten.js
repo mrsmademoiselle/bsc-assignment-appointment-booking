@@ -29,13 +29,23 @@ const actions = { // asynchronous
             commit('removeAbwesenheit', id);
         }
     },
-    async addAbwesenheit({commit}, {abwesenheit, token}) {
-        console.log("adding abwesenheit (token: " + token + "): " + JSON.stringify(abwesenheit))
-        let response = await apiService.authenticatedPost("abwesenheit/add", abwesenheit, token);
-        console.log("Response: '" + response.data + "' with Statuscode " + response.status);
-        if (response.status === 200) {
-            commit('addAbwesenheit', {abwesenheit});
-        }
+    addAbwesenheit({commit}, {abwesenheit, token}) {
+        return new Promise((resolve, reject) => {
+
+            console.log("adding abwesenheit (token: " + token + "): " + JSON.stringify(abwesenheit))
+            apiService.authenticatedPost("abwesenheit/add", abwesenheit, token)
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log("Abwesenheit erfolgreich angelegt");
+                        commit('addAbw', {abwesenheit});
+                    }
+                    resolve()
+                })
+                .catch(error => {
+                    console.log("Error: " + error);
+                    reject("In diesem Zeitraum gibt es bereits einen Abwesenheitsantrag.")
+                })
+        });
     }
 }
 
@@ -52,7 +62,7 @@ const mutations = { // synchronous
     removeAbwesenheit(state, id) {
         state.alleAbwesenheiten = state.alleAbwesenheiten.filter(abwesenheit => abwesenheit.id !== id);
     },
-    addAbwesenheit(state, abwesenheit) {
+    addAbw(state, abwesenheit) {
         state.alleAbwesenheiten.push(abwesenheit);
     }
 }

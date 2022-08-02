@@ -18,12 +18,13 @@
           Abwesenheit buchbar
           sind.</small></div>
       </div>
+      <ErrorBanner v-for="error in errors" :key="error" :message="error" class="mt-3"></ErrorBanner>
     </div>
     <div class=" d-flex justify-content-end mb-5">
       <ButtonSubmit class="col-auto" title="Anlegen" @onclick="addAbwesenheit"></ButtonSubmit>
     </div>
     <div class="my-3">
-      <AbwesenheitenListe :abwesenheitsliste="abwesenheitsliste"></AbwesenheitenListe>
+      <AbwesenheitenListe :abwesenheitsliste="this.abwesenheiten"></AbwesenheitenListe>
     </div>
   </div>
 </template>
@@ -32,19 +33,28 @@
 import AbwesenheitenListe from "@/components/AbwesenheitenListe";
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 import Datepicker from "@vuepic/vue-datepicker";
+import ErrorBanner from "@/components/banner/ErrorBanner";
 
 export default {
   name: "AbwesenheitenView",
-  components: {ButtonSubmit, AbwesenheitenListe, Datepicker},
+  components: {ErrorBanner, ButtonSubmit, AbwesenheitenListe, Datepicker},
   data: function () {
     return {
-      abwesenheitsliste: [],
       neueAbwesenheit: {
         startDatum: null,
         endDatum: null,
       },
       nichtVerfuegbareTage: [],
-      datePair: []
+      datePair: [],
+      datumsliste: [],
+      errors: [],
+    }
+  },
+  computed: {
+    abwesenheiten: {
+      get() {
+        return this.$store.getters.alleAbwesenheiten;
+      }
     }
   },
   methods: {
@@ -54,33 +64,51 @@ export default {
       }
       this.neueAbwesenheit.startDatum = this.datePair[0].toISOString();
       this.neueAbwesenheit.endDatum = this.datePair[1].toISOString();
-      this.$store.dispatch('addAbwesenheit', {abwesenheit: this.neueAbwesenheit, token: this.$store.getters.token});
+
+      this.$store.dispatch('addAbwesenheit', {abwesenheit: this.neueAbwesenheit, token: this.$store.getters.token})
+          .then(() => this.errors = [])
+          .catch((e) => {
+            this.errors.push(e);
+          });
     },
     formatDate([date1, date2]) {
       return date1.toLocaleDateString() + " - " + date2.toLocaleDateString()
     },
     getDatumslisteFuerAbwesenheiten() {
       let datumsliste = []
+      this.fetchAbwesenheiten();
+
+      console.log("preparing to iterate through " + this.abwesenheiten.length + " abwesenheiten")
       // Für jeden Tag der Abwesenheit jedes einzelne Datum zwischen start- und enddatum rausparsen
-      for (let abwesenheit in this.abwesenheitsliste) {
-        for (let d = abwesenheit.startDatum; d <= abwesenheit.endDatum; d.setDate(d.getDate() + 1)) {
-          datumsliste.push(d);
+      for (let counter in this.abwesenheiten) {
+        try {
+          let startDate = new Date(this.abwesenheiten[counter].startDatum);
+
+          let currentDate = startDate;
+          let endDate = new Date(this.abwesenheiten[counter].endDatum);
+          for (currentDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+            datumsliste.push(currentDate);
+          }
+        } catch (e) {
+          console.log("Could not get dates from " + JSON.stringify(this.abwesenheiten[counter]))
         }
       }
+      console.log("added " + datumsliste.length + " absences to list")
       return datumsliste;
+    },
+    async fetchAbwesenheiten() {
+      await this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token);
     }
   },
-  beforeMount() {
-    this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token)
-
-    this.getDatumslisteFuerAbwesenheiten()
-
+  beforeMount: function () {
+    this.fetchAbwesenheiten();
   },
   mounted() {
     const startDate = new Date();
     const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
     this.datePair = [startDate, endDate];
-  }
+    this.datumsliste = this.getDatumslisteFuerAbwesenheiten();
+  },
 }
 </script>
 

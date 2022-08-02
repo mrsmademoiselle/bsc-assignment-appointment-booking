@@ -13,8 +13,8 @@
         <tbody>
         <tr v-for="(abwesenheit,i) in abwesenheitsliste" :key="abwesenheit.id">
           <td>#{{ i + 1 }}</td>
-          <td>{{ abwesenheit.startDatum.toLocaleDateString() }}</td>
-          <td>{{ abwesenheit.endDatum.toLocaleDateString() }}</td>
+          <td>{{ new Date(abwesenheit.startDatum).toLocaleDateString() }}</td>
+          <td>{{ new Date(abwesenheit.endDatum).toLocaleDateString() }}</td>
           <td>
             <ButtonSubmit danger="true" data-target="#myModal" data-toggle="modal"
                           title="x" type="button" @onclick="selectAbwesenheit(abwesenheit)">
@@ -38,8 +38,8 @@
           </div>
           <div class="modal-body">
             <div>Möchten Sie diese Abwesenheit wirklich löschen?</div>
-            <div class="my-4">{{ selectedAbwesenheit.startDatum.toLocaleDateString() }} -
-              {{ selectedAbwesenheit.endDatum.toLocaleDateString() }} Uhr
+            <div class="my-4">{{ new Date(selectedAbwesenheit.startDatum).toLocaleDateString() }} -
+              {{ new Date(selectedAbwesenheit.endDatum).toLocaleDateString() }}
             </div>
             <div>{{ selectedAbwesenheit.vorname }} {{ selectedAbwesenheit.nachname }}</div>
             <div>Diese Aktion kann nicht rückgängig gemacht werden.</div>
@@ -75,6 +75,9 @@ export default {
     deleteAbwesenheit() {
       this.$store.dispatch('removeAbwesenheit', {id: this.selectedAbwesenheit.id, token: this.$store.getters.token});
     }
+  },
+  mounted() {
+    alert(JSON.stringify(this.abwesenheitsliste))
   }
 }
 </script>

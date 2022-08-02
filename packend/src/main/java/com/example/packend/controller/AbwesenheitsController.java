@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class AbwesenheitsController {
             JsonNode jsonNode = objectMapper.valueToTree(abwesenheit);
             abwesenheitAlsJsonList.add(jsonNode);
         }
+        System.out.println(abwesenheitAlsJsonList.size());
         return ResponseEntity.ok(abwesenheitAlsJsonList);
     }
 
@@ -50,8 +52,16 @@ public class AbwesenheitsController {
     @PostMapping("/add")
     public ResponseEntity<String> addAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
         LOGGER.info("Abwesenheit wird angelegt: " + abwesenheit);
-        abwesenheitRepository.save(abwesenheit);
-        return new ResponseEntity<>(HttpStatus.OK);
+        LocalDate startDatum = abwesenheit.getStartDatum();
+        LocalDate endDatum = abwesenheit.getEndDatum();
+        boolean nochKeineEintraegeInZeitraum = abwesenheitRepository.findAllByStartDatumBetween(startDatum, endDatum).isEmpty()
+                && abwesenheitRepository.findAllByEndDatumBetween(startDatum, endDatum).isEmpty();
 
+        if (nochKeineEintraegeInZeitraum) {
+            abwesenheitRepository.save(abwesenheit);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
