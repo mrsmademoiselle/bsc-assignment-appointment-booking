@@ -48,8 +48,8 @@ export default {
       }
       console.log("successfully converted " + events.length + " events.")
       return events;
-    }
-  },
+    },
+  }
 }
 </script>
 

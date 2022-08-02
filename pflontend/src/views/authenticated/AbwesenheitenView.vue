@@ -62,8 +62,8 @@ export default {
       if (this.datePair.length !== 2) {
         console.log("date has invalid attributes")
       }
-      this.neueAbwesenheit.startDatum = this.datePair[0].toISOString();
-      this.neueAbwesenheit.endDatum = this.datePair[1].toISOString();
+      this.neueAbwesenheit.startDatum = this.datePair[0].format('YYYY-MM-DD');
+      this.neueAbwesenheit.endDatum = this.datePair[1].format('YYYY-MM-DD');
 
       this.$store.dispatch('addAbwesenheit', {abwesenheit: this.neueAbwesenheit, token: this.$store.getters.token})
           .then(() => this.errors = [])
@@ -76,28 +76,6 @@ export default {
     formatDate([date1, date2]) {
       return date1.toLocaleDateString() + " - " + date2.toLocaleDateString()
     },
-    getDatumslisteFuerAbwesenheiten() {
-      let datumsliste = []
-      this.fetchAbwesenheiten();
-
-      console.log("preparing to iterate through " + this.abwesenheiten.length + " abwesenheiten")
-      // Für jeden Tag der Abwesenheit jedes einzelne Datum zwischen start- und enddatum rausparsen
-      for (let counter in this.abwesenheiten) {
-        try {
-          let startDate = new Date(this.abwesenheiten[counter].startDatum);
-
-          let currentDate = startDate;
-          let endDate = new Date(this.abwesenheiten[counter].endDatum);
-          for (currentDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
-            datumsliste.push(currentDate);
-          }
-        } catch (e) {
-          console.log("Could not get dates from " + JSON.stringify(this.abwesenheiten[counter]))
-        }
-      }
-      console.log("added " + datumsliste.length + " absences to list")
-      return datumsliste;
-    },
     async fetchAbwesenheiten() {
       await this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token);
     }
@@ -109,7 +87,6 @@ export default {
     const startDate = new Date();
     const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
     this.datePair = [startDate, endDate];
-    this.datumsliste = this.getDatumslisteFuerAbwesenheiten();
   },
 }
 </script>

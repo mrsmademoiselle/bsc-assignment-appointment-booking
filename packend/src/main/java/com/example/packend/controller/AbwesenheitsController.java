@@ -30,6 +30,7 @@ public class AbwesenheitsController {
     @GetMapping("/get/all")
     public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten() {
         LOGGER.info("Calling getAlleAbwesenheiten");
+        
         List<Abwesenheit> all = abwesenheitRepository.findAll();
 
         List<JsonNode> abwesenheitAlsJsonList = new ArrayList<>();
@@ -44,9 +45,13 @@ public class AbwesenheitsController {
     @PostMapping("/remove/{stringId}")
     public ResponseEntity<String> cancelAbwesenheit(@PathVariable String stringId) {
         Long id = Long.valueOf(stringId);
-        abwesenheitRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        boolean existiert = abwesenheitRepository.existsById(id);
+        if (existiert) {
+            abwesenheitRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/add")

@@ -37,7 +37,7 @@ const actions = { // asynchronous
                 .then(response => {
                     if (response.status === 200) {
                         console.log("Abwesenheit erfolgreich angelegt");
-                        commit('addAbw', {abwesenheit});
+                        commit('addAbw', abwesenheit);
                     }
                     resolve()
                 })
