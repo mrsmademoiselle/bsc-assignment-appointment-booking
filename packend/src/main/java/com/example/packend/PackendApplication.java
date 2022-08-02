@@ -42,7 +42,7 @@ public class PackendApplication implements CommandLineRunner {
         userService.saveUser(janni);
 
         Beratungsstelle preetz = Beratungsstelle.builder()
-                .ansprechpartner(janni)
+                .ansprechpartner(adminMitarbeiter)
                 .adresse(Adresse.builder().hausnummer("5")
                         .strasse("Mühlenstraße")
                         .ort("Preetz")
@@ -51,7 +51,7 @@ public class PackendApplication implements CommandLineRunner {
         userService.saveUser(claudia);
 
         Beratungsstelle eutin = Beratungsstelle.builder()
-                .ansprechpartner(claudia)
+                .ansprechpartner(adminMitarbeiter)
                 .adresse(Adresse.builder().hausnummer("36")
                         .strasse("Lübecker Straße")
                         .ort("Eutin")

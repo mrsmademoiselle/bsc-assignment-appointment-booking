@@ -2,11 +2,13 @@ package com.example.packend.controller;
 
 import com.example.packend.dto.TerminDto;
 import com.example.packend.entities.CancellationUrl;
+import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.entities.Termin;
 import com.example.packend.mapper.TerminToDtoMapper;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.CancellationLinkRepository;
 import com.example.packend.repositories.TerminRepository;
+import com.example.packend.repositories.UserRepository;
 import com.example.packend.services.TerminService;
 import com.example.packend.services.mail.EmailService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,21 +43,22 @@ public class TerminController {
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
     TerminToDtoMapper terminToDtoMapper;
-
     @Autowired
     TerminService terminService;
-
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     ObjectMapper objectMapper;
 
     /**
      * Berechnet und gibt die verfügbaren Uhrzeiten für einen spezifischen Termin zurück.
      */
-    @GetMapping("/public/termin/uhrzeiten/get/{jahr}/{monat}/{tag}")
-    public ResponseEntity<List<String>> getVerfuegbareUhrzeitenFuerTermin(@PathVariable String jahr, @PathVariable String monat, @PathVariable String tag) {
+    @GetMapping("/public/{mitarbeiterId}/termin/uhrzeiten/get/{jahr}/{monat}/{tag}")
+    public ResponseEntity<List<String>> getVerfuegbareUhrzeitenFuerTermin(@PathVariable String jahr, @PathVariable String monat, @PathVariable String tag, @PathVariable String mitarbeiterId) {
+        Mitarbeiter mitarbeiter = userRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
 
         List<String> verfuegbareUhrzeitenFuerTag = terminService.berechneVerfuegbareUhrzeitenFuerTag(
-                LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)));
+                LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)), mitarbeiter);
         LOGGER.info("verfuegbareUhrzeitenFuerTag: " + verfuegbareUhrzeitenFuerTag.size());
 
         return ResponseEntity.ok(verfuegbareUhrzeitenFuerTag);
@@ -65,9 +68,9 @@ public class TerminController {
      * Gibt alle Datümer zurück, in denen schon Termine existieren.
      * Wird bei der Terminbuchung verwendet, um diese Datümer auszugrauen.
      */
-    @GetMapping("/public/termin/komplett-belegt/all")
-    public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatümer() {
-        List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage();
+    @GetMapping("/public/termin/{mitarbeiterId}/komplett-belegt/all")
+    public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatümer(@PathVariable String mitarbeiterId) {
+        List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage(userRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new));
         LOGGER.info("Komplett belegte Tage: " + komplettBelegteTage.size());
         return ResponseEntity.ok(komplettBelegteTage);
     }

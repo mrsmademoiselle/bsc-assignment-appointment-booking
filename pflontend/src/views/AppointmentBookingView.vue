@@ -382,7 +382,7 @@ export default {
           break;
         case 2:
           if (this.alleBelegtenTermine.length === 0) {
-            this.alleBelegtenTermine = await TerminService.getKomplettBelegteDatuemer();
+            this.alleBelegtenTermine = await TerminService.getKomplettBelegteDatuemer(this.$store.getters.username);
             this.setMinAndMaxDate();
           }
           break;
@@ -402,7 +402,7 @@ export default {
     },
 
     async getAlleVerfuegbarenUhrzeiten(datum) {
-      this.verfuegbareUhrzeitenFuerDatum = await TerminService.getAlleVerfuegbarenUhrzeiten(datum);
+      this.verfuegbareUhrzeitenFuerDatum = await TerminService.getAlleVerfuegbarenUhrzeiten(datum, this.$store.getters.username);
       this.termin.uhrzeit = this.verfuegbareUhrzeitenFuerDatum[0];
     }
   }, beforeMount: function () {

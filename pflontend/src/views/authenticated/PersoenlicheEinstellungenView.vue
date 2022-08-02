@@ -15,7 +15,9 @@
     <div v-if="beratungsstellenAnzeigen">
       <BeratungsstellenEinstellungen></BeratungsstellenEinstellungen>
     </div>
-    <div v-else>Arbeitszeiten ändern</div>
+    <div v-else>
+      <ArbeitszeitenEinstellungen></ArbeitszeitenEinstellungen>
+    </div>
   </div>
   <!--
   1. Arbeitszeiten pro Werktag
@@ -28,10 +30,12 @@
 
 <script>
 import BeratungsstellenEinstellungen from "@/components/BeratungsstellenEinstellungen";
+import ArbeitszeitenEinstellungen from "@/components/ArbeitszeitenEinstellungen";
 
 export default {
   name: "PersoenlicheEinstellungenView",
   components: {
+    ArbeitszeitenEinstellungen,
     BeratungsstellenEinstellungen,
   },
   data: function () {

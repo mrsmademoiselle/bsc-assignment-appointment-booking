@@ -7,11 +7,11 @@ export class TerminService {
      * Gibt ein Objekt zurück, das für jeden Tag eine Liste der verfügbaren Uhrzeiten beinhält.
      * @returns {Promise<VerfuegbareUhrzeiten>}
      */
-    static async getAlleVerfuegbarenUhrzeiten(date) {
+    static async getAlleVerfuegbarenUhrzeiten(date, username) {
         if (date !== null) {
             let verfuegbareUhrzeiten = [];
 
-            verfuegbareUhrzeiten = ((await (apiService.get("termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
+            verfuegbareUhrzeiten = ((await (apiService.get(username + "/termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
             return verfuegbareUhrzeiten;
         }
     }
@@ -19,9 +19,9 @@ export class TerminService {
     /**
      * Gibt eine Liste von Datümern zurück, die komplett nicht auswählbar sind.
      */
-    static async getKomplettBelegteDatuemer() {
+    static async getKomplettBelegteDatuemer(username) {
         let komplettBelegteDatuemer = [];
-        komplettBelegteDatuemer = ((await (apiService.get("termin/komplett-belegt/all/"))).data);
+        komplettBelegteDatuemer = ((await (apiService.get("termin/" + username + "/komplett-belegt/all/"))).data);
         return komplettBelegteDatuemer;
     }
 
