@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ public class AbwesenheitsController {
     @GetMapping("/get/all")
     public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten() {
         LOGGER.info("Calling getAlleAbwesenheiten");
-        
-        List<Abwesenheit> all = abwesenheitRepository.findAll();
+
+        List<Abwesenheit> all = abwesenheitRepository.findAll(Sort.by("startDatum").ascending());
 
         List<JsonNode> abwesenheitAlsJsonList = new ArrayList<>();
         for (Abwesenheit abwesenheit : all) {
@@ -55,7 +56,7 @@ public class AbwesenheitsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
+    public ResponseEntity<Abwesenheit> addAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
         LOGGER.info("Abwesenheit wird angelegt: " + abwesenheit);
         LocalDate startDatum = abwesenheit.getStartDatum();
         LocalDate endDatum = abwesenheit.getEndDatum();
@@ -63,10 +64,10 @@ public class AbwesenheitsController {
                 && abwesenheitRepository.findAllByEndDatumBetween(startDatum, endDatum).isEmpty();
 
         if (nochKeineEintraegeInZeitraum) {
-            abwesenheitRepository.save(abwesenheit);
-            return new ResponseEntity<>(HttpStatus.OK);
+            abwesenheit = abwesenheitRepository.save(abwesenheit);
+            return ResponseEntity.ok(abwesenheit);
         } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

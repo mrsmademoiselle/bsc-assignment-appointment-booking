@@ -1,6 +1,7 @@
 package com.example.packend.repositories;
 
 import com.example.packend.entities.Abwesenheit;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,7 @@ public interface AbwesenheitRepository extends JpaRepository<Abwesenheit, Long> 
     List<Abwesenheit> findAllByStartDatumBetween(LocalDate startDate, LocalDate endDate);
 
     List<Abwesenheit> findAllByEndDatumBetween(LocalDate startDate, LocalDate endDate);
+
+    @Override
+    List<Abwesenheit> findAll(Sort sort);
 }

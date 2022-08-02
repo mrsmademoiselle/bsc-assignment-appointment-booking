@@ -37,7 +37,7 @@ const actions = { // asynchronous
                 .then(response => {
                     if (response.status === 200) {
                         console.log("Abwesenheit erfolgreich angelegt");
-                        commit('addAbw', abwesenheit);
+                        commit('addAbw', new Abwesenheit(response.data));
                     }
                     resolve()
                 })
@@ -63,7 +63,7 @@ const mutations = { // synchronous
         state.alleAbwesenheiten = state.alleAbwesenheiten.filter(abwesenheit => abwesenheit.id !== id);
     },
     addAbw(state, abwesenheit) {
-        state.alleAbwesenheiten.push(abwesenheit);
+        state.alleAbwesenheiten = [...state.alleAbwesenheiten, abwesenheit];
     }
 }
 
