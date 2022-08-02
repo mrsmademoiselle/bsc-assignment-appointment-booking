@@ -1,18 +1,15 @@
 <template>
-  <div class="d-flex justify-content-center border-1 border-bottom my-2 border-top bg-light p-2">
-    <div :class="this.kalenderansicht ? 'font-weight-bold' : 'text-secondary'" class="col-6 h4 cursor-pointer"
-         v-on:click="this.kalenderansicht = true">
-      Kalenderansicht
-    </div>
-    <div :class="this.kalenderansicht ? 'text-secondary' : 'font-weight-bold'" class="col-6 h4 cursor-pointer"
-         v-on:click="this.kalenderansicht = false">
-      Listenansicht
+  <div class="d-flex justify-content-end border-1 my-2 border-top bg-light p-2">
+    <div :title="'Zur '+(this.kalenderansicht ? 'Listen':'Kalender')+'ansicht wechseln'"
+         class="tab col-1 tab-active"
+         v-on:click="this.kalenderansicht = !this.kalenderansicht">
+      <font-awesome-icon :icon="'fa-'+(this.kalenderansicht?'list':'calendar')" class="pointer"/>
     </div>
   </div>
   <div>
 
     <AppointmentCalendar v-if="kalenderansicht" :abwesenheiten="alleAbwesenheiten"
-                         :termine="allAppointments" class="my-2"></AppointmentCalendar>
+                         :termine="allAppointments" class="mb-2"></AppointmentCalendar>
 
     <div v-else class="my-3">
       <div class="justify-content-center d-flex mt-3">
@@ -124,5 +121,15 @@ export default {
 </script>
 
 <style scoped>
+.tab {
+  font-size: 18pt;
+  cursor: pointer;
+  color: gray;
+}
 
+.tab-active {
+  color: #27718c;
+  font-weight: bold;
+  border-bottom: solid #27718c;
+}
 </style>
