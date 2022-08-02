@@ -13,7 +13,7 @@
               </div>
               <div class="form-floating mb-3">
                 <input id="floatingPassword" v-model="password" class="form-control"
-                       placeholder="Bitte Passwort eingeben" type="password">
+                       placeholder="Bitte Passwort eingeben" type="password" @keyup.enter="callLogin">
               </div>
 
               <div v-if="errors.length > 0" class="mt-4">
@@ -48,7 +48,8 @@ export default {
     }
   },
   methods: {
-    callLogin() {
+    callLogin(e) {
+      e.preventDefault();
       this.errors = [];
       this.$store.dispatch('login', {username: this.username, password: this.password})
           .then(() => {

@@ -39,14 +39,18 @@ export default {
 
       for (let counter in abwesenheiten) {
         if (!Abwesenheit.isValidAbwesenheit(abwesenheiten[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
-        let date = new Date(abwesenheiten[counter].ausgewaehlterTermin + " " + abwesenheiten[counter].uhrzeit);
-
-        events.push({
-          start: date,
-          end: date.addHours(1),
-          title: abwesenheiten[counter].vorname + ' ' + abwesenheiten[counter].nachname,
-          class: 'blocker'
-        })
+        let startDate = abwesenheiten[counter].startDatum;
+        let endDate = abwesenheiten[counter].endDatum;
+        // Jeder Tag eines Abwesenheitseintrages muss separat im kalender eingetragen werden
+        for (let currentDate = new Date(startDate); currentDate <= new Date(endDate); currentDate.setDate(currentDate.getDate() + 1)) {
+          events.push({
+            start: currentDate.format("YYYY-MM-DD"),
+            end: currentDate.format("YYYY-MM-DD"),
+            content: "",
+            title: "Abwesenheit",
+            class: 'blocker'
+          })
+        }
       }
       console.log("successfully converted " + abwesenheiten.length + " abwesenheiten.")
       return events;

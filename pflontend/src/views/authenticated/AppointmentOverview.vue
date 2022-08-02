@@ -95,6 +95,11 @@ export default {
     },
     cancelAppointment() {
       this.$store.dispatch('removeAppointment', {id: this.selectedAppointment.id, token: this.$store.getters.token});
+    },
+    async fetchApiInformation() {
+      await this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token);
+      await this.$store.dispatch('fetchAppointments', this.$store.getters.token);
+
     }
   },
   computed: {
@@ -106,12 +111,12 @@ export default {
     alleAbwesenheiten: {
       get() {
         return this.$store.getters.alleAbwesenheiten;
-      }
-    }
+      },
+    },
   },
   /* Nur im Fall der Fälle, dass die Daten vor dem Weiterleiten aus irgendeinem Grund nicht geladen wurden */
   beforeMount: function () {
-    this.$store.dispatch('fetchAppointments', this.$store.getters.token)
+    this.fetchApiInformation();
   },
   errorCaptured: function (err) {
     console.log(err)
