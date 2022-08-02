@@ -1,12 +1,12 @@
-export class Ansprechpartner {
+export class Mitarbeiter {
     constructor(json) {
-        if (Ansprechpartner.isValidAnsprechpartner(json)) {
+        if (Mitarbeiter.isValidAnsprechpartner(json)) {
             this.username = json.username;
             this.vorname = json.vorname;
             this.nachname = json.nachname;
 
         } else {
-            console.log("is not a valid ansprechpartner!" + JSON.stringify(json));
+            console.log("is not a valid Mitarbeiter!" + JSON.stringify(json));
             let e = {};
             throw e;
         }

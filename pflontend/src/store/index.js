@@ -3,12 +3,14 @@ import authentication from "@/store/modules/authentication";
 import appointments from "@/store/modules/appointments";
 import abwesenheiten from "@/store/modules/abwesenheiten";
 import beratungsstellen from "@/store/modules/beratungsstellen";
+import mitarbeiter from "@/store/modules/mitarbeiter";
 
 export default createStore({
     modules: {
         authentication,
         appointments,
         abwesenheiten,
-        beratungsstellen
+        beratungsstellen,
+        mitarbeiter,
     },
 })

@@ -1,9 +1,12 @@
 package com.example.packend.controller;
 
+import com.example.packend.dto.MitarbeiterDto;
 import com.example.packend.entities.Beratungsstelle;
+import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.repositories.BeratungsstellenRepository;
+import com.example.packend.repositories.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -28,6 +31,8 @@ public class BeratungsstellenController {
 
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -87,5 +92,21 @@ public class BeratungsstellenController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @GetMapping("/mitarbeiter/get/all")
+    public ResponseEntity<List<JsonNode>> getAlleMitarbeiter() {
+        List<Mitarbeiter> all = userRepository.findAll();
+        List<JsonNode> jsonListe = new ArrayList<>();
+
+        for (Mitarbeiter mitarbeiter : all) {
+            MitarbeiterDto mitarbeiterDto = MitarbeiterDto.builder()
+                    .vorname(mitarbeiter.getVorname())
+                    .nachname(mitarbeiter.getNachname())
+                    .username(mitarbeiter.getUsername())
+                    .build();
+            jsonListe.add(objectMapper.valueToTree(mitarbeiterDto));
+        }
+        return ResponseEntity.ok(jsonListe);
     }
 }

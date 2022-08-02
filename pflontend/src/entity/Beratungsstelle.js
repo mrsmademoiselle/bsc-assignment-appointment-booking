@@ -1,11 +1,11 @@
-import {Ansprechpartner} from "@/entity/Ansprechpartner";
+import {Mitarbeiter} from "@/entity/Mitarbeiter";
 import {Adresse} from "@/entity/Adresse";
 
 export class Beratungsstelle {
     constructor(json) {
         if (Beratungsstelle.isValidBeratungsstelle(json)) {
             this.id = json.id;
-            this.ansprechpartner = new Ansprechpartner(json.ansprechpartner);
+            this.ansprechpartner = new Mitarbeiter(json.ansprechpartner);
             this.adresse = new Adresse(json.adresse)
             this.mitarbeiterListe = json.mitarbeiterListe;
         } else {
