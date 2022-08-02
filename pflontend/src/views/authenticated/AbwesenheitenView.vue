@@ -29,17 +29,13 @@
 import AbwesenheitenListe from "@/components/AbwesenheitenListe";
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 import Datepicker from "@vuepic/vue-datepicker";
-import {Abwesenheit} from "@/entity/Abwesenheit";
 
 export default {
   name: "AbwesenheitenView",
   components: {ButtonSubmit, AbwesenheitenListe, Datepicker},
   data: function () {
     return {
-      abwesenheitsliste: [new Abwesenheit({
-        startDatum: new Date(),
-        endDatum: new Date(new Date().setDate(new Date().getDate() + 7))
-      })],
+      abwesenheitsliste: [],
       neueAbwesenheit: {
         startDatum: null,
         endDatum: null,

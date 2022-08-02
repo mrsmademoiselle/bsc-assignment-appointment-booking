@@ -1,5 +1,13 @@
 
 ---------------------- Fragen
+- Usability bezieht sich aktuell primär auf der Kundenansicht.
+    - "Dabei ist ein besonderer Fokus auf die Benutzerfreundlichkeit zu legen, sodass Kunden selbstständig Termine buchen können."
+    - Dennoch hat das System auch eine Adminansicht
+    - Wie konkret gehe ich im Kapitel Konzeption (Mockups) auf die Ansicht und die Gedankengänge hinter der Konzeption ein?
+        - Fokus der Arbeit liegt ja eigentlich auf der Benutzeransicht
+        - Screenshots + funktionale Anforderungen erläutern reicht?
+
+---------------------- Fragen
 - Use-Case-Diagramm: <<include>> <<extends>> laut IONOS-Webseite: https://www.google.com/url?q=https://www.ionos.de/digitalguide/websites/web-entwicklung/anwendungsfalldiagramm/&sa=D&source=docs&ust=1659306408167644&usg=AOvVaw1nrupIhCiMn7TRq0-Rgw_t
 - Nicht berücksichtigt:
     - Tabellen- und Seitenumbrüche

@@ -23,6 +23,8 @@
         </tr>
         </tbody>
       </table>
+      <div v-else>Es gibt derzeit keine Abwesenheitseinträge.</div>
+
     </div>
 
     <!-- Modal -->

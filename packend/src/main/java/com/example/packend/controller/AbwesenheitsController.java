@@ -46,7 +46,8 @@ public class AbwesenheitsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> cancelAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
+    public ResponseEntity<String> addAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
+        LOGGER.debug("Abwesenheit wird angelegt: " + abwesenheit);
         abwesenheitRepository.save(abwesenheit);
         return new ResponseEntity<>(HttpStatus.OK);
 
