@@ -1,63 +1,79 @@
 <template>
-
-  <AppointmentCalendar
-      :abwesenheiten="alleAbwesenheiten" :termine="allAppointments"></AppointmentCalendar>
-
-  <div class="h2 m-4">Terminübersicht</div>
-  <div class="justify-content-center d-flex mt-3">
-    <table v-if="allAppointments.length > 0" class="col-lg-8 table">
-      <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Termin</th>
-        <th scope="col">Email</th>
-        <th scope="col">Details</th>
-        <th scope="col">Absagen</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="appointment in allAppointments" :key="appointment.id">
-        <td>{{ appointment.vorname }} {{ appointment.nachname }}</td>
-        <td>{{ appointment.formatDateToGermanLocale() }} {{ appointment.uhrzeit }} Uhr</td>
-        <td>{{ appointment.email }}</td>
-        <td>
-          <router-link to="/appointment/{{appointment.id}}">zum Termin</router-link>
-        </td>
-        <td>
-          <ButtonSubmit danger="true" data-target="#myModal" data-toggle="modal"
-                        title="x" type="button" @onclick="selectAppointment(appointment)">
-          </ButtonSubmit>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <div v-if="allAppointments.length <= 0" class="col-lg-6">Derzeit gibt es keine Termine.</div>
+  <div class="d-flex justify-content-center border-1 border-bottom my-2 border-top bg-light p-2">
+    <div :class="this.kalenderansicht ? 'font-weight-bold' : 'text-secondary'" class="col-6 h4 cursor-pointer"
+         v-on:click="this.kalenderansicht = true">
+      Kalenderansicht
+    </div>
+    <div :class="this.kalenderansicht ? 'text-secondary' : 'font-weight-bold'" class="col-6 h4 cursor-pointer"
+         v-on:click="this.kalenderansicht = false">
+      Listenansicht
+    </div>
   </div>
+  <div>
 
-  <!-- Modal -->
-  <div v-if="selectedAppointment !== null" id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <AppointmentCalendar v-if="kalenderansicht" :abwesenheiten="alleAbwesenheiten"
+                         :termine="allAppointments" class="my-2"></AppointmentCalendar>
 
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header justify-content-center">
-          <h4 class="modal-title">Termin absagen</h4>
-        </div>
-        <div class="modal-body">
-          <div>Möchten Sie diesen Termin wirklich absagen?</div>
-          <div class="my-4">{{ selectedAppointment.formatDateToGermanLocale() }} {{ selectedAppointment.uhrzeit }} Uhr
-          </div>
-          <div>{{ selectedAppointment.vorname }} {{ selectedAppointment.nachname }}</div>
-          <div class="mt-4">Der Kunde wird über die Terminabsage per E-Mail benachrichtigt.</div>
-          <div>Diese Aktion kann nicht rückgängig gemacht werden.</div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-dismiss="modal" type="button">Abbrechen</button>
-          <button class="btn btn-danger" data-dismiss="modal" type="button" v-on:click="cancelAppointment">Ja, absagen
-          </button>
-        </div>
+    <div v-else class="my-3">
+      <div class="justify-content-center d-flex mt-3">
+        <table v-if="allAppointments.length > 0" class="col-lg-8 table">
+          <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Termin</th>
+            <th scope="col">Email</th>
+            <th scope="col">Details</th>
+            <th scope="col">Absagen</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="appointment in allAppointments" :key="appointment.id">
+            <td>{{ appointment.vorname }} {{ appointment.nachname }}</td>
+            <td>{{ appointment.formatDateToGermanLocale() }} {{ appointment.uhrzeit }} Uhr</td>
+            <td>{{ appointment.email }}</td>
+            <td>
+              <router-link to="/appointment/{{appointment.id}}">zum Termin</router-link>
+            </td>
+            <td>
+              <ButtonSubmit danger="true" data-target="#myModal" data-toggle="modal"
+                            title="x" type="button" @onclick="selectAppointment(appointment)">
+              </ButtonSubmit>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div v-if="allAppointments.length <= 0" class="col-lg-6">Derzeit gibt es keine Termine.</div>
       </div>
 
+      <!-- Modal -->
+      <div v-if="selectedAppointment !== null" id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header justify-content-center">
+              <h4 class="modal-title">Termin absagen</h4>
+            </div>
+            <div class="modal-body">
+              <div>Möchten Sie diesen Termin wirklich absagen?</div>
+              <div class="my-4">{{ selectedAppointment.formatDateToGermanLocale() }} {{
+                  selectedAppointment.uhrzeit
+                }} Uhr
+              </div>
+              <div>{{ selectedAppointment.vorname }} {{ selectedAppointment.nachname }}</div>
+              <div class="mt-4">Der Kunde wird über die Terminabsage per E-Mail benachrichtigt.</div>
+              <div>Diese Aktion kann nicht rückgängig gemacht werden.</div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-dismiss="modal" type="button">Abbrechen</button>
+              <button class="btn btn-danger" data-dismiss="modal" type="button" v-on:click="cancelAppointment">Ja,
+                absagen
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +89,7 @@ export default {
   data: function () {
     return {
       selectedAppointment: null,
+      kalenderansicht: true,
     }
   },
   methods: {
