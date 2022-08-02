@@ -30,11 +30,11 @@ const actions = { // asynchronous
         }
     },
     async addAbwesenheit({commit}, {abwesenheit, token}) {
-        console.log("Adding abwesenheit");
+        console.log("adding abwesenheit (token: " + token + "): " + JSON.stringify(abwesenheit))
         let response = await apiService.authenticatedPost("abwesenheit/add", abwesenheit, token);
         console.log("Response: '" + response.data + "' with Statuscode " + response.status);
         if (response.status === 200) {
-            commit('addAbwesenheit', abwesenheit);
+            commit('addAbwesenheit', {abwesenheit});
         }
     }
 }
@@ -53,7 +53,7 @@ const mutations = { // synchronous
         state.alleAbwesenheiten = state.alleAbwesenheiten.filter(abwesenheit => abwesenheit.id !== id);
     },
     addAbwesenheit(state, abwesenheit) {
-        state.alleAbwesenheiten = state.alleAbwesenheiten.push(abwesenheit);
+        state.alleAbwesenheiten.push(abwesenheit);
     }
 }
 

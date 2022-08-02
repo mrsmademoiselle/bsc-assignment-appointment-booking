@@ -45,7 +45,8 @@ public class TerminController {
     @Autowired
     TerminService terminService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
 
     /**
      * Berechnet und gibt die verfügbaren Uhrzeiten für einen spezifischen Termin zurück.

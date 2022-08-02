@@ -20,21 +20,23 @@ import java.util.List;
 @RequestMapping("/abwesenheit")
 public class AbwesenheitsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbwesenheitsController.class);
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Autowired
     AbwesenheitRepository abwesenheitRepository;
 
     @GetMapping("/get/all")
     public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten() {
-        LOGGER.info("Calling getAllBeratungsstellen");
+        LOGGER.info("Calling getAlleAbwesenheiten");
         List<Abwesenheit> all = abwesenheitRepository.findAll();
 
-        List<JsonNode> beratungsstellenAlsJsonList = new ArrayList<>();
-        for (Abwesenheit beratungsstelle : all) {
-            beratungsstellenAlsJsonList.add(objectMapper.valueToTree(beratungsstelle));
+        List<JsonNode> abwesenheitAlsJsonList = new ArrayList<>();
+        for (Abwesenheit abwesenheit : all) {
+            JsonNode jsonNode = objectMapper.valueToTree(abwesenheit);
+            abwesenheitAlsJsonList.add(jsonNode);
         }
-        return ResponseEntity.ok(beratungsstellenAlsJsonList);
+        return ResponseEntity.ok(abwesenheitAlsJsonList);
     }
 
     @PostMapping("/remove/{stringId}")
@@ -47,7 +49,7 @@ public class AbwesenheitsController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
-        LOGGER.debug("Abwesenheit wird angelegt: " + abwesenheit);
+        LOGGER.info("Abwesenheit wird angelegt: " + abwesenheit);
         abwesenheitRepository.save(abwesenheit);
         return new ResponseEntity<>(HttpStatus.OK);
 

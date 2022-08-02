@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-auto pt-2"><b>Zeitraum auswählen: </b></div>
         <div class="col-auto">
-          <Datepicker v-model="neueAbwesenheit.datePair" :disabledDates="nichtVerfuegbareTage"
+          <Datepicker v-model="datePair" :disabledDates="nichtVerfuegbareTage"
                       :disabledWeekDays="[6, 0]" :enableTimePicker="false"
                       :format="formatDate"
                       autoApply class="mx-4 px-4"
@@ -14,6 +14,9 @@
                       range>
           </Datepicker>
         </div>
+        <div class="m-auto text-secondary"><small>Bitte beachten Sie, dass derzeit nur ganze Tage als
+          Abwesenheit buchbar
+          sind.</small></div>
       </div>
     </div>
     <div class=" d-flex justify-content-end mb-5">
@@ -49,11 +52,9 @@ export default {
       if (this.datePair.length !== 2) {
         console.log("date has invalid attributes")
       }
-      this.neueAbwesenheit.startDatum = this.datePair[0];
-      this.neueAbwesenheit.endDatum = this.datePair[1];
+      this.neueAbwesenheit.startDatum = this.datePair[0].toISOString();
+      this.neueAbwesenheit.endDatum = this.datePair[1].toISOString();
       this.$store.dispatch('addAbwesenheit', {abwesenheit: this.neueAbwesenheit, token: this.$store.getters.token});
-
-      alert("angelegt!")
     },
     formatDate([date1, date2]) {
       return date1.toLocaleDateString() + " - " + date2.toLocaleDateString()

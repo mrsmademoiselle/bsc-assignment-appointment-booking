@@ -28,8 +28,8 @@ public class BeratungsstellenController {
 
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
-    ObjectMapper objectMapper = new ObjectMapper();
-
+    @Autowired
+    ObjectMapper objectMapper;
 
     @GetMapping("/beratungsstellen/get/all")
     public ResponseEntity<List<JsonNode>> getAllBeratungsstellen() {
