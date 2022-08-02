@@ -68,7 +68,9 @@ export default {
       this.$store.dispatch('addAbwesenheit', {abwesenheit: this.neueAbwesenheit, token: this.$store.getters.token})
           .then(() => this.errors = [])
           .catch((e) => {
-            this.errors.push(e);
+            if (!this.errors.find(f => f === e)) {
+              this.errors.push(e);
+            }
           });
     },
     formatDate([date1, date2]) {

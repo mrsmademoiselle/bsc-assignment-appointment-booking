@@ -76,9 +76,6 @@ export default {
       this.$store.dispatch('removeAbwesenheit', {id: this.selectedAbwesenheit.id, token: this.$store.getters.token});
     }
   },
-  mounted() {
-    alert(JSON.stringify(this.abwesenheitsliste))
-  }
 }
 </script>
 
