@@ -18,4 +18,5 @@ public interface AbwesenheitRepository extends JpaRepository<Abwesenheit, Long> 
 
     @Override
     List<Abwesenheit> findAll(Sort sort);
+
 }

@@ -1,7 +1,9 @@
 package com.example.packend.services;
 
 import com.example.packend.dto.VerfuegbareUhrzeitenDto;
+import com.example.packend.entities.Abwesenheit;
 import com.example.packend.entities.Termin;
+import com.example.packend.repositories.AbwesenheitRepository;
 import com.example.packend.repositories.TerminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,14 @@ import java.util.List;
 @Service
 public class TerminService {
     TerminRepository terminRepository;
+    AbwesenheitRepository abwesenheitRepository;
     AdminConfigurationService adminConfigurationService;
 
     @Autowired
-    public TerminService(TerminRepository terminRepository, AdminConfigurationService adminConfigurationService) {
+    public TerminService(TerminRepository terminRepository, AdminConfigurationService adminConfigurationService, AbwesenheitRepository abwesenheitRepository) {
         this.terminRepository = terminRepository;
         this.adminConfigurationService = adminConfigurationService;
+        this.abwesenheitRepository = abwesenheitRepository;
     }
 
     /**
@@ -46,9 +50,18 @@ public class TerminService {
      */
     public List<LocalDate> berechneKomplettBelegteTage() {
         List<LocalDate> alleVollBelegtenTage = new ArrayList<>();
-        List<Termin> alleTermineSortiert = terminRepository.findAllByOrderByAusgewaehlterTerminAsc();
-
         VerfuegbareUhrzeitenDto alleVerfuegbarenUhrzeiten = adminConfigurationService.getAlleVerfuegbarenUhrzeiten();
+        List<Termin> alleTermineSortiert = terminRepository.findAllByOrderByAusgewaehlterTerminAsc();
+        List<Abwesenheit> all = abwesenheitRepository.findAll();
+
+        for (Abwesenheit abwesenheit : all) {
+            LocalDate startDatum = abwesenheit.getStartDatum();
+            LocalDate endDatum = abwesenheit.getEndDatum();
+
+            for (LocalDate currentDate = startDatum; currentDate.isBefore(endDatum.plusDays(1)); currentDate = currentDate.plusDays(1)) {
+                alleVollBelegtenTage.add(currentDate);
+            }
+        }
 
         LocalDate iterierDatum = null;
         // Über jedes Datum der Terminliste iterieren.
@@ -72,11 +85,13 @@ public class TerminService {
                     .toList()
                     .containsAll(verfuegbareUhrzeitenFuerTag);
 
-            if (istVollBelegterTag) alleVollBelegtenTage.add(termin.getAusgewaehlterTermin());
+            if (istVollBelegterTag)
+                alleVollBelegtenTage.add(termin.getAusgewaehlterTermin());
 
             iterierDatum = termin.getAusgewaehlterTermin();
 
         }
         return alleVollBelegtenTage;
     }
+
 }
