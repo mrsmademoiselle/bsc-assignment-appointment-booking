@@ -2,13 +2,13 @@ import apiService from "@/services/ApiService";
 import {Arbeitszeiten} from "@/entity/Arbeitszeiten";
 
 const state = () => ({
-    verfuegbareUhrzeitenFuerWochentage: null
+    arbeitszeiten: null
 })
 
 // getters
 const getters = {
-    verfuegbareUhrzeitenFuerWochentage: state => {
-        return state.verfuegbareUhrzeitenFuerWochentage;
+    arbeitszeiten: state => {
+        return state.arbeitszeiten;
     }
 }
 
@@ -45,11 +45,10 @@ const actions = { // asynchronous
 // mutations
 const mutations = { // synchronous
     fetchArbeitszeiten(state, data) {
-        alert(JSON.stringify(data))
-        state.verfuegbareUhrzeitenFuerWochentage = new Arbeitszeiten(data);
+        state.arbeitszeiten = new Arbeitszeiten(data);
     },
     updateArbeitszeiten(state, zeiten) {
-        state.verfuegbareUhrzeitenFuerWochentage = zeiten;
+        state.arbeitszeiten = zeiten;
     }
 }
 

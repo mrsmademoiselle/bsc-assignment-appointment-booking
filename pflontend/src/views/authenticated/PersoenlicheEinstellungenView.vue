@@ -21,10 +21,6 @@
   </div>
   <!--
   1. Arbeitszeiten pro Werktag
-
-  2. Button auf Abwesenheitszeiten verweisen
-
-  3. Beratungsstellen anlegen und sehen können
   -->
 </template>
 
@@ -47,6 +43,7 @@ export default {
   methods: {
     async getApiInformation() {
       await this.$store.dispatch("fetchBeratungsstellen");
+      await this.$store.dispatch("fetchArbeitszeiten", this.$store.getters.username);
     },
   },
   beforeMount: function () {
