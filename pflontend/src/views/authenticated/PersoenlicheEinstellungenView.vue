@@ -1,0 +1,66 @@
+<template>
+  <div class="d-flex justify-content-center mt-4 p-2 bg-light">
+    <div :class="this.beratungsstellenAnzeigen ? 'tab-active' : ''" class="tab col-6 h5 p-2"
+         title="Beratungsstellen"
+         v-on:click="this.beratungsstellenAnzeigen = !this.beratungsstellenAnzeigen">Beratungsstellen
+    </div>
+    <div :class="this.beratungsstellenAnzeigen ? '' : 'tab-active'" class="tab col-6 h5 p-2"
+         title="Arbeitszeiten"
+         v-on:click="this.beratungsstellenAnzeigen = !this.beratungsstellenAnzeigen">
+      Arbeitszeiten
+    </div>
+  </div>
+
+  <div class="bg-light h-100 w-100 py-2">
+    <div v-if="beratungsstellenAnzeigen">
+      <BeratungsstellenListe :beratungsstellen="alleBeratungsstellen"></BeratungsstellenListe>
+    </div>
+    <div v-else>Arbeitszeiten ändern</div>
+  </div>
+  <!--
+  1. Arbeitszeiten pro Werktag
+
+  2. Button auf Abwesenheitszeiten verweisen
+
+  3. Beratungsstellen anlegen und sehen können
+  -->
+</template>
+
+<script>
+import BeratungsstellenListe from "@/components/BeratungsstellenListe";
+
+export default {
+  name: "PersoenlicheEinstellungenView",
+  components: {BeratungsstellenListe},
+  data: function () {
+    return {
+      beratungsstellenAnzeigen: true
+    }
+  },
+  computed: {
+    alleBeratungsstellen: {
+      get() {
+        return this.$store.getters.alleBeratungsstellen;
+      }
+    }
+  },
+  methods: {
+    async getApiInformation() {
+      await this.$store.dispatch("fetchBeratungsstellen");
+    }
+  },
+  beforeMount: function () {
+    this.getApiInformation();
+  }
+}
+</script>
+
+<style scoped>
+.tab-active {
+  font-weight: bold;
+}
+
+.tab {
+  cursor: pointer;
+}
+</style>

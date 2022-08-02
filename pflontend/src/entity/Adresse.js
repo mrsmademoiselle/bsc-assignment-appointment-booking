@@ -24,4 +24,8 @@ export class Adresse {
         return Object.prototype.hasOwnProperty.call(object, field);
     }
 
+    formatToReadableString() {
+        return this.strasse + " " + this.hausnummer + ", " + this.plz + " " + this.ort;
+    }
+
 }

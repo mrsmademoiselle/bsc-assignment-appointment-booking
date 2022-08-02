@@ -8,6 +8,7 @@ import AppointmentCancellation from "@/views/AppointmentCancellationView";
 import {createRouter, createWebHistory} from "vue-router";
 import store from "@/store";
 import AbwesenheitenView from "@/views/authenticated/AbwesenheitenView";
+import PersoenlicheEinstellungenView from "@/views/authenticated/PersoenlicheEinstellungenView";
 
 const routes = [
     {path: '/', component: HomepageClient},
@@ -17,6 +18,7 @@ const routes = [
     {path: '/overview', component: AppointmentOverview, meta: {requiresAuthentication: true}},
     {path: '/appointment/:id', component: AppointmentDetails, meta: {requiresAuthentication: true}},
     {path: '/absence', component: AbwesenheitenView, meta: {requiresAuthentication: true}},
+    {path: '/settings', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
 ]
 
 // 3. Create the router instance and pass the `routes` option

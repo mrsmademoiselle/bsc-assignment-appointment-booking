@@ -9,20 +9,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
 @RestController
-@RequestMapping("/public")
+@RequestMapping
 public class BeratungsstellenController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BeratungsstellenController.class);
 
@@ -31,10 +31,10 @@ public class BeratungsstellenController {
     @Autowired
     ObjectMapper objectMapper;
 
-    @GetMapping("/beratungsstellen/get/all")
+    @GetMapping("public/beratungsstellen/get/all")
     public ResponseEntity<List<JsonNode>> getAllBeratungsstellen() {
         LOGGER.info("Calling getAllBeratungsstellen");
-        List<Beratungsstelle> all = beratungsstellenRepository.findAll();
+        List<Beratungsstelle> all = beratungsstellenRepository.findAllByIstArchiviertIsFalse();
 
         List<JsonNode> beratungsstellenAlsJsonList = new ArrayList<>();
         for (Beratungsstelle beratungsstelle : all) {
@@ -43,7 +43,7 @@ public class BeratungsstellenController {
         return ResponseEntity.ok(beratungsstellenAlsJsonList);
     }
 
-    @GetMapping("/termingrund/get/all")
+    @GetMapping("public/termingrund/get/all")
     public ResponseEntity<List<String>> getAllTermingruende() {
         LOGGER.info("Calling getAllTermingruende");
 
@@ -53,12 +53,39 @@ public class BeratungsstellenController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/anrede/get/all")
+    @GetMapping("public/anrede/get/all")
     public ResponseEntity<List<String>> getAllAnreden() {
         LOGGER.info("Calling getAllAnreden");
         Anrede[] values = Anrede.values();
         return ResponseEntity.ok(Arrays.stream(values)
                 .map(Anrede::getAnrede)
                 .collect(Collectors.toList()));
+    }
+
+    @PostMapping("/beratungsstellen/add")
+    public ResponseEntity<Beratungsstelle> addBeratungsstelle(@RequestBody Beratungsstelle beratungsstelle) {
+        LOGGER.warn("calling addBeratungsstelle");
+
+        beratungsstelle = beratungsstellenRepository.save(beratungsstelle);
+
+        return ResponseEntity.ok(beratungsstelle);
+    }
+
+    @PostMapping("/beratungsstellen/archiviere/{stringId}")
+    public ResponseEntity<String> archiviere(@PathVariable String stringId) {
+        LOGGER.warn("archiviere Beratungsstelle mit ID " + stringId);
+
+        Long id = Long.valueOf(stringId);
+        Optional<Beratungsstelle> optional = beratungsstellenRepository.findById(id);
+        if (optional.isPresent()) {
+            Beratungsstelle beratungsstelle = optional.get();
+            beratungsstelle.setIstArchiviert(true);
+            beratungsstellenRepository.save(beratungsstelle);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 }

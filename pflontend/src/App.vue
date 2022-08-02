@@ -33,6 +33,7 @@ export default {
   color: inherit;
   margin: 10px 20px 10px 20px;
   cursor: pointer;
+  border-bottom: solid transparent;
 }
 
 .navbar-link:hover {
@@ -48,4 +49,9 @@ export default {
   border-bottom: solid darkgreen;
 }
 
+.tab-active {
+  color: #27718c;
+  font-weight: bold;
+  border-bottom: solid #27718c;
+}
 </style>

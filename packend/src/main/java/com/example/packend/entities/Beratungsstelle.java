@@ -23,6 +23,7 @@ public class Beratungsstelle {
     private Adresse adresse;
     @OneToMany
     private List<Mitarbeiter> mitarbeiterListe;
+    private boolean istArchiviert;
 
     public void addMitarbeiter(Mitarbeiter mitarbeiter) {
         mitarbeiterListe.add(mitarbeiter);

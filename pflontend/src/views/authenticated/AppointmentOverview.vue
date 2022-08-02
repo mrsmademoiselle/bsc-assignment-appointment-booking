@@ -131,10 +131,4 @@ export default {
   cursor: pointer;
   color: gray;
 }
-
-.tab-active {
-  color: #27718c;
-  font-weight: bold;
-  border-bottom: solid #27718c;
-}
 </style>
