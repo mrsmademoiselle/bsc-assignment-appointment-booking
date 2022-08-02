@@ -35,6 +35,8 @@ export default {
         };
         events.push(newEvent)
       }
+      console.log("successfully converted " + termine.length + " termine.")
+
       for (let counter in abwesenheiten) {
         if (!Abwesenheit.isValidAbwesenheit(abwesenheiten[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
         let date = new Date(abwesenheiten[counter].ausgewaehlterTermin + " " + abwesenheiten[counter].uhrzeit);
@@ -46,7 +48,7 @@ export default {
           class: 'blocker'
         })
       }
-      console.log("successfully converted " + events.length + " events.")
+      console.log("successfully converted " + abwesenheiten.length + " abwesenheiten.")
       return events;
     },
   }

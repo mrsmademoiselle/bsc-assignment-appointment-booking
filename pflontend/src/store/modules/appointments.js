@@ -29,13 +29,22 @@ const actions = { // asynchronous
             commit('remove', id);
         }
     },
-    async addAppointment({commit}, appointment) {
-        console.log("Adding appointment");
-        let response = await apiService.post("termin/post", appointment);
-        console.log("Response: '" + response.data + "' with Statuscode " + response.status);
-        if (response.status === 200) {
-            commit('add', appointment);
-        }
+    addAppointment({commit}, appointment) {
+        return new Promise((resolve, reject) => {
+
+            console.log("Adding appointment");
+            apiService.post("termin/post", appointment).then(response => {
+                if (response.status === 200) {
+                    console.log("appointment erfolgreich angelegt");
+                    commit('add', new Appointment(appointment));
+                }
+                resolve()
+            })
+                .catch(error => {
+                    console.log("Error: " + error);
+                    reject("Der Termin konnte nicht angelegt werden.")
+                })
+        })
     }
 }
 
@@ -53,7 +62,7 @@ const mutations = { // synchronous
         state.allAppointments = state.allAppointments.filter(app => app.id !== id);
     },
     add(state, appointment) {
-        state.allAppointments = state.allAppointments.push(appointment);
+        state.allAppointments = [...state.allAppointments, appointment];
     }
 }
 
