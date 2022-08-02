@@ -99,6 +99,17 @@ public class PackendApplication implements CommandLineRunner {
                     .kundeninformationen(kundeninformationen).build();
             terminRepository.save(termin);
         }
+        Termin termin = Termin.builder()
+                .ausgewaehlterTermin(LocalDate.now())
+                .bemerkung(generateString())
+                .beratungsgrund(Beratungsgrund.BERATUNG)
+                .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
+                .uhrzeit(LocalTime.now())
+                .beratungsstelle(istEutin ? eutin : preetz)
+                .kundeninformationen(kundeninformationen).build();
+        terminRepository.save(termin);
+
+
     }
 
     private String generateString() {

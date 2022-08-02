@@ -7,7 +7,6 @@ import store from './store'
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import router from "@/router";
-import WizardSteps from 'vue-wizard-steps';
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faAngleUp} from "@fortawesome/free-solid-svg-icons/faAngleUp";
@@ -23,7 +22,6 @@ library.add(faClock)
 library.add(faPerson)
 library.add(faHouse)
 library.add(faUser)
-app.component("wizard-steps", WizardSteps);
 // eslint-disable-next-line vue/multi-word-component-names
 app.component('Datepicker', Datepicker);
 app.component("font-awesome-icon", FontAwesomeIcon)

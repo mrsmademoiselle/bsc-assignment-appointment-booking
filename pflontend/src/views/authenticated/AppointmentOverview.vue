@@ -1,4 +1,8 @@
 <template>
+
+  <AppointmentCalendar
+      :abwesenheiten="alleAbwesenheiten" :termine="allAppointments"></AppointmentCalendar>
+
   <div class="h2 m-4">Terminübersicht</div>
   <div class="justify-content-center d-flex mt-3">
     <table v-if="allAppointments.length > 0" class="col-lg-8 table">
@@ -61,13 +65,14 @@
 <script>
 
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import AppointmentCalendar from "@/components/AppointmentCalendar";
 
 export default {
   name: "AppointmentOverview",
-  components: {ButtonSubmit},
+  components: {AppointmentCalendar, ButtonSubmit},
   data: function () {
     return {
-      selectedAppointment: null
+      selectedAppointment: null,
     }
   },
   methods: {
@@ -82,6 +87,11 @@ export default {
     allAppointments: {
       get() {
         return this.$store.getters.allAppointments;
+      }
+    },
+    alleAbwesenheiten: {
+      get() {
+        return this.$store.getters.alleAbwesenheiten;
       }
     }
   },

@@ -47,4 +47,5 @@ export default {
 .router-link-active {
   border-bottom: solid darkgreen;
 }
+
 </style>
