@@ -1,4 +1,44 @@
 
+
+---------------------- Notizen
+- Im weiteren Verlauf der Arbeit von Mitarbeitenden sprechen, aber obe ienmal definieren, dass sie das repräsentiert
+- wenn ich von Terminbuchungssoftware/meiner Arbeit rede, nicht kann verwenden
+- Bei Eventualitäten ist es ok
+- Mitarbeiteranforderungen -> Kunden können buchen...
+    - Verständnis eher "Perspektiven innerhalb des Systems"
+        - Dann ist das falsch, die Kundenperspektive hält die Anforderung inne
+    - ist die Unterteilung so sinnvoll?
+- Am ende des Absatzes nicht Blocksatz -> möglich bei Google Docs?
+- Python-Abschnitt in eine Fußnote schieben
+    - ODER später zu erklären
+- Kundendatensätze
+    - Differenz-Satz entweder näher erläutern oder rausnehmen
+- "Frage: Usability bezieht sich aktuell primär auf der Kundenansicht."
+    - sie erwartet dass die Ansicht der anderen Akteure (Mitarbeiter) auch Benutzerfreundlich gestaltet sind
+    - Sie möchte nicht die Untersuchung der Adminansicht nach Heuristiken
+        - explizit begrenzen
+        - einige der Anforderungen sind allgemeingültig (zB Systemrückmeldung bei Aktionen)
+            - 3.3 Untersuchung Terminbuchungssystem
+                - NOchmal sagen dass das primäre Ziel die Kundenansicht benutzerfruenlich ist
+                - die konkreten Dinge in heuristikk analyse nicht wegnehmen, sondern als Beispiel nehmen
+                - Benennen welche Anforderungen auhc in Adminsicht umgesetzt wurden, aber sagen dass der Fkus auf Benutzersicht liegt
+- Sie wusste nicht dass alle Tools eine Adminansicht bieten
+- Wie ohne Account? Usability-Anforderungen
+    - da schon reinschreiben konkret durch EinmalURL
+- letzter Satz => anpassen auf "die funktionalen/ nicht funktionalen Anforderunge  der Mitarbeiter...."
+    - Hauptfokus auf Kundensicht, allgemeine Anforderungen werden auch bei MA Sicht betrachtet, das wird näher in Kap xy betrachtet
+
+- Use-Case Diagramm
+    - Diagramm soll auch nicht-techies verstehen
+    - Authentifizierung & PW/USername => zu konkret
+    - Terminbuchung von Admin muss möglich sein
+- Polylithisch als Antonym gegen Monolithisch?
+    - https://english.stackexchange.com/questions/112633/whats-an-antonym-of-monolithic-as-in-monolithic-architecture
+- Skalierbarkeit soll möglich sein
+    - 2.2.2 -> keine konkreten Anforderung von Seiten der Stakeholder, aber da Systeme im besten Fall skalierbar
+    sein sollen, wird es als Argument hier verwendet (Quelle)
+
+
 ---------------------- Fragen
 - Usability bezieht sich aktuell primär auf der Kundenansicht.
     - "Dabei ist ein besonderer Fokus auf die Benutzerfreundlichkeit zu legen, sodass Kunden selbstständig Termine buchen können."
@@ -6,6 +46,9 @@
     - Wie konkret gehe ich im Kapitel Konzeption (Mockups) auf die Ansicht und die Gedankengänge hinter der Konzeption ein?
         - Fokus der Arbeit liegt ja eigentlich auf der Benutzeransicht
         - Screenshots + funktionale Anforderungen erläutern reicht?
+
+
+- Gibt es eine Seite, die Webseiten nach Quelleneignung bewertet?
 
 ---------------------- Fragen
 - Use-Case-Diagramm: <<include>> <<extends>> laut IONOS-Webseite: https://www.google.com/url?q=https://www.ionos.de/digitalguide/websites/web-entwicklung/anwendungsfalldiagramm/&sa=D&source=docs&ust=1659306408167644&usg=AOvVaw1nrupIhCiMn7TRq0-Rgw_t
