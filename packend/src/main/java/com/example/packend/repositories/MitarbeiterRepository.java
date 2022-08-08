@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<Mitarbeiter, Long> {
+public interface MitarbeiterRepository extends CrudRepository<Mitarbeiter, Long> {
     List<Mitarbeiter> findAll();
 
     Optional<Mitarbeiter> findByUsername(String username);

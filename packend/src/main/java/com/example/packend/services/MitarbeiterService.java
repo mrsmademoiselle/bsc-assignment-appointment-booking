@@ -1,7 +1,7 @@
 package com.example.packend.services;
 
 import com.example.packend.entities.Mitarbeiter;
-import com.example.packend.repositories.UserRepository;
+import com.example.packend.repositories.MitarbeiterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-public class UserService implements UserDetailsService {
-    private final UserRepository userRepository;
+public class MitarbeiterService implements UserDetailsService {
+    private final MitarbeiterRepository mitarbeiterRepository;
 
     /*
     Dieses Feld muss field injection haben, damit kein Zyklus entsteht. Bei uns besteht der Zyklus bei PasswordEncoder,
@@ -22,15 +22,15 @@ public class UserService implements UserDetailsService {
 
     Begründung:
     Spring versucht zu Beginn die WebSecurityConfig zu erstellen.
-    Dafür braucht er eine UserService-Instanz (Konstruktor). Um die zu erstellen, braucht er aber eine Bean von
+    Dafür braucht er eine MitarbeiterService-Instanz (Konstruktor). Um die zu erstellen, braucht er aber eine Bean von
     PasswordEncoder, die erst später in der WebSecurityConfig erstellt wird.
     Somit kann Spring nicht entscheiden, in welcher Reihenfolge die Dependencies aufgelöst werden sollen, weil ein
-    Zyklus besteht: WebSecurity braucht UserService, UserService braucht PasswordEncoder, PasswordEncoder
+    Zyklus besteht: WebSecurity braucht MitarbeiterService, MitarbeiterService braucht PasswordEncoder, PasswordEncoder
     braucht zu seiner eigenen Erstellung die fertige WebSecurity.
 
     Warum Field Injection hier funktioniert:
     Field Injections finden (anders als Constructor Injections) erst dann statt, wenn sie gebraucht werden, sodass
-    zu diesem Zeitpunkt die PasswordEncoder-Bean bereits existiert, weil der Konstruktor von UserService bereits erfolgreich
+    zu diesem Zeitpunkt die PasswordEncoder-Bean bereits existiert, weil der Konstruktor von MitarbeiterService bereits erfolgreich
     aufgerufen wurde.
 
     Weitere Workarounds wären z.B. das Auslagern der PasswordEncoder-Bean in eine andere Klasse oder das field
@@ -40,8 +40,8 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder bcryptEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public MitarbeiterService(MitarbeiterRepository mitarbeiterRepository) {
+        this.mitarbeiterRepository = mitarbeiterRepository;
     }
 
     /**
@@ -51,12 +51,12 @@ public class UserService implements UserDetailsService {
      * @return true wenn Objekt persistiert, false wenn Exception eintritt
      */
     public boolean saveUser(Mitarbeiter mitarbeiter) {
-        if (this.userRepository.existsByUsername(mitarbeiter.getUsername())) {
+        if (this.mitarbeiterRepository.existsByUsername(mitarbeiter.getUsername())) {
             return false;
         }
         try {
             Mitarbeiter newMitarbeiter = new Mitarbeiter(mitarbeiter.getUsername(), bcryptEncoder.encode(mitarbeiter.getPassword()), mitarbeiter.getVorname(), mitarbeiter.getNachname());
-            userRepository.save(newMitarbeiter);
+            mitarbeiterRepository.save(newMitarbeiter);
             return true;
         } catch (Exception e) {
             return false;
@@ -72,7 +72,7 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Mitarbeiter> optional = userRepository.findByUsername(username);
+        Optional<Mitarbeiter> optional = mitarbeiterRepository.findByUsername(username);
 
         if (optional.isEmpty())
             throw new UsernameNotFoundException("Kein Benutzer mit dem Namen " + username + " gefunden");

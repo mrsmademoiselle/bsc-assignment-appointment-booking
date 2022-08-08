@@ -1,9 +1,15 @@
-
+- Am ende des Absatzes nicht Blocksatz -> möglich bei Google Docs?
+- Ist Unterteilung zwischen Mitarbeiteranforderungen und Kundenanforderungen sinnvoll?
+    - Ist die Aufteilung auch anders möglich?
+- Sie wusste nicht dass alle Tools eine Adminansicht bieten
+- Wie ohne Account? Usability-Anforderungen
+    - da schon reinschreiben konkret durch EinmalURL
+- 3 tier "näher begründen" - was wird da verarbeitet, warum ist das notwendig das nochmal auszulagern?
 
 ---------------------- Notizen
 - Im weiteren Verlauf der Arbeit von Mitarbeitenden sprechen, aber obe ienmal definieren, dass sie das repräsentiert
 - wenn ich von Terminbuchungssoftware/meiner Arbeit rede, nicht kann verwenden
-- Bei Eventualitäten ist es ok
+    - Bei Eventualitäten ist es ok
 - Mitarbeiteranforderungen -> Kunden können buchen...
     - Verständnis eher "Perspektiven innerhalb des Systems"
         - Dann ist das falsch, die Kundenperspektive hält die Anforderung inne
@@ -37,7 +43,48 @@
 - Skalierbarkeit soll möglich sein
     - 2.2.2 -> keine konkreten Anforderung von Seiten der Stakeholder, aber da Systeme im besten Fall skalierbar
     sein sollen, wird es als Argument hier verwendet (Quelle)
+    - 3.2.1 abändern
+    - Selbstverständlich betrachtet man alle n-f/f Anroderungen die vom Stakeholder vorgegeben wurde, jedoch zieht man
+    auch weitere Punkte in Betracht, die heutzutage für Softwarequalität Standard geworden sind
+        - diese Aspekte werden mitbetrachtet, jedoch nicht als primäre Aspekte
+            - dann kann ich skalierbarkeit argumentieren, aber
+            - explizit sagen, für Architekturkonzept werden Qualitätskriterien für gute Software herangezogen
+                - implizit beschränke ich mich damit darauf, dass ich den Punkt Security nicht bis nach unten in den Code mit reinbeziehe
+    - selbsterstellt nach Quelle
 
+- Standarddefinition 1-2 mal Wikipedia, nicht schlimm, mehr Wikipedia angeben nicht gut
+- quora, stackoverflow, muss man extrem aufpassen
+- Graphikbeschreibung [selbsterstellt, nach Quelle X]
+- 3 tier "näher begründen" - was wird da verarbeitet, warum ist das notwendig das nochmal auszulagern?
+ 4.2.6 fazit: Hauptgründe aufzählen, kosten waren vorher nie relevant, kurz bennennen nicht alle einzelnen aufzählen
+ und erklären, sondern nur benennen
+ - Komponentenfiagramm
+    - hilfreich wäre zu sagen, dass es hier eine usersicht-, mitarbeiterkomponente gibt, auf die Mitarbeiter zugreifen können
+
+- allg. klassendiagramm allgemeine struktur
+- im nächsten schritt ein konkretes klassendiagramm für das backend mit den konkreten entitätsklassen
+- nur klassennamen ohne attribute und Methoden
+    - Dinge einfärben für Zusammengehörigkeit
+    - allgemein: diese Struktur findet sich in jedem Anwendungsfall wieder, das sieht man im nächsten klassendiagramm
+    - falls Klassendiagramm zu groß iost, drehen
+    - konkretes Klassendiagramm einfügen
+             - bei 3 Usecases wo Service übersprungen wird, so erwähnen
+    - Hauptkomponenten wo Schnittstellen zusammenführen oder so, farblich extra hinzufügen,
+
+y
+- Sequenzdiagramme eigentlich nur für sehr komplexe Abläufe
+- Sequenzdiagramm
+    - es fehlt die Objekterstellung
+    - EIGENTLICH hätte es ein Aktivitätsdiagramm mit swim lanes gewesen
+    - erstmal drinlassen, Falls ich eine Verlängerung bekomme, sollte ich es nochmal umbauen zum Aktivitätsdiagramm für einige Dinge
+    - explizit dazuschreiben, dass sequenzdiagramm mit vereinfachter form in bezug auf kommunikation zwischen komponenten
+    nochmal erxplizit darstellt, was ich vorher beschrieben habe, ohne konkret auf objekterstellgun etc einzugehen
+        - auf welche komponenten ich warum verzichtet habe
+
+- Bei 2-3 Subkapitel, da ist alles von irgendwoher, direkt hinter den Titel die Quelle
+
+s
+- WENN FERTIG 2.4 (4.4) KAPITEL 4.4 NOCHMAL SCHICKEN MIT DEM KLASSENDIAGRAMM FÜR FEEDBACK (2.5 Datenmodell)
 
 ---------------------- Fragen
 - Usability bezieht sich aktuell primär auf der Kundenansicht.

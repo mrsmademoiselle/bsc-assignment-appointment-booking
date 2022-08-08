@@ -1,7 +1,7 @@
 package com.example.packend.config;
 
 
-import com.example.packend.services.UserService;
+import com.example.packend.services.MitarbeiterService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,9 +24,9 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    /* Field Injection aus selbem Grund wie PasswordEncoder in UserService */
+    /* Field Injection aus selbem Grund wie PasswordEncoder in MitarbeiterService */
     @Autowired
-    private UserService userService;
+    private MitarbeiterService mitarbeiterService;
 
     @Autowired
     public JwtRequestFilter(JwtTokenUtil jwtTokenUtil) {
@@ -61,7 +61,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // Sobald ein User gefunden wurde
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userService.loadUserByUsername(username);
+            UserDetails userDetails = this.mitarbeiterService.loadUserByUsername(username);
 
             // Laden des Users und validieren
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {

@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class PasswordEncoderConfig {
-    // Diese Bean wird für die Erstellung des UserService-Objekts benötigt (PasswordEncoder)
+    // Diese Bean wird für die Erstellung des MitarbeiterService-Objekts benötigt (PasswordEncoder)
 
     /**
      * Encoder fuer Passwoerter. Wird fuer das JWT-handling verwendet.

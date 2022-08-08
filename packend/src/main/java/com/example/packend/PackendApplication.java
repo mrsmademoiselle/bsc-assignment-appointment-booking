@@ -6,7 +6,7 @@ import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.enums.Terminerinnerung;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.TerminRepository;
-import com.example.packend.services.UserService;
+import com.example.packend.services.MitarbeiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +22,7 @@ import java.util.Random;
 public class PackendApplication implements CommandLineRunner {
 
     @Autowired
-    UserService userService;
+    MitarbeiterService mitarbeiterService;
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
@@ -36,10 +36,10 @@ public class PackendApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Default AdminUser
         Mitarbeiter adminMitarbeiter = Mitarbeiter.builder().password("adminPass").username("admin").nachname("admin nachname").vorname("admin vorname").build();
-        userService.saveUser(adminMitarbeiter);
+        mitarbeiterService.saveUser(adminMitarbeiter);
 
         Mitarbeiter janni = Mitarbeiter.builder().vorname("Jannika").nachname("Loof").username("janni").password("janni").build();
-        userService.saveUser(janni);
+        mitarbeiterService.saveUser(janni);
 
         Beratungsstelle preetz = Beratungsstelle.builder()
                 .ansprechpartner(adminMitarbeiter)
@@ -48,7 +48,7 @@ public class PackendApplication implements CommandLineRunner {
                         .ort("Preetz")
                         .plz("24211").build()).build();
         Mitarbeiter claudia = Mitarbeiter.builder().vorname("Claudia").nachname("Loof").username("claudi").password("claudi").build();
-        userService.saveUser(claudia);
+        mitarbeiterService.saveUser(claudia);
 
         Beratungsstelle eutin = Beratungsstelle.builder()
                 .ansprechpartner(adminMitarbeiter)

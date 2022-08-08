@@ -2,7 +2,7 @@ package com.example.packend.services;
 
 import com.example.packend.config.JwtTokenUtil;
 import com.example.packend.entities.Mitarbeiter;
-import com.example.packend.repositories.UserRepository;
+import com.example.packend.repositories.MitarbeiterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,18 +15,18 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserAuthenticationService {
+public class AuthenticationService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(UserAuthenticationService.class);
+    private final MitarbeiterRepository mitarbeiterRepository;
+    private final MitarbeiterService mitarbeiterService;
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
-    public UserAuthenticationService(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, UserRepository userRepository, UserService userService) {
+    public AuthenticationService(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, MitarbeiterRepository mitarbeiterRepository, MitarbeiterService mitarbeiterService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.userService = userService;
+        this.mitarbeiterRepository = mitarbeiterRepository;
+        this.mitarbeiterService = mitarbeiterService;
     }
 
     /**
@@ -34,7 +34,7 @@ public class UserAuthenticationService {
      */
     public String authenticateAndGetTokenForUserCredentials(String username, String password) {
         // Pruefen ob Token existiert
-        UserDetails userDetails = userService.loadUserByUsername(username);
+        UserDetails userDetails = mitarbeiterService.loadUserByUsername(username);
         authenticate(username, password);
 
         return jwtTokenUtil.generateToken(userDetails);
@@ -58,7 +58,7 @@ public class UserAuthenticationService {
      */
     public Mitarbeiter getUserFromJwt(String jwtToken) {
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        Optional<Mitarbeiter> userOptional = userRepository.findByUsername(username);
+        Optional<Mitarbeiter> userOptional = mitarbeiterRepository.findByUsername(username);
         return userOptional.orElseThrow(RuntimeException::new);
     }
 }

@@ -1,12 +1,11 @@
 package com.example.packend.services;
 
-import com.example.packend.entities.Abwesenheit;
-import com.example.packend.entities.Arbeitszeiten;
-import com.example.packend.entities.Mitarbeiter;
-import com.example.packend.entities.Termin;
+import com.example.packend.entities.*;
 import com.example.packend.repositories.AbwesenheitRepository;
 import com.example.packend.repositories.ArbeitszeitenRepository;
+import com.example.packend.repositories.CancellationLinkRepository;
 import com.example.packend.repositories.TerminRepository;
+import com.example.packend.services.mail.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +14,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class TerminService {
+    @Autowired
+    EmailService emailService;
     TerminRepository terminRepository;
     AbwesenheitRepository abwesenheitRepository;
-
     @Autowired
     ArbeitszeitenRepository arbeitszeitenRepository;
+    @Autowired
+    CancellationLinkRepository cancellationLinkRepository;
 
     @Autowired
     public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository) {
@@ -115,4 +118,58 @@ public class TerminService {
         return alleVollBelegtenTage;
     }
 
+    public Termin saveTermin(Termin data) {
+        data = terminRepository.save(data); // needs to be saved first, so it receives an ID that is used for CancellationUrl generation
+
+        CancellationUrl cancellationUrl = generateOneTimeUrl(data);
+
+        emailService.sendeTerminbestaetigung(data, cancellationUrl);
+
+        return data;
+    }
+
+
+    private CancellationUrl generateOneTimeUrl(Termin termin) {
+        String randomString = generateString();
+        CancellationUrl cancellationUrl = new CancellationUrl(termin.getId(), randomString);
+        cancellationUrl = cancellationLinkRepository.save(cancellationUrl);
+        return cancellationUrl;
+    }
+
+    private String generateString() {
+        Random rng = new Random();
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        int length = 40;
+        char[] text = new char[length];
+        for (int i = 0; i < length; i++) {
+            text[i] = characters.charAt(rng.nextInt(characters.length()));
+        }
+        return new String(text);
+    }
+
+    public boolean cancelAppointment(Long id) {
+        Optional<Termin> terminOptional = terminRepository.findById(id);
+        if (terminOptional.isPresent()) {
+            // remove cancellationUrl
+            cancellationLinkRepository.deleteByTerminId(id);
+            // remove appointment
+            terminRepository.delete(terminOptional.get());
+            // send cancellation-Email
+            emailService.sendeTerminabsage(terminOptional.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Optional<Termin> getTerminByCancellationToken(String token) {
+        Optional<CancellationUrl> cancellationUrlOptional = cancellationLinkRepository.findByToken(token);
+
+        if (cancellationUrlOptional.isPresent()) {
+            Optional<Termin> terminOptional = terminRepository.findById(cancellationUrlOptional.get().getTerminId());
+            return terminOptional;
+        } else {
+            return Optional.empty();
+        }
+    }
 }

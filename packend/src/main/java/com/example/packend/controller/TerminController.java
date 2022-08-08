@@ -1,16 +1,15 @@
 package com.example.packend.controller;
 
 import com.example.packend.dto.TerminDto;
-import com.example.packend.entities.CancellationUrl;
 import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.entities.Termin;
+import com.example.packend.enums.Anrede;
+import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.mapper.TerminToDtoMapper;
 import com.example.packend.repositories.BeratungsstellenRepository;
-import com.example.packend.repositories.CancellationLinkRepository;
+import com.example.packend.repositories.MitarbeiterRepository;
 import com.example.packend.repositories.TerminRepository;
-import com.example.packend.repositories.UserRepository;
 import com.example.packend.services.TerminService;
-import com.example.packend.services.mail.EmailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -24,21 +23,19 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.stream.Collectors;
 
 @Transactional
 @RestController
 @RequestMapping
 public class TerminController {
     private static final Logger LOGGER = LoggerFactory.getLogger(TerminController.class);
-    @Autowired
-    public EmailService emailService;
+
     @Autowired
     TerminRepository terminRepository;
-    @Autowired
-    CancellationLinkRepository cancellationLinkRepository;
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
@@ -46,7 +43,7 @@ public class TerminController {
     @Autowired
     TerminService terminService;
     @Autowired
-    UserRepository userRepository;
+    MitarbeiterRepository mitarbeiterRepository;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -55,7 +52,7 @@ public class TerminController {
      */
     @GetMapping("/public/{mitarbeiterId}/termin/uhrzeiten/get/{jahr}/{monat}/{tag}")
     public ResponseEntity<List<String>> getVerfuegbareUhrzeitenFuerTermin(@PathVariable String jahr, @PathVariable String monat, @PathVariable String tag, @PathVariable String mitarbeiterId) {
-        Mitarbeiter mitarbeiter = userRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
+        Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
 
         List<String> verfuegbareUhrzeitenFuerTag = terminService.berechneVerfuegbareUhrzeitenFuerTag(
                 LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)), mitarbeiter);
@@ -70,7 +67,7 @@ public class TerminController {
      */
     @GetMapping("/public/termin/{mitarbeiterId}/komplett-belegt/all")
     public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatümer(@PathVariable String mitarbeiterId) {
-        List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage(userRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new));
+        List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage(mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new));
         LOGGER.info("Komplett belegte Tage: " + komplettBelegteTage.size());
         return ResponseEntity.ok(komplettBelegteTage);
     }
@@ -99,7 +96,6 @@ public class TerminController {
         try {
             if (terminOptional.isPresent()) {
                 Termin termin = terminOptional.get();
-
                 TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
                 return ResponseEntity.ok(terminDto);
             } else {
@@ -116,13 +112,8 @@ public class TerminController {
     @PostMapping("/public/termin/post")
     public ResponseEntity<TerminDto> saveTermin(@RequestBody @Validated Termin data) {
         LOGGER.info("Calling saveTermin with data " + data.toString());
-        data = terminRepository.save(data); // needs to be saved first, so it receives an ID that is used for CancellationUrl generation
-
-        CancellationUrl cancellationUrl = generateOneTimeUrl(data);
-
-        emailService.sendeTerminbestaetigung(data, cancellationUrl);
-
-        return ResponseEntity.ok(terminToDtoMapper.terminToDto(data));
+        TerminDto terminDto = terminToDtoMapper.terminToDto(terminService.saveTermin(data));
+        return ResponseEntity.ok(terminDto);
     }
 
     /**
@@ -132,22 +123,13 @@ public class TerminController {
     public ResponseEntity<TerminDto> getByCancellationToken(@PathVariable String token) {
         LOGGER.info("Calling getByCancellationToken with token " + token);
 
-        Optional<CancellationUrl> cancellationUrlOptional = cancellationLinkRepository.findByToken(token);
-
-        if (cancellationUrlOptional.isPresent()) {
-            Optional<Termin> terminOptional = terminRepository.findById(cancellationUrlOptional.get().getTerminId());
-            if (terminOptional.isPresent()) {
-                Termin termin = terminOptional.get();
-
-                TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
-                return ResponseEntity.ok(terminDto);
-            } else {
-                LOGGER.warn("No Appointment has been found for token " + token);
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+        Optional<Termin> terminOptional = terminService.getTerminByCancellationToken(token);
+        if (terminOptional.isPresent()) {
+            TerminDto terminDto = terminToDtoMapper.terminToDto(terminOptional.get());
+            return ResponseEntity.ok(terminDto);
         } else {
-            LOGGER.warn("The CancellationToken does not exist.");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            LOGGER.warn("No Appointment has been found for token " + token);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }
@@ -158,16 +140,9 @@ public class TerminController {
     @PostMapping("/public/termin/cancel/{id}")
     public ResponseEntity<String> cancelAppointmentUser(@PathVariable Long id) {
         LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
+        boolean isCancelled = terminService.cancelAppointment(id);
 
-        Optional<Termin> terminOptional = terminRepository.findById(id);
-        if (terminOptional.isPresent()) {
-            // remove cancellationUrl
-            cancellationLinkRepository.deleteByTerminId(id);
-            // remove appointment
-            terminRepository.delete(terminOptional.get());
-            // send cancellation-Email
-            emailService.sendeTerminabsage(terminOptional.get());
-
+        if (isCancelled) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             LOGGER.info("No appointment has been found for id " + id);
@@ -179,18 +154,11 @@ public class TerminController {
      * Über diesen Endpunkt kann ein Admin jeden Termin stornieren.
      */
     @PostMapping("/termin/cancel/{id}")
-    public ResponseEntity<String> cancelAppointmentAdmin(@PathVariable String id) {
+    public ResponseEntity<String> cancelAppointmentAdmin(@PathVariable Long id) {
         LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
-        Long terminId = Long.valueOf(id);
-        Optional<Termin> terminOptional = terminRepository.findById(terminId);
-        if (terminOptional.isPresent()) {
-            // remove cancellationUrl
-            cancellationLinkRepository.deleteByTerminId(terminId);
-            // remove appointment
-            terminRepository.delete(terminOptional.get());
-            // send cancellation-Email
-            emailService.sendeTerminabsage(terminOptional.get());
+        boolean isCancelled = terminService.cancelAppointment(id);
 
+        if (isCancelled) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             LOGGER.info("No appointment has been found for id " + id);
@@ -199,23 +167,24 @@ public class TerminController {
     }
 
 
-    private CancellationUrl generateOneTimeUrl(Termin termin) {
-        String randomString = generateString();
-        CancellationUrl cancellationUrl = new CancellationUrl(termin.getId(), randomString);
-        LOGGER.warn("Created CancellationUrl with parameters terminId: " + termin.getId() + " and string " + randomString);
-        cancellationUrl = cancellationLinkRepository.save(cancellationUrl);
-        return cancellationUrl;
+    @GetMapping("public/termingrund/get/all")
+    public ResponseEntity<List<String>> getAllTermingruende() {
+        LOGGER.info("Calling getAllTermingruende");
+
+        Beratungsgrund[] values = Beratungsgrund.values();
+        return ResponseEntity.ok(Arrays.stream(values)
+                .map(Beratungsgrund::getGrund)
+                .collect(Collectors.toList()));
     }
 
-    private String generateString() {
-        Random rng = new Random();
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        int length = 40;
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++) {
-            text[i] = characters.charAt(rng.nextInt(characters.length()));
-        }
-        return new String(text);
+    @GetMapping("public/anrede/get/all")
+    public ResponseEntity<List<String>> getAllAnreden() {
+        LOGGER.info("Calling getAllAnreden");
+        Anrede[] values = Anrede.values();
+        return ResponseEntity.ok(Arrays.stream(values)
+                .map(Anrede::getAnrede)
+                .collect(Collectors.toList()));
     }
+
 
 }

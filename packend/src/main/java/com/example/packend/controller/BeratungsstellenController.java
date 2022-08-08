@@ -1,12 +1,8 @@
 package com.example.packend.controller;
 
-import com.example.packend.dto.MitarbeiterDto;
 import com.example.packend.entities.Beratungsstelle;
-import com.example.packend.entities.Mitarbeiter;
-import com.example.packend.enums.Anrede;
-import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.repositories.BeratungsstellenRepository;
-import com.example.packend.repositories.UserRepository;
+import com.example.packend.repositories.MitarbeiterRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -18,10 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Transactional
 @RestController
@@ -32,7 +26,7 @@ public class BeratungsstellenController {
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
-    UserRepository userRepository;
+    MitarbeiterRepository mitarbeiterRepository;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -46,25 +40,6 @@ public class BeratungsstellenController {
             beratungsstellenAlsJsonList.add(objectMapper.valueToTree(beratungsstelle));
         }
         return ResponseEntity.ok(beratungsstellenAlsJsonList);
-    }
-
-    @GetMapping("public/termingrund/get/all")
-    public ResponseEntity<List<String>> getAllTermingruende() {
-        LOGGER.info("Calling getAllTermingruende");
-
-        Beratungsgrund[] values = Beratungsgrund.values();
-        return ResponseEntity.ok(Arrays.stream(values)
-                .map(Beratungsgrund::getGrund)
-                .collect(Collectors.toList()));
-    }
-
-    @GetMapping("public/anrede/get/all")
-    public ResponseEntity<List<String>> getAllAnreden() {
-        LOGGER.info("Calling getAllAnreden");
-        Anrede[] values = Anrede.values();
-        return ResponseEntity.ok(Arrays.stream(values)
-                .map(Anrede::getAnrede)
-                .collect(Collectors.toList()));
     }
 
     @PostMapping("/beratungsstellen/add")
@@ -91,22 +66,5 @@ public class BeratungsstellenController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-    }
-
-    @GetMapping("/mitarbeiter/get/all")
-    public ResponseEntity<List<JsonNode>> getAlleMitarbeiter() {
-        List<Mitarbeiter> all = userRepository.findAll();
-        List<JsonNode> jsonListe = new ArrayList<>();
-
-        for (Mitarbeiter mitarbeiter : all) {
-            MitarbeiterDto mitarbeiterDto = MitarbeiterDto.builder()
-                    .vorname(mitarbeiter.getVorname())
-                    .nachname(mitarbeiter.getNachname())
-                    .username(mitarbeiter.getUsername())
-                    .build();
-            jsonListe.add(objectMapper.valueToTree(mitarbeiterDto));
-        }
-        return ResponseEntity.ok(jsonListe);
     }
 }
