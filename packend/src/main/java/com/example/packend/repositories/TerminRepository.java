@@ -13,6 +13,8 @@ public interface TerminRepository extends JpaRepository<Termin, Long> {
 
     List<Termin> findAllByOrderByAusgewaehlterTerminAsc();
 
+    List<Termin> findAllByAusgewaehlterTerminBefore(LocalDate now);
+
     List<Termin> findAllByAusgewaehlterTermin(LocalDate ausgewaehlterTermin);
 
     List<Termin> findAllByAusgewaehlterTerminBetween(LocalDate startDate, LocalDate endDate);

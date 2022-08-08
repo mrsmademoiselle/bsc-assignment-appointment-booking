@@ -68,7 +68,7 @@ public class TerminController {
     @GetMapping("/termin/get/all")
     public ResponseEntity<List<JsonNode>> getAll() {
         LOGGER.info("Calling /termin/get/all");
-        List<Termin> all = terminRepository.findAll();
+        List<Termin> all = terminService.findAll();
 
         List<JsonNode> alleTerminDtos = new ArrayList<>();
         for (Termin termin : all) {

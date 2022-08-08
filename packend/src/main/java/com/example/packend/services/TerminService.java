@@ -177,4 +177,13 @@ public class TerminService {
         }
     }
 
+    public List<Termin> findAll() {
+        deleteTermineInVergangenheit();
+        return terminRepository.findAll();
+    }
+
+    private void deleteTermineInVergangenheit() {
+        List<Termin> termineInVergangenheit = terminRepository.findAllByAusgewaehlterTerminBefore(LocalDate.now().minusDays(1));
+        terminRepository.deleteAll(termineInVergangenheit);
+    }
 }

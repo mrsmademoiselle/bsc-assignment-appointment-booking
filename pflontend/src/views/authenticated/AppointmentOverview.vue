@@ -100,9 +100,13 @@ export default {
       await this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token);
       await this.$store.dispatch('fetchAppointments', this.$store.getters.token);
 
+    },
+    liegtInDerVergangenheit(termin) {
+      return termin.ausgewaehlterTermin <= new Date().format("YYYY-MM-DD")
     }
   },
   computed: {
+
     allAppointments: {
       get() {
         return this.$store.getters.allAppointments;
