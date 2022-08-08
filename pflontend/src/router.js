@@ -1,4 +1,3 @@
-// 2. Define some routes
 import TerminUebersichtView from "@/views/authenticated/TerminUebersichtView";
 import HomepageClient from "@/views/HomepageClientView";
 import LoginView from "@/views/LoginView";
@@ -21,9 +20,8 @@ const routes = [
     {path: '/einstellungen', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
 ]
 
-// 3. Create the router instance and pass the `routes` option
+// Router-Instanz erstellen
 const router = createRouter({
-    // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
     history: createWebHistory(),
     routes: routes,
 })

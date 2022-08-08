@@ -47,13 +47,13 @@ export default {
   methods: {
     async fetchAppointments() {
       await this.$store.dispatch('fetchAppointments', this.$store.getters.token);
-      // here we explicitly allow type coercion because the url is a string
+      // Hier erlaubt ich explizit die Type Coersion, weil die ID in der URL ein String ist
       this.termin = this.$store.getters.alleTermine.find((e) => e.id == this.id)
       if (this.termin.anrede === undefined) {
         this.termin.anrede = ""
       }
       if (this.termin === null || this.termin === undefined || !Termin.hatKorrektesFormat(this.termin)) {
-        console.log(" redirect to /uebersicht")
+        console.log("Termin für Detailseite konnte nicht gesetzt werden. Weiterleitung zu /uebersicht")
         await this.$router.push("/uebersicht")
       }
     },

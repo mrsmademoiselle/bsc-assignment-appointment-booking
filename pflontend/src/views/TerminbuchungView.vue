@@ -179,7 +179,6 @@ function initialState() {
   return {
     step: 1,
 
-    // Data to API
     termin: {
       termingrund: null,
       uhrzeit: null,
@@ -198,10 +197,8 @@ function initialState() {
     responseMessage: "No response yet.",
 
     alleSchritte: ['Grund', 'Termin', 'Persönliche Daten', 'Zusammenfassung', 'Vielen Dank'],
-    // Data from API
     alleBeratungsstellen: [],
     alleTermingruende: [],
-    // "anonymisiert"
     alleBelegtenTermine: [],
     alleAnreden: [],
 
@@ -295,7 +292,7 @@ export default {
     switchTo(step) {
       this.errors = []
       let navigatingBackwards = step < this.step;
-      // should only trigger validation if navigating forward
+      // Wir wollen die Inputvalidierung nur triggern, wenn wir vorwärts navigieren
       let isOk = navigatingBackwards || this.validatePreviousInput();
       if (isOk) {
         this.step = step;
