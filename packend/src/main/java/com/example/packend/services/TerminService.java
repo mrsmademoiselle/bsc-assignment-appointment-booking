@@ -18,19 +18,19 @@ import java.util.Random;
 
 @Service
 public class TerminService {
-    @Autowired
     EmailService emailService;
     TerminRepository terminRepository;
     AbwesenheitRepository abwesenheitRepository;
-    @Autowired
     ArbeitszeitenRepository arbeitszeitenRepository;
-    @Autowired
     CancellationLinkRepository cancellationLinkRepository;
 
     @Autowired
-    public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository) {
+    public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository, EmailService emailService, ArbeitszeitenRepository arbeitszeitenRepository, CancellationLinkRepository cancellationLinkRepository) {
         this.terminRepository = terminRepository;
         this.abwesenheitRepository = abwesenheitRepository;
+        this.emailService = emailService;
+        this.arbeitszeitenRepository = arbeitszeitenRepository;
+        this.cancellationLinkRepository = cancellationLinkRepository;
     }
 
     /**
@@ -42,14 +42,7 @@ public class TerminService {
                 .map(e -> String.valueOf(e.getUhrzeit().getHour()))
                 .toList();
 
-        Optional<Arbeitszeiten> byMitarbeiterId = arbeitszeitenRepository.findByMitarbeiterId(ansprechpartner.getUsername());
-        Arbeitszeiten arbeitszeiten = null;
-        if (byMitarbeiterId.isEmpty()) {
-            arbeitszeiten = new Arbeitszeiten(ansprechpartner.getUsername());
-            arbeitszeiten = arbeitszeitenRepository.save(arbeitszeiten);
-        } else {
-            arbeitszeiten = byMitarbeiterId.get();
-        }
+        Arbeitszeiten arbeitszeiten = getArbeitszeitenFuerMitarbeiter(ansprechpartner);
 
         List<String> verfuegbareUhrzeitenFuerTag = arbeitszeiten.getListeFuerTag(tag);
         // Weil die Liste verfuegbareUhrzeitenFuerTag nicht modifiable ist, wir aber die Elemente manipulieren wollen
@@ -66,19 +59,13 @@ public class TerminService {
      */
     public List<LocalDate> berechneKomplettBelegteTage(Mitarbeiter mitarbeiter) {
         List<LocalDate> alleVollBelegtenTage = new ArrayList<>();
-        Optional<Arbeitszeiten> byMitarbeiterId = arbeitszeitenRepository.findByMitarbeiterId(mitarbeiter.getUsername());
-        Arbeitszeiten arbeitszeiten = null;
-        if (byMitarbeiterId.isEmpty()) {
-            arbeitszeiten = new Arbeitszeiten(mitarbeiter.getUsername());
-            arbeitszeiten = arbeitszeitenRepository.save(arbeitszeiten);
-        } else {
-            arbeitszeiten = byMitarbeiterId.get();
-        }
+        Arbeitszeiten arbeitszeiten = getArbeitszeitenFuerMitarbeiter(mitarbeiter);
 
         List<Termin> alleTermineSortiert = terminRepository.findAllByOrderByAusgewaehlterTerminAsc();
-        List<Abwesenheit> all = abwesenheitRepository.findAll();
+        List<Abwesenheit> alleAbwesenheiten = abwesenheitRepository.findAll();
 
-        for (Abwesenheit abwesenheit : all) {
+        // Alle Tage mit Abwesenheiten sind "komplett belegte Tage"
+        for (Abwesenheit abwesenheit : alleAbwesenheiten) {
             LocalDate startDatum = abwesenheit.getStartDatum();
             LocalDate endDatum = abwesenheit.getEndDatum();
 
@@ -113,21 +100,28 @@ public class TerminService {
                 alleVollBelegtenTage.add(termin.getAusgewaehlterTermin());
 
             iterierDatum = termin.getAusgewaehlterTermin();
-
         }
         return alleVollBelegtenTage;
     }
 
-    public Termin saveTermin(Termin data) {
-        data = terminRepository.save(data); // needs to be saved first, so it receives an ID that is used for CancellationUrl generation
+    private Arbeitszeiten getArbeitszeitenFuerMitarbeiter(Mitarbeiter mitarbeiter) {
+        Optional<Arbeitszeiten> optionalArbeitszeiten = arbeitszeitenRepository.findByMitarbeiterId(mitarbeiter.getUsername());
+        Arbeitszeiten arbeitszeiten = null;
 
-        CancellationUrl cancellationUrl = generateOneTimeUrl(data);
-
-        emailService.sendeTerminbestaetigung(data, cancellationUrl);
-
-        return data;
+        if (optionalArbeitszeiten.isEmpty()) {
+            arbeitszeiten = new Arbeitszeiten(mitarbeiter.getUsername());
+            return arbeitszeitenRepository.save(arbeitszeiten);
+        } else {
+            return optionalArbeitszeiten.get();
+        }
     }
 
+    public Termin saveTermin(Termin data) {
+        data = terminRepository.save(data); // muss zuerst gespeichert werden, damit es eine ID erhält, über die wir die CancellationURL generieren können
+        CancellationUrl cancellationUrl = generateOneTimeUrl(data);
+        emailService.sendeTerminbestaetigung(data, cancellationUrl);
+        return data;
+    }
 
     private CancellationUrl generateOneTimeUrl(Termin termin) {
         String randomString = generateString();
@@ -166,8 +160,7 @@ public class TerminService {
         Optional<CancellationUrl> cancellationUrlOptional = cancellationLinkRepository.findByToken(token);
 
         if (cancellationUrlOptional.isPresent()) {
-            Optional<Termin> terminOptional = terminRepository.findById(cancellationUrlOptional.get().getTerminId());
-            return terminOptional;
+            return terminRepository.findById(cancellationUrlOptional.get().getTerminId());
         } else {
             return Optional.empty();
         }

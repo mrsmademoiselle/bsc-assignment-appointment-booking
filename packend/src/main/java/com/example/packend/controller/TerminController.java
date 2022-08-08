@@ -6,7 +6,6 @@ import com.example.packend.entities.Termin;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.mapper.TerminToDtoMapper;
-import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.MitarbeiterRepository;
 import com.example.packend.repositories.TerminRepository;
 import com.example.packend.services.TerminService;
@@ -36,8 +35,6 @@ public class TerminController {
 
     @Autowired
     TerminRepository terminRepository;
-    @Autowired
-    BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
     TerminToDtoMapper terminToDtoMapper;
     @Autowired
@@ -185,6 +182,4 @@ public class TerminController {
                 .map(Anrede::getAnrede)
                 .collect(Collectors.toList()));
     }
-
-
 }
