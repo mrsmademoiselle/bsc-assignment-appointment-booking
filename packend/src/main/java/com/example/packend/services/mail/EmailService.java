@@ -1,7 +1,7 @@
 package com.example.packend.services.mail;
 
+import com.example.packend.entities.AbsageLink;
 import com.example.packend.entities.Beratungsstelle;
-import com.example.packend.entities.CancellationUrl;
 import com.example.packend.entities.Termin;
 import com.example.packend.enums.Anrede;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    public void sendeTerminbestaetigung(Termin termin, CancellationUrl cancellationUrl) {
+    public void sendeTerminbestaetigung(Termin termin, AbsageLink absageLink) {
 
         LOGGER.info("Calling sendeTerminbestaetigung");
         String text = String.format(terminbestaetigung.getText(),
@@ -39,7 +39,7 @@ public class EmailService {
                 termin.getAusgewaehlterTermin(),
                 termin.getUhrzeit(),
                 getBeratungsstelleFooter(termin),
-                cancellationUrl.entireUrl(),
+                absageLink.entireUrl(),
                 getBeratungsstelleFooter(termin));
         sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminbestätigung", text, terminbestaetigung);
     }

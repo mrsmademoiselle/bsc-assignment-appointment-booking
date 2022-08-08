@@ -1,7 +1,10 @@
 package com.example.packend.services;
 
 import com.example.packend.entities.*;
-import com.example.packend.repositories.*;
+import com.example.packend.repositories.AbsageLinkRepository;
+import com.example.packend.repositories.AbwesenheitRepository;
+import com.example.packend.repositories.ArbeitszeitenRepository;
+import com.example.packend.repositories.TerminRepository;
 import com.example.packend.services.mail.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,21 +22,21 @@ public class TerminService {
     TerminRepository terminRepository;
     AbwesenheitRepository abwesenheitRepository;
     ArbeitszeitenRepository arbeitszeitenRepository;
-    CancellationLinkRepository cancellationLinkRepository;
-    MitarbeiterRepository mitarbeiterRepository;
+    AbsageLinkRepository absageLinkRepository;
+    MitarbeiterService mitarbeiterService;
 
     @Autowired
-    public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository, EmailService emailService, ArbeitszeitenRepository arbeitszeitenRepository, CancellationLinkRepository cancellationLinkRepository, MitarbeiterRepository mitarbeiterRepository) {
+    public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository, EmailService emailService, ArbeitszeitenRepository arbeitszeitenRepository, AbsageLinkRepository absageLinkRepository, MitarbeiterService mitarbeiterService) {
         this.terminRepository = terminRepository;
         this.abwesenheitRepository = abwesenheitRepository;
         this.emailService = emailService;
         this.arbeitszeitenRepository = arbeitszeitenRepository;
-        this.cancellationLinkRepository = cancellationLinkRepository;
-        this.mitarbeiterRepository = mitarbeiterRepository;
+        this.absageLinkRepository = absageLinkRepository;
+        this.mitarbeiterService = mitarbeiterService;
     }
 
     public List<String> getVerfuegbareUhrzeitenFuerTerminUndMitarbeiter(String jahr, String monat, String tag, String mitarbeiterId) {
-        Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
+        Mitarbeiter mitarbeiter = mitarbeiterService.findMitarbeiter(mitarbeiterId);
 
         List<String> verfuegbareUhrzeitenFuerTag = berechneVerfuegbareUhrzeitenFuerTag(
                 LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)), mitarbeiter);
@@ -65,7 +68,7 @@ public class TerminService {
      * Berechnet alle Tage, die komplett belegt wurden und somit im Kalender ausgegraut werden.
      */
     public List<LocalDate> berechneKomplettBelegteTage(String mitarbeiterId) {
-        Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
+        Mitarbeiter mitarbeiter = mitarbeiterService.findMitarbeiter(mitarbeiterId);
         List<LocalDate> alleVollBelegtenTage = new ArrayList<>();
         Arbeitszeiten arbeitszeiten = getArbeitszeitenFuerMitarbeiter(mitarbeiter);
 
@@ -114,23 +117,23 @@ public class TerminService {
 
     public Termin saveTermin(Termin data) {
         data = terminRepository.save(data); // muss zuerst gespeichert werden, damit es eine ID erhält, über die wir die CancellationURL generieren können
-        CancellationUrl cancellationUrl = generateOneTimeUrl(data);
-        emailService.sendeTerminbestaetigung(data, cancellationUrl);
+        AbsageLink absageLink = generateOneTimeUrl(data);
+        emailService.sendeTerminbestaetigung(data, absageLink);
         return data;
     }
 
-    private CancellationUrl generateOneTimeUrl(Termin termin) {
+    private AbsageLink generateOneTimeUrl(Termin termin) {
         String randomString = generateString();
-        CancellationUrl cancellationUrl = new CancellationUrl(termin.getId(), randomString);
-        cancellationUrl = cancellationLinkRepository.save(cancellationUrl);
-        return cancellationUrl;
+        AbsageLink absageLink = new AbsageLink(termin.getId(), randomString);
+        absageLink = absageLinkRepository.save(absageLink);
+        return absageLink;
     }
 
     public boolean cancelAppointment(Long id) {
         Optional<Termin> terminOptional = terminRepository.findById(id);
         if (terminOptional.isPresent()) {
             // remove cancellationUrl
-            cancellationLinkRepository.deleteByTerminId(id);
+            absageLinkRepository.deleteByTerminId(id);
             // remove appointment
             terminRepository.delete(terminOptional.get());
             // send cancellation-Email
@@ -142,7 +145,7 @@ public class TerminService {
     }
 
     public Optional<Termin> getTerminByCancellationToken(String token) {
-        Optional<CancellationUrl> cancellationUrlOptional = cancellationLinkRepository.findByToken(token);
+        Optional<AbsageLink> cancellationUrlOptional = absageLinkRepository.findByToken(token);
 
         if (cancellationUrlOptional.isPresent()) {
             return terminRepository.findById(cancellationUrlOptional.get().getTerminId());

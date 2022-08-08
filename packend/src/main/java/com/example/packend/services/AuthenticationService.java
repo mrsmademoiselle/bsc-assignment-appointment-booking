@@ -2,7 +2,6 @@ package com.example.packend.services;
 
 import com.example.packend.config.JwtTokenUtil;
 import com.example.packend.entities.Mitarbeiter;
-import com.example.packend.repositories.MitarbeiterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,20 +11,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class AuthenticationService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-    private final MitarbeiterRepository mitarbeiterRepository;
     private final MitarbeiterService mitarbeiterService;
     private final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
-    public AuthenticationService(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, MitarbeiterRepository mitarbeiterRepository, MitarbeiterService mitarbeiterService) {
+    public AuthenticationService(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, MitarbeiterService mitarbeiterService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
-        this.mitarbeiterRepository = mitarbeiterRepository;
         this.mitarbeiterService = mitarbeiterService;
     }
 
@@ -58,7 +53,7 @@ public class AuthenticationService {
      */
     public Mitarbeiter getUserFromJwt(String jwtToken) {
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        Optional<Mitarbeiter> userOptional = mitarbeiterRepository.findByUsername(username);
-        return userOptional.orElseThrow(RuntimeException::new);
+        Mitarbeiter mitarbeiter = mitarbeiterService.findMitarbeiter(username);
+        return mitarbeiter;
     }
 }

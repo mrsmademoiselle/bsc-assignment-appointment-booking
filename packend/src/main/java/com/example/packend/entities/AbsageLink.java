@@ -9,14 +9,14 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @Data
-public class CancellationUrl {
+public class AbsageLink {
     // TODO to be adjusted if live
     private static final String PREFIX = "http://localhost:8080/appointment/cancel/";
     @Id
     private Long terminId;
     private String token;
 
-    public CancellationUrl(Long terminId, String token) {
+    public AbsageLink(Long terminId, String token) {
         this.terminId = terminId;
         this.token = token;
     }

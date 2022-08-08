@@ -81,4 +81,8 @@ public class MitarbeiterService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(mitarbeiter.getUsername(), mitarbeiter.getPassword(),
                 new ArrayList<>());
     }
+
+    public Mitarbeiter findMitarbeiter(String username) {
+        return mitarbeiterRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+    }
 }
