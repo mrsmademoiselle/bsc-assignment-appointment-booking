@@ -1,7 +1,7 @@
 import apiService from "@/services/ApiService";
 
 const state = () => ({
-    loginSuccess: false,
+    loginErfolgreich: false,
     username: "",
     token: null
 })
@@ -27,18 +27,18 @@ const actions = { // asynchronous
         try {
             await apiService.authenticatedGet('auth/check', token);
         } catch (e) {
-            console.log('Token invalid! ' + e)
+            console.log('Token ungültig! ' + e)
             commit('logout');
         }
     },
     login({commit}, {username, password}) {
         return new Promise((resolve, reject) => {
-            console.log("Accessing backend with user: " + username + " and pw " + password);
+            console.log("Versuche einzuloggen.");
 
             apiService.post("auth/login", {username, password})
                 .then(response => {
                     if (response.status === 200) {
-                        console.log("Login successful");
+                        console.log("Login erfolgreich.");
                         commit('login', {username: username, token: response.data});
                     }
                     resolve()
@@ -61,14 +61,14 @@ const mutations = { // synchronous
     login(state, {username, token}) {
         state.username = username;
         state.token = token;
-        state.loginSuccess = true;
+        state.loginErfolgreich = true;
         sessionStorage.setItem("jwt", token);
         sessionStorage.setItem("user", username);
     },
     logout(state) {
         console.log("logging out...")
         state.token = null;
-        state.loginSuccess = false;
+        state.loginErfolgreich = false;
         state.username = "";
         sessionStorage.removeItem("jwt");
         sessionStorage.removeItem("user");

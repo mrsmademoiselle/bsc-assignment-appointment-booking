@@ -1,8 +1,8 @@
 import {Beratungsstelle} from "@/entity/Beratungsstelle";
 
-export class Appointment {
+export class Termin {
     constructor(json) {
-        if (Appointment.isValidAppointment(json)) {
+        if (Termin.hatKorrektesFormat(json)) {
             this.id = json.id;
             this.vorname = json.vorname;
             this.nachname = json.nachname;
@@ -16,14 +16,14 @@ export class Appointment {
             this.ausgewaehlterTermin = json.ausgewaehlterTermin;
             this.uhrzeit = json.uhrzeit;
         } else {
-            console.log("is not a valid appointment!" + JSON.stringify(json));
+            console.log("Das Format ist inkorrekt für Termin " + JSON.stringify(json));
             let e = {};
             throw e;
         }
     }
 
 
-    static isValidAppointment(jsonObject) {
+    static hatKorrektesFormat(jsonObject) {
         return this.hasField(jsonObject, "vorname") && this.hasField(jsonObject, "id") &&
             this.hasField(jsonObject, "nachname") &&
             this.hasField(jsonObject, "geschlecht") &&
@@ -50,7 +50,7 @@ export class Appointment {
             return date.toLocaleString("de-DE").split(",")[0];
         } catch (e) {
             console.log(e);
-            return "Date konnte nicht geparst werden.";
+            return "Datum konnte nicht geparst werden.";
         }
     }
 }

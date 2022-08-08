@@ -1,20 +1,20 @@
 import apiService from "@/services/ApiService";
-import {Appointment} from "@/entity/Appointment";
+import {Termin} from "@/entity/Termin";
 
 const state = () => ({
-    allAppointments: []
+    alleTermine: []
 })
 
 // getters
 const getters = {
-    allAppointments: state => {
-        return state.allAppointments;
+    alleTermine: state => {
+        return state.alleTermine;
     }
 }
 
 const actions = { // asynchronous
     async fetchAppointments({commit}, token) {
-        console.log("Fetching all appointments from server")
+        console.log("Hole alle Termine vom Server")
         let response = await apiService.authenticatedGet("termin/get/all", token);
 
         if (response.status === 200) {
@@ -22,7 +22,7 @@ const actions = { // asynchronous
         }
     },
     async removeAppointment({commit}, {id, token}) {
-        console.log("Removing appointment with id " + id)
+        console.log("Entferne Termin mit ID " + id)
 
         let response = await apiService.authenticatedPost("termin/cancel/" + id, {}, token);
         if (response.status === 200) {
@@ -32,11 +32,11 @@ const actions = { // asynchronous
     addAppointment({commit}, appointment) {
         return new Promise((resolve, reject) => {
 
-            console.log("Adding appointment");
+            console.log("Füge Termin hinzu");
             apiService.post("termin/post", appointment).then(response => {
                 if (response.status === 200) {
-                    console.log("appointment erfolgreich angelegt");
-                    commit('add', new Appointment(response.data));
+                    console.log("Termin erfolgreich angelegt");
+                    commit('add', new Termin(response.data));
                 }
                 resolve()
             })
@@ -51,18 +51,18 @@ const actions = { // asynchronous
 // mutations
 const mutations = { // synchronous
     fetch(state, data) {
-        let allAppointments = [];
-        data.forEach(appointment => {
-            let appointment1 = new Appointment(appointment);
-            allAppointments.push(appointment1);
+        let termine = [];
+        data.forEach(t => {
+            let termin = new Termin(t);
+            termine.push(termin);
         });
-        state.allAppointments = allAppointments;
+        state.alleTermine = termine;
     },
     remove(state, id) {
-        state.allAppointments = state.allAppointments.filter(app => app.id !== id);
+        state.alleTermine = state.alleTermine.filter(termin => termin.id !== id);
     },
     add(state, appointment) {
-        state.allAppointments = [...state.allAppointments, appointment];
+        state.alleTermine = [...state.alleTermine, appointment];
     }
 }
 

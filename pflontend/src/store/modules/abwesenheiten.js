@@ -14,7 +14,7 @@ const getters = {
 
 const actions = { // asynchronous
     async fetchAbwesenheiten({commit}, token) {
-        console.log("Fetching alle Abwesenheiten vom server")
+        console.log("Hole alle Abwesenheiten vom Server")
         let response = await apiService.authenticatedGet("abwesenheit/get/all", token);
 
         if (response.status === 200) {
@@ -22,7 +22,7 @@ const actions = { // asynchronous
         }
     },
     async removeAbwesenheit({commit}, {id, token}) {
-        console.log("Removing abwesenheit with id " + id)
+        console.log("Entferne Abwesenheitseintrag mit ID " + id)
 
         let response = await apiService.authenticatedPost("abwesenheit/remove/" + id, {}, token);
         if (response.status === 200) {
@@ -32,7 +32,7 @@ const actions = { // asynchronous
     addAbwesenheit({commit}, {abwesenheit, token}) {
         return new Promise((resolve, reject) => {
 
-            console.log("adding abwesenheit (token: " + token + "): " + JSON.stringify(abwesenheit))
+            console.log("Füge Abwesenheitseintrag hinzu")
             apiService.authenticatedPost("abwesenheit/add", abwesenheit, token)
                 .then(response => {
                     if (response.status === 200) {
@@ -54,8 +54,8 @@ const mutations = { // synchronous
     fetchAbwesenheiten(state, data) {
         let abwesenheiten = [];
         data.forEach(abwesenheit => {
-            let appointment1 = new Abwesenheit(abwesenheit);
-            abwesenheiten.push(appointment1);
+            let a = new Abwesenheit(abwesenheit);
+            abwesenheiten.push(a);
         });
         state.alleAbwesenheiten = abwesenheiten;
     },

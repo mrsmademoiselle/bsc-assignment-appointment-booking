@@ -1,10 +1,10 @@
 // 2. Define some routes
-import AppointmentOverview from "@/views/authenticated/AppointmentOverview";
+import TerminUebersichtView from "@/views/authenticated/TerminUebersichtView";
 import HomepageClient from "@/views/HomepageClientView";
 import LoginView from "@/views/LoginView";
-import AppointmentBookingView from "@/views/AppointmentBookingView";
-import AppointmentDetails from "@/views/authenticated/AppointmentDetails";
-import AppointmentCancellation from "@/views/AppointmentCancellationView";
+import TerminbuchungView from "@/views/TerminbuchungView";
+import TerminDetailsView from "@/views/authenticated/TerminDetailsView";
+import TerminabsageView from "@/views/TerminabsageView";
 import {createRouter, createWebHistory} from "vue-router";
 import store from "@/store";
 import AbwesenheitenView from "@/views/authenticated/AbwesenheitenView";
@@ -13,10 +13,10 @@ import PersoenlicheEinstellungenView from "@/views/authenticated/PersoenlicheEin
 const routes = [
     {path: '/', component: HomepageClient},
     {path: '/login', component: LoginView},
-    {path: '/termin-buchen', component: AppointmentBookingView},
-    {path: '/termin/absage/:id', component: AppointmentCancellation},
-    {path: '/uebersicht', component: AppointmentOverview, meta: {requiresAuthentication: true}},
-    {path: '/appointment/:id', component: AppointmentDetails, props: true, meta: {requiresAuthentication: true}},
+    {path: '/termin-buchen', component: TerminbuchungView},
+    {path: '/termin/absage/:id', component: TerminabsageView},
+    {path: '/uebersicht', component: TerminUebersichtView, meta: {requiresAuthentication: true}},
+    {path: '/appointment/:id', component: TerminDetailsView, props: true, meta: {requiresAuthentication: true}},
     {path: '/abwesenheit', component: AbwesenheitenView, meta: {requiresAuthentication: true}},
     {path: '/einstellungen', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
 ]

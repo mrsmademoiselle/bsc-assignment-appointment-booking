@@ -3,20 +3,20 @@ import {Adresse} from "@/entity/Adresse";
 
 export class Beratungsstelle {
     constructor(json) {
-        if (Beratungsstelle.isValidBeratungsstelle(json)) {
+        if (Beratungsstelle.hatKorrektesFormat(json)) {
             this.id = json.id;
             this.ansprechpartner = new Mitarbeiter(json.ansprechpartner);
             this.adresse = new Adresse(json.adresse)
             this.mitarbeiterListe = json.mitarbeiterListe;
         } else {
             let e = {}
-            console.log("is not a valid beratungsstelle!" + JSON.stringify(json));
+            console.log("Falsches Format für Beratungsstelle: " + JSON.stringify(json));
 
             throw e;
         }
     }
 
-    static isValidBeratungsstelle(jsonObject) {
+    static hatKorrektesFormat(jsonObject) {
 
         return this.hasField(jsonObject, "id") &&
             this.hasField(jsonObject, "ansprechpartner") &&

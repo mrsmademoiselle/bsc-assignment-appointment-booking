@@ -6,7 +6,7 @@
 <script>
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
-import {Appointment} from "@/entity/Appointment";
+import {Termin} from "@/entity/Termin";
 import {Abwesenheit} from "@/entity/Abwesenheit";
 
 export default {
@@ -24,7 +24,7 @@ export default {
     convertEverythingToEvents(termine, abwesenheiten) {
       let events = [];
       for (let counter in termine) {
-        if (!Appointment.isValidAppointment(termine[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
+        if (!Termin.hatKorrektesFormat(termine[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
         let date = new Date(termine[counter].ausgewaehlterTermin + " " + termine[counter].uhrzeit);
 
         let newEvent = {
@@ -38,7 +38,7 @@ export default {
       console.log("successfully converted " + termine.length + " termine.")
 
       for (let counter in abwesenheiten) {
-        if (!Abwesenheit.isValidAbwesenheit(abwesenheiten[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
+        if (!Abwesenheit.hatKorrektesFormat(abwesenheiten[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
         let startDate = abwesenheiten[counter].startDatum;
         let endDate = abwesenheiten[counter].endDatum;
         // Jeder Tag eines Abwesenheitseintrages muss separat im kalender eingetragen werden

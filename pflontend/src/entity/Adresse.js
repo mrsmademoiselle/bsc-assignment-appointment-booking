@@ -1,19 +1,19 @@
 export class Adresse {
     constructor(json) {
-        if (Adresse.isValidAdresse(json)) {
+        if (Adresse.hatKorrektesFormat(json)) {
             this.hausnummer = json.hausnummer;
             this.plz = json.plz;
             this.ort = json.ort;
             this.strasse = json.strasse;
 
         } else {
-            console.log("is not a valid Adresse!" + JSON.stringify(json));
+            console.log("Falsches Format für Adresse: " + JSON.stringify(json));
             let e = {};
             throw e;
         }
     }
 
-    static isValidAdresse(jsonObject) {
+    static hatKorrektesFormat(jsonObject) {
         return this.hasField(jsonObject, "hausnummer") &&
             this.hasField(jsonObject, "plz") &&
             this.hasField(jsonObject, "ort") &&

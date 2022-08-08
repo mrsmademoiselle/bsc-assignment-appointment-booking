@@ -14,7 +14,7 @@ const getters = {
 
 const actions = { // asynchronous
     async fetchBeratungsstellen({commit}) {
-        console.log("Fetching alle Beratungsstellen vom server")
+        console.log("Hole alle Beratungsstellen vom Server")
         let response = await apiService.get("beratungsstellen/get/all");
 
         if (response.status === 200) {
@@ -22,7 +22,7 @@ const actions = { // asynchronous
         }
     },
     async archiviereBeratungsstelle({commit}, {id, token}) {
-        console.log("Archivieren Beratungsstelle with id " + id)
+        console.log("Archiviere Beratungsstelle mit id " + id)
 
         let response = await apiService.authenticatedPost("/beratungsstellen/archiviere/" + id, {}, token);
         if (response.status === 200) {
@@ -32,7 +32,7 @@ const actions = { // asynchronous
     addBeratungsstelle({commit}, {beratungsstelle, token}) {
         return new Promise((resolve, reject) => {
 
-            console.log("addBeratungsstelle (token: " + token + "): " + JSON.stringify(beratungsstelle))
+            console.log("Füge Beratungsstelle hinzu")
             apiService.authenticatedPost("/beratungsstellen/add", beratungsstelle, token)
                 .then(response => {
                     if (response.status === 200) {
@@ -54,8 +54,8 @@ const mutations = { // synchronous
     fetchBeratungsstellen(state, data) {
         let beratungsstellen = [];
         data.forEach(beratungsstelle => {
-            let b1 = new Beratungsstelle(beratungsstelle);
-            beratungsstellen.push(b1);
+            let b = new Beratungsstelle(beratungsstelle);
+            beratungsstellen.push(b);
         });
         state.alleBeratungsstellen = beratungsstellen;
     },

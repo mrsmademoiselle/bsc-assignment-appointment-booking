@@ -1,5 +1,5 @@
 import apiService from "@/services/ApiService";
-import {Appointment} from "@/entity/Appointment";
+import {Termin} from "@/entity/Termin";
 
 export class TerminService {
 
@@ -31,7 +31,7 @@ export class TerminService {
         let appointment;
         console.log("getAppointmentForCancellationToken")
         let data = (await apiService.get("termin/cancel/" + token)).data;
-        appointment = new Appointment(data);
+        appointment = new Termin(data);
         console.log('got appointment ' + JSON.stringify(appointment))
         return appointment;
     }

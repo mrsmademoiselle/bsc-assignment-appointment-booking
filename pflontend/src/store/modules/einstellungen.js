@@ -15,7 +15,7 @@ const getters = {
 const actions = { // asynchronous
     async fetchArbeitszeiten({commit}, username) {
         if (username.trim().length > 0) {
-            console.log("Fetching arbeitszeiten vom server")
+            console.log("Hole Arbeitszeiten vom Server")
             let response = await apiService.get(username + "/uhrzeiten/get/all");
 
             if (response.status === 200) {
@@ -25,18 +25,18 @@ const actions = { // asynchronous
     },
     updateArbeitszeiten({commit}, {arbeitszeiten, token}) {
         return new Promise((resolve, reject) => {
-            console.log("addBeratungsstelle (token: " + token + "): " + JSON.stringify(arbeitszeiten))
+            console.log("Arbeitszeiten aktualisieren")
             apiService.authenticatedPost("/admin/uhrzeiten/post", arbeitszeiten, token)
                 .then(response => {
                     if (response.status === 200) {
-                        console.log("arbeitszeiten erfolgreich geupdated");
+                        console.log("Arbeitszeiten erfolgreich aktualisiert");
                         commit('updateArbeitszeiten', new Arbeitszeiten(response.data));
                     }
                     resolve()
                 })
                 .catch(error => {
                     console.log("Error: " + error);
-                    reject("Die Arbeitszeiten konnten nicht angelegt werden.")
+                    reject("Die Arbeitszeiten konnten nicht aktualisiert werden.")
                 })
         });
     }

@@ -29,7 +29,7 @@ import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 import SuccessBanner from "@/components/banner/SuccessBanner";
 
 export default {
-  name: "AppointmentCancellation",
+  name: "TerminabsageView",
   components: {ButtonSubmit, ButtonCancel, SuccessBanner},
   data: function () {
     return {

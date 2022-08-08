@@ -32,11 +32,11 @@
 
 <script>
 import TextLabel from "@/components/TextLabel";
-import {Appointment} from "@/entity/Appointment";
+import {Termin} from "@/entity/Termin";
 import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 
 export default {
-  name: "AppointmentDetails",
+  name: "TerminDetailsView",
   components: {ButtonSubmit, TextLabel},
   props: ['id'],
   data: function () {
@@ -48,11 +48,11 @@ export default {
     async fetchAppointments() {
       await this.$store.dispatch('fetchAppointments', this.$store.getters.token);
       // here we explicitly allow type coercion because the url is a string
-      this.termin = this.$store.getters.allAppointments.find((e) => e.id == this.id)
+      this.termin = this.$store.getters.alleTermine.find((e) => e.id == this.id)
       if (this.termin.anrede === undefined) {
         this.termin.anrede = ""
       }
-      if (this.termin === null || this.termin === undefined || !Appointment.isValidAppointment(this.termin)) {
+      if (this.termin === null || this.termin === undefined || !Termin.hatKorrektesFormat(this.termin)) {
         console.log(" redirect to /uebersicht")
         await this.$router.push("/uebersicht")
       }

@@ -9,11 +9,11 @@
   <div>
 
     <AppointmentCalendar v-if="kalenderansicht" :abwesenheiten="alleAbwesenheiten"
-                         :termine="allAppointments" class="mb-2"></AppointmentCalendar>
+                         :termine="alleTermine" class="mb-2"></AppointmentCalendar>
 
     <div v-else class="my-3 ">
       <div class="justify-content-center d-flex mt-3">
-        <table v-if="allAppointments.length > 0" class="col-lg-8 table">
+        <table v-if="alleTermine.length > 0" class="col-lg-8 table">
           <thead>
           <tr>
             <th scope="col">Name</th>
@@ -24,7 +24,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="appointment in allAppointments" :key="appointment.id">
+          <tr v-for="appointment in alleTermine" :key="appointment.id">
             <td>{{ appointment.vorname }} {{ appointment.nachname }}</td>
             <td>{{ appointment.formatDateToGermanLocale() }} {{ appointment.uhrzeit }} Uhr</td>
             <td>{{ appointment.email }}</td>
@@ -39,7 +39,7 @@
           </tr>
           </tbody>
         </table>
-        <div v-if="allAppointments.length <= 0" class="col-lg-6">Derzeit gibt es keine Termine.</div>
+        <div v-if="alleTermine.length <= 0" class="col-lg-6">Derzeit gibt es keine Termine.</div>
       </div>
 
       <!-- Modal -->
@@ -81,7 +81,7 @@ import ButtonSubmit from "@/components/buttons/ButtonSubmit";
 import AppointmentCalendar from "@/components/AppointmentCalendar";
 
 export default {
-  name: "AppointmentOverview",
+  name: "TerminUebersichtView",
   components: {AppointmentCalendar, ButtonSubmit},
   data: function () {
     return {
@@ -108,9 +108,9 @@ export default {
   },
   computed: {
 
-    allAppointments: {
+    alleTermine: {
       get() {
-        return this.$store.getters.allAppointments;
+        return this.$store.getters.alleTermine;
       }
     },
     alleAbwesenheiten: {

@@ -1,6 +1,6 @@
 export class Arbeitszeiten {
     constructor(json) {
-        if (Arbeitszeiten.isValidArbeitszeiten(json)) {
+        if (Arbeitszeiten.hatKorrektesFormat(json)) {
             this.montag = json.montag;
             this.dienstag = json.dienstag;
             this.mittwoch = json.mittwoch;
@@ -9,13 +9,13 @@ export class Arbeitszeiten {
             this.mitarbeiterId = json.mitarbeiterId;
 
         } else {
-            console.log("is not a valid Arbeitszeiten!" + JSON.stringify(json));
+            console.log("Falsches Format für Arbeitszeiten:" + JSON.stringify(json));
             let e = {};
             throw e;
         }
     }
 
-    static isValidArbeitszeiten(jsonObject) {
+    static hatKorrektesFormat(jsonObject) {
         return this.hasField(jsonObject, "montag") &&
             this.hasField(jsonObject, "dienstag") &&
             this.hasField(jsonObject, "donnerstag") &&

@@ -215,7 +215,7 @@ function initialState() {
 }
 
 export default {
-  name: "AppointmentBookingView",
+  name: "TerminbuchungView",
   components: {
     SuccessBanner,
     LogoText,
