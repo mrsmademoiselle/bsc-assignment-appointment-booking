@@ -2,7 +2,6 @@ package com.example.packend.controller;
 
 import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.repositories.BeratungsstellenRepository;
-import com.example.packend.repositories.MitarbeiterRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -25,8 +24,6 @@ public class BeratungsstellenController {
 
     @Autowired
     BeratungsstellenRepository beratungsstellenRepository;
-    @Autowired
-    MitarbeiterRepository mitarbeiterRepository;
     @Autowired
     ObjectMapper objectMapper;
 

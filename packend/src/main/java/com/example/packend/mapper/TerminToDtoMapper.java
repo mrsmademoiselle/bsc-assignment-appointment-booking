@@ -27,7 +27,6 @@ public class TerminToDtoMapper {
 
         terminDto.setBeratungsstelle(termin.getBeratungsstelle());
 
-        terminDto.setTerminerinnerungPerMail(termin.getTerminerinnerungPerMail());
         terminDto.setBemerkung(termin.getBemerkung());
         terminDto.setBeratungsgrund(termin.getBeratungsgrund());
         terminDto.setAusgewaehlterTermin(termin.getAusgewaehlterTermin().toString());

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-public class AdminConfigurationController {
+public class ArbeitszeitenController {
 
     @Autowired
     ArbeitszeitenRepository arbeitszeitenRepository;
@@ -34,7 +34,7 @@ public class AdminConfigurationController {
     }
 
     /**
-     * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag abzupassen..
+     * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag anzupassen..
      */
     @PostMapping("admin/uhrzeiten/post")
     public ResponseEntity<String> postSetzeVerfuegbareTagesUhrzeiten(@RequestBody Arbeitszeiten arbeitszeiten) {

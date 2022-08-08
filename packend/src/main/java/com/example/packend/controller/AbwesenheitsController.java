@@ -24,7 +24,6 @@ public class AbwesenheitsController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbwesenheitsController.class);
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     AbwesenheitRepository abwesenheitRepository;
 

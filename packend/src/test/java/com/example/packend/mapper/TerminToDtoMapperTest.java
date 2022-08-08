@@ -4,7 +4,6 @@ import com.example.packend.dto.TerminDto;
 import com.example.packend.entities.*;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
-import com.example.packend.enums.Terminerinnerung;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -34,7 +33,6 @@ class TerminToDtoMapperTest {
                 .nachname("nya")
                 .vorname("ayn")
                 .telefon("1234567890")
-                .terminerinnerungPerMail(Terminerinnerung.KEINE)
                 .uhrzeit(LocalTime.of(13, 30).toString())
                 .build();
 
@@ -59,7 +57,6 @@ class TerminToDtoMapperTest {
                 .nachname("nya")
                 .vorname("ayn")
                 .telefon("1234567890")
-                .terminerinnerungPerMail(Terminerinnerung.KEINE)
                 .uhrzeit(LocalTime.of(13, 30).toString())
                 .build();
 
@@ -81,7 +78,6 @@ class TerminToDtoMapperTest {
                                 .vorname("ayn")
                                 .telefon("1234567890")
                                 .build())
-                .terminerinnerungPerMail(Terminerinnerung.KEINE)
                 .uhrzeit(LocalTime.of(13, 30))
                 .build();
     }

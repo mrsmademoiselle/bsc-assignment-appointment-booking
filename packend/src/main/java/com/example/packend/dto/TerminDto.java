@@ -2,7 +2,6 @@ package com.example.packend.dto;
 
 import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.enums.Beratungsgrund;
-import com.example.packend.enums.Terminerinnerung;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +23,6 @@ public class TerminDto {
 
     //Termindetails
     private String bemerkung;
-    private Terminerinnerung terminerinnerungPerMail;
     private Beratungsgrund beratungsgrund;
     private String ausgewaehlterTermin;
     private String uhrzeit;

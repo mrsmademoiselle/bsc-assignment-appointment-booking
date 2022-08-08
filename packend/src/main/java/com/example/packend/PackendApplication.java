@@ -3,7 +3,6 @@ package com.example.packend;
 import com.example.packend.entities.*;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
-import com.example.packend.enums.Terminerinnerung;
 import com.example.packend.repositories.BeratungsstellenRepository;
 import com.example.packend.repositories.TerminRepository;
 import com.example.packend.services.MitarbeiterService;
@@ -73,7 +72,6 @@ public class PackendApplication implements CommandLineRunner {
                     .ausgewaehlterTermin(LocalDate.of(2022, i, i))
                     .bemerkung(generateString())
                     .beratungsgrund(Beratungsgrund.BERATUNG)
-                    .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
                     .uhrzeit(LocalTime.of(i, 0))
                     .beratungsstelle(istEutin ? eutin : preetz)
                     .kundeninformationen(kundeninformationen).build();
@@ -93,7 +91,6 @@ public class PackendApplication implements CommandLineRunner {
                     .ausgewaehlterTermin(LocalDate.of(2022, 10, 10))
                     .bemerkung(generateString())
                     .beratungsgrund(Beratungsgrund.BERATUNG)
-                    .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
                     .uhrzeit(LocalTime.of(i, 0))
                     .beratungsstelle(istEutin ? eutin : preetz)
                     .kundeninformationen(kundeninformationen).build();
@@ -103,7 +100,6 @@ public class PackendApplication implements CommandLineRunner {
                 .ausgewaehlterTermin(LocalDate.now())
                 .bemerkung(generateString())
                 .beratungsgrund(Beratungsgrund.BERATUNG)
-                .terminerinnerungPerMail(Terminerinnerung.EINE_STUNDE)
                 .uhrzeit(LocalTime.now())
                 .beratungsstelle(istEutin ? eutin : preetz)
                 .kundeninformationen(kundeninformationen).build();

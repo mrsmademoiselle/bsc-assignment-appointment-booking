@@ -1,7 +1,6 @@
 package com.example.packend.entities;
 
 import com.example.packend.enums.Beratungsgrund;
-import com.example.packend.enums.Terminerinnerung;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +26,6 @@ public class Termin {
     @Embedded
     private Kundeninformationen kundeninformationen;
     private String bemerkung;
-    private Terminerinnerung terminerinnerungPerMail;
     @NotNull
     private Beratungsgrund beratungsgrund;
     @NotNull
