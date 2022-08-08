@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @Service("EmailService")
 public class EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private final SimpleMailMessage terminbestaetigung;
+    private final SimpleMailMessage terminabsage;
     @Value("${spring.mail.username}")
     String from;
     @Value("${spring.mail.cc}")
     String cc;
-    private SimpleMailMessage terminbestaetigung;
-    private SimpleMailMessage terminabsage;
     private JavaMailSender emailSender;
 
     @Autowired
@@ -41,7 +41,7 @@ public class EmailService {
                 getBeratungsstelleFooter(termin),
                 absageLink.entireUrl(),
                 getBeratungsstelleFooter(termin));
-        sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminbestätigung", text, terminbestaetigung);
+        sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminbestätigung", text);
     }
 
 
@@ -56,10 +56,12 @@ public class EmailService {
                 getBeratungsstelleFooter(termin),
                 "http://localhost:8080/book-appointment",
                 getBeratungsstelleFooter(termin));
-        sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminabsage", text, terminabsage);
+        LOGGER.info("EMAIL TEXT: " + text);
+        sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminabsage", text);
     }
 
-    public void sendSimpleMessage(String to, String subject, String text, SimpleMailMessage template) {
+    public void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage template = new SimpleMailMessage();
         template.setFrom(from);
         template.setTo(cc);
         // template.setTo(to); TODO in prod wieder einkommentieren

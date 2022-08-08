@@ -6,10 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TerminRepository extends JpaRepository<Termin, Long> {
     List<Termin> findAll();
+
+    Optional<Termin> findById(Long id);
 
     List<Termin> findAllByOrderByAusgewaehlterTerminAsc();
 

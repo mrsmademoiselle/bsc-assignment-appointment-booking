@@ -29,7 +29,7 @@
             <td>{{ appointment.formatDateToGermanLocale() }} {{ appointment.uhrzeit }} Uhr</td>
             <td>{{ appointment.email }}</td>
             <td>
-              <router-link to="/appointment/{{appointment.id}}">zum Termin</router-link>
+              <router-link :to="'/appointment/'+appointment.id">zum Termin</router-link>
             </td>
             <td>
               <ButtonSubmit danger="true" data-target="#myModal" data-toggle="modal"
@@ -95,6 +95,7 @@ export default {
     },
     cancelAppointment() {
       this.$store.dispatch('removeAppointment', {id: this.selectedAppointment.id, token: this.$store.getters.token});
+      this.selectedAppointment = null;
     },
     async fetchApiInformation() {
       await this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token);

@@ -132,12 +132,12 @@ public class TerminService {
     public boolean cancelAppointment(Long id) {
         Optional<Termin> terminOptional = terminRepository.findById(id);
         if (terminOptional.isPresent()) {
+            // send cancellation-Email
+            emailService.sendeTerminabsage(terminOptional.get());
             // remove cancellationUrl
             absageLinkRepository.deleteByTerminId(id);
             // remove appointment
             terminRepository.delete(terminOptional.get());
-            // send cancellation-Email
-            emailService.sendeTerminabsage(terminOptional.get());
             return true;
         } else {
             return false;

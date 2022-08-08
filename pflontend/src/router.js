@@ -16,7 +16,7 @@ const routes = [
     {path: '/book-appointment', component: AppointmentBookingView},
     {path: '/appointment/cancel/:id', component: AppointmentCancellation},
     {path: '/overview', component: AppointmentOverview, meta: {requiresAuthentication: true}},
-    {path: '/appointment/:id', component: AppointmentDetails, meta: {requiresAuthentication: true}},
+    {path: '/appointment/:id', component: AppointmentDetails, props: true, meta: {requiresAuthentication: true}},
     {path: '/absence', component: AbwesenheitenView, meta: {requiresAuthentication: true}},
     {path: '/settings', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
 ]
