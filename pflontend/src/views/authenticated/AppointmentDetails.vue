@@ -53,13 +53,13 @@ export default {
         this.termin.anrede = ""
       }
       if (this.termin === null || this.termin === undefined || !Appointment.isValidAppointment(this.termin)) {
-        console.log(" redirect to /overview")
-        await this.$router.push("/overview")
+        console.log(" redirect to /uebersicht")
+        await this.$router.push("/uebersicht")
       }
     },
     async absagen() {
       await this.$store.dispatch('removeAppointment', {id: this.id, token: this.$store.getters.token})
-      await this.$router.push("/overview")
+      await this.$router.push("/uebersicht")
     }
   },
   beforeMount() {

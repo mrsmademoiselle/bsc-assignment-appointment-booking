@@ -13,12 +13,12 @@ import PersoenlicheEinstellungenView from "@/views/authenticated/PersoenlicheEin
 const routes = [
     {path: '/', component: HomepageClient},
     {path: '/login', component: LoginView},
-    {path: '/book-appointment', component: AppointmentBookingView},
-    {path: '/appointment/cancel/:id', component: AppointmentCancellation},
-    {path: '/overview', component: AppointmentOverview, meta: {requiresAuthentication: true}},
+    {path: '/termin-buchen', component: AppointmentBookingView},
+    {path: '/termin/absage/:id', component: AppointmentCancellation},
+    {path: '/uebersicht', component: AppointmentOverview, meta: {requiresAuthentication: true}},
     {path: '/appointment/:id', component: AppointmentDetails, props: true, meta: {requiresAuthentication: true}},
-    {path: '/absence', component: AbwesenheitenView, meta: {requiresAuthentication: true}},
-    {path: '/settings', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
+    {path: '/abwesenheit', component: AbwesenheitenView, meta: {requiresAuthentication: true}},
+    {path: '/einstellungen', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
 ]
 
 // 3. Create the router instance and pass the `routes` option

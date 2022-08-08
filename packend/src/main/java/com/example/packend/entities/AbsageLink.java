@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Data
 public class AbsageLink {
     // TODO to be adjusted if live
-    private static final String PREFIX = "http://localhost:8080/appointment/cancel/";
+    private static final String PREFIX = "http://localhost:8080/termin/absage/";
     @Id
     private Long terminId;
     private String token;

@@ -5,15 +5,15 @@
         VLH
       </router-link>
       <div v-if="isLoggedIn" class="d-flex">
-        <router-link class="navbar-link" to="/overview">Terminübersicht</router-link>
-        <router-link class="navbar-link" to="/absence">Abwesenheit</router-link>
-        <router-link class="navbar-link" to="/settings">Einstellungen</router-link>
-        <router-link class="navbar-link" to="/book-appointment">Termin buchen</router-link>
+        <router-link class="navbar-link" to="/uebersicht">Terminübersicht</router-link>
+        <router-link class="navbar-link" to="/abwesenheit">Abwesenheit</router-link>
+        <router-link class="navbar-link" to="/einstellungen">Einstellungen</router-link>
+        <router-link class="navbar-link" to="/termin-buchen">Termin buchen</router-link>
 
         <a class="navbar-link" v-on:click="logout">Logout</a>
       </div>
       <div v-else class="d-flex">
-        <router-link class="navbar-link" to="/book-appointment">Termin buchen</router-link>
+        <router-link class="navbar-link" to="/termin-buchen">Termin buchen</router-link>
         <router-link class="navbar-link" to="/login">Login</router-link>
       </div>
 
