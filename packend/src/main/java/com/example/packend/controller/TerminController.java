@@ -1,12 +1,10 @@
 package com.example.packend.controller;
 
 import com.example.packend.dto.TerminDto;
-import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.entities.Termin;
 import com.example.packend.enums.Anrede;
 import com.example.packend.enums.Beratungsgrund;
 import com.example.packend.mapper.TerminToDtoMapper;
-import com.example.packend.repositories.MitarbeiterRepository;
 import com.example.packend.repositories.TerminRepository;
 import com.example.packend.services.TerminService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,22 +38,17 @@ public class TerminController {
     @Autowired
     TerminService terminService;
     @Autowired
-    MitarbeiterRepository mitarbeiterRepository;
-    @Autowired
     ObjectMapper objectMapper;
 
     /**
      * Berechnet und gibt die verfügbaren Uhrzeiten für einen spezifischen Termin zurück.
+     * Diese Uhrzeiten werden nach Auswahl eines Datums angezeigt.
      */
     @GetMapping("/public/{mitarbeiterId}/termin/uhrzeiten/get/{jahr}/{monat}/{tag}")
     public ResponseEntity<List<String>> getVerfuegbareUhrzeitenFuerTermin(@PathVariable String jahr, @PathVariable String monat, @PathVariable String tag, @PathVariable String mitarbeiterId) {
-        Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
+        List<String> uhrzeiten = terminService.getVerfuegbareUhrzeitenFuerTerminUndMitarbeiter(jahr, monat, tag, mitarbeiterId);
 
-        List<String> verfuegbareUhrzeitenFuerTag = terminService.berechneVerfuegbareUhrzeitenFuerTag(
-                LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)), mitarbeiter);
-        LOGGER.info("verfuegbareUhrzeitenFuerTag: " + verfuegbareUhrzeitenFuerTag.size());
-
-        return ResponseEntity.ok(verfuegbareUhrzeitenFuerTag);
+        return ResponseEntity.ok(uhrzeiten);
     }
 
     /**
@@ -63,8 +56,8 @@ public class TerminController {
      * Wird bei der Terminbuchung verwendet, um diese Datümer auszugrauen.
      */
     @GetMapping("/public/termin/{mitarbeiterId}/komplett-belegt/all")
-    public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatümer(@PathVariable String mitarbeiterId) {
-        List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage(mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new));
+    public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatuemer(@PathVariable String mitarbeiterId) {
+        List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage(mitarbeiterId);
         LOGGER.info("Komplett belegte Tage: " + komplettBelegteTage.size());
         return ResponseEntity.ok(komplettBelegteTage);
     }

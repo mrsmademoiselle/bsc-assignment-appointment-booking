@@ -1,10 +1,7 @@
 package com.example.packend.services;
 
 import com.example.packend.entities.*;
-import com.example.packend.repositories.AbwesenheitRepository;
-import com.example.packend.repositories.ArbeitszeitenRepository;
-import com.example.packend.repositories.CancellationLinkRepository;
-import com.example.packend.repositories.TerminRepository;
+import com.example.packend.repositories.*;
 import com.example.packend.services.mail.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +20,24 @@ public class TerminService {
     AbwesenheitRepository abwesenheitRepository;
     ArbeitszeitenRepository arbeitszeitenRepository;
     CancellationLinkRepository cancellationLinkRepository;
+    MitarbeiterRepository mitarbeiterRepository;
 
     @Autowired
-    public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository, EmailService emailService, ArbeitszeitenRepository arbeitszeitenRepository, CancellationLinkRepository cancellationLinkRepository) {
+    public TerminService(TerminRepository terminRepository, AbwesenheitRepository abwesenheitRepository, EmailService emailService, ArbeitszeitenRepository arbeitszeitenRepository, CancellationLinkRepository cancellationLinkRepository, MitarbeiterRepository mitarbeiterRepository) {
         this.terminRepository = terminRepository;
         this.abwesenheitRepository = abwesenheitRepository;
         this.emailService = emailService;
         this.arbeitszeitenRepository = arbeitszeitenRepository;
         this.cancellationLinkRepository = cancellationLinkRepository;
+        this.mitarbeiterRepository = mitarbeiterRepository;
+    }
+
+    public List<String> getVerfuegbareUhrzeitenFuerTerminUndMitarbeiter(String jahr, String monat, String tag, String mitarbeiterId) {
+        Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
+
+        List<String> verfuegbareUhrzeitenFuerTag = berechneVerfuegbareUhrzeitenFuerTag(
+                LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)), mitarbeiter);
+        return verfuegbareUhrzeitenFuerTag;
     }
 
     /**
@@ -57,7 +64,8 @@ public class TerminService {
     /**
      * Berechnet alle Tage, die komplett belegt wurden und somit im Kalender ausgegraut werden.
      */
-    public List<LocalDate> berechneKomplettBelegteTage(Mitarbeiter mitarbeiter) {
+    public List<LocalDate> berechneKomplettBelegteTage(String mitarbeiterId) {
+        Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(mitarbeiterId).orElseThrow(RuntimeException::new);
         List<LocalDate> alleVollBelegtenTage = new ArrayList<>();
         Arbeitszeiten arbeitszeiten = getArbeitszeitenFuerMitarbeiter(mitarbeiter);
 
@@ -104,18 +112,6 @@ public class TerminService {
         return alleVollBelegtenTage;
     }
 
-    private Arbeitszeiten getArbeitszeitenFuerMitarbeiter(Mitarbeiter mitarbeiter) {
-        Optional<Arbeitszeiten> optionalArbeitszeiten = arbeitszeitenRepository.findByMitarbeiterId(mitarbeiter.getUsername());
-        Arbeitszeiten arbeitszeiten = null;
-
-        if (optionalArbeitszeiten.isEmpty()) {
-            arbeitszeiten = new Arbeitszeiten(mitarbeiter.getUsername());
-            return arbeitszeitenRepository.save(arbeitszeiten);
-        } else {
-            return optionalArbeitszeiten.get();
-        }
-    }
-
     public Termin saveTermin(Termin data) {
         data = terminRepository.save(data); // muss zuerst gespeichert werden, damit es eine ID erhält, über die wir die CancellationURL generieren können
         CancellationUrl cancellationUrl = generateOneTimeUrl(data);
@@ -128,17 +124,6 @@ public class TerminService {
         CancellationUrl cancellationUrl = new CancellationUrl(termin.getId(), randomString);
         cancellationUrl = cancellationLinkRepository.save(cancellationUrl);
         return cancellationUrl;
-    }
-
-    private String generateString() {
-        Random rng = new Random();
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        int length = 40;
-        char[] text = new char[length];
-        for (int i = 0; i < length; i++) {
-            text[i] = characters.charAt(rng.nextInt(characters.length()));
-        }
-        return new String(text);
     }
 
     public boolean cancelAppointment(Long id) {
@@ -165,4 +150,28 @@ public class TerminService {
             return Optional.empty();
         }
     }
+
+    private String generateString() {
+        Random rng = new Random();
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        int length = 40;
+        char[] text = new char[length];
+        for (int i = 0; i < length; i++) {
+            text[i] = characters.charAt(rng.nextInt(characters.length()));
+        }
+        return new String(text);
+    }
+
+    private Arbeitszeiten getArbeitszeitenFuerMitarbeiter(Mitarbeiter mitarbeiter) {
+        Optional<Arbeitszeiten> optionalArbeitszeiten = arbeitszeitenRepository.findByMitarbeiterId(mitarbeiter.getUsername());
+        Arbeitszeiten arbeitszeiten = null;
+
+        if (optionalArbeitszeiten.isEmpty()) {
+            arbeitszeiten = new Arbeitszeiten(mitarbeiter.getUsername());
+            return arbeitszeitenRepository.save(arbeitszeiten);
+        } else {
+            return optionalArbeitszeiten.get();
+        }
+    }
+
 }
