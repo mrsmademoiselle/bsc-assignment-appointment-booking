@@ -36,7 +36,7 @@ const actions = { // asynchronous
             apiService.post("termin/post", appointment).then(response => {
                 if (response.status === 200) {
                     console.log("appointment erfolgreich angelegt");
-                    commit('add', new Appointment(appointment));
+                    commit('add', new Appointment(response.data));
                 }
                 resolve()
             })

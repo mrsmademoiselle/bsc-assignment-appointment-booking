@@ -10,7 +10,6 @@ export class Appointment {
             this.geschlecht = json.geschlecht;
             this.telefon = json.telefon;
             this.bemerkung = json.bemerkung;
-            this.terminerinnerungPerMail = json.terminerinnerungPerMail;
             this.beratungsstelle = new Beratungsstelle(json.beratungsstelle);
             this.bereitsMitglied = json.bereitsMitglied;
             this.beratungsgrund = json.beratungsgrund;
@@ -34,9 +33,12 @@ export class Appointment {
             this.hasField(jsonObject, "bereitsMitglied") &&
             this.hasField(jsonObject, "beratungsgrund") &&
             this.hasField(jsonObject, "ausgewaehlterTermin") &&
-            this.hasField(jsonObject, "uhrzeit") &&
-            this.hasField(jsonObject, "terminerinnerungPerMail");
+            this.hasField(jsonObject, "uhrzeit")
     }
+
+    /*
+    *
+    * */
 
     static hasField(object, field) {
         return Object.prototype.hasOwnProperty.call(object, field);

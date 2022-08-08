@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @ToString
 @Getter
@@ -12,6 +13,9 @@ import javax.persistence.Id;
 @Entity(name = "mitarbeiter")
 @NoArgsConstructor
 public class Mitarbeiter {
+    @OneToOne
+    Arbeitszeiten arbeitszeiten;
+
     @Column
     @Id
     private String username;

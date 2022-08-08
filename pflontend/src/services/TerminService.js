@@ -8,11 +8,13 @@ export class TerminService {
      * @returns {Promise<VerfuegbareUhrzeiten>}
      */
     static async getAlleVerfuegbarenUhrzeiten(date, username) {
-        if (date !== null) {
+        if (date !== null && username.length > 0) {
             let verfuegbareUhrzeiten = [];
 
             verfuegbareUhrzeiten = ((await (apiService.get(username + "/termin/uhrzeiten/get/" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()))).data);
             return verfuegbareUhrzeiten;
+        } else {
+            console.log("cannot get alleverfuegbarenUhrzeiten for date " + date + " and username " + username)
         }
     }
 

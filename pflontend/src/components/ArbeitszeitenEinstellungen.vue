@@ -45,7 +45,11 @@ export default {
       this.$store.dispatch("updateArbeitszeiten", {
         arbeitszeiten: this.zeiten,
         token: this.$store.getters.token
-      });
+      })
+          .catch((e) => {
+            this.errors.push(e);
+            this.error = true
+          })
     }
   },
   beforeMount() {
