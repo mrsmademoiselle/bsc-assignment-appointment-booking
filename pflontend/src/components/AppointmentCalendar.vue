@@ -1,6 +1,6 @@
 <template>
   <vue-cal :disable-views="['years','year']" :events="events" :time-from="8 * 60" :time-to="19 * 60" cell-contextmenu
-           class="vuecal--blue-theme" hide-weekends locale="de" style="height: 80vh"/>
+           class="vuecal--blue-theme" hide-weekends locale="de" style="height: 80vh; width:90vw; margin:auto"/>
 </template>
 
 <script>

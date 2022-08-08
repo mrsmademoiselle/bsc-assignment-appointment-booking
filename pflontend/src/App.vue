@@ -23,7 +23,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #f0f0f0;
+  background-color: white;
   text-decoration: none;
   height: 105vh;
 }
@@ -54,4 +54,5 @@ export default {
   font-weight: bold;
   border-bottom: solid #27718c;
 }
+
 </style>

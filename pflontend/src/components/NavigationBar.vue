@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-light bg-light">
+  <nav class="navbar navbar-light border">
     <div class="container-fluid">
       <router-link class="navbar-link" to="/">
         VLH

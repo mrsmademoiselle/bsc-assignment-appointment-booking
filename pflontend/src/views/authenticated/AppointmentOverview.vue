@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-end border-1 my-2 border-top bg-light p-2">
+  <div class="d-flex justify-content-end border-1 my-2 border-top p-2">
     <div :title="'Zur '+(this.kalenderansicht ? 'Listen':'Kalender')+'ansicht wechseln'"
          class="tab col-1 tab-active"
          v-on:click="this.kalenderansicht = !this.kalenderansicht">
@@ -11,7 +11,7 @@
     <AppointmentCalendar v-if="kalenderansicht" :abwesenheiten="alleAbwesenheiten"
                          :termine="allAppointments" class="mb-2"></AppointmentCalendar>
 
-    <div v-else class="my-3">
+    <div v-else class="my-3 ">
       <div class="justify-content-center d-flex mt-3">
         <table v-if="allAppointments.length > 0" class="col-lg-8 table">
           <thead>

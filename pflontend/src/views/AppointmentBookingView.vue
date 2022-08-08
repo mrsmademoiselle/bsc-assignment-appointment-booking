@@ -6,7 +6,7 @@
                  show-bridge
                  @onStepChanged="(step) => switchTo(step+1)"></ProgressBar>
   </div>
-  <div class="py-3 container bg-light d-flex text-muted justify-content-between rounded">
+  <div class="py-3 container border d-flex justify-content-between rounded">
     <LogoText v-if="this.termin.ausgewaehlterTermin !== null && this.termin.uhrzeit !== null"
               :text="this.termin.ausgewaehlterTermin.toLocaleDateString('de') + ', ' + this.termin.uhrzeit + ':00 Uhr' "
               logo="fa-clock"></LogoText>
@@ -17,7 +17,7 @@
               :text="this.termin.beratungsstelle.formatToReadableString()"
               logo="fa-house"></LogoText>
   </div>
-  <form class="mt-3 container bg-light rounded border p-4">
+  <form class="mt-3 container rounded border p-4">
 
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
