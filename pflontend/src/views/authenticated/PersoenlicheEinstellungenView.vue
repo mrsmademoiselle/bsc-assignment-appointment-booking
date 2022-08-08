@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import BeratungsstellenEinstellungen from "@/components/BeratungsstellenEinstellungen";
-import ArbeitszeitenEinstellungen from "@/components/ArbeitszeitenEinstellungen";
+import BeratungsstellenEinstellungen from "@/components/compositions/BeratungsstellenEinstellungen";
+import ArbeitszeitenEinstellungen from "@/components/compositions/ArbeitszeitenEinstellungen";
 
 export default {
   name: "PersoenlicheEinstellungenView",

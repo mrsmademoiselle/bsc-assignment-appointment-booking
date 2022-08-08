@@ -30,11 +30,11 @@
 </template>
 
 <script>
-import TextInput from "@/components/TextInput";
-import MitarbeiterListe from "@/components/MitarbeiterListe";
-import ErrorBanner from "@/components/banner/ErrorBanner";
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
-import BeratungsstellenListe from "@/components/BeratungsstellenListe";
+import TextInput from "@/components/fragments/TextInput";
+import MitarbeiterListe from "@/components/compositions/MitarbeiterListe";
+import ErrorBanner from "@/components/fragments/ErrorBanner";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
+import BeratungsstellenListe from "@/components/compositions/BeratungsstellenListe";
 
 export default {
   name: "BeratungsstellenEinstellungen",

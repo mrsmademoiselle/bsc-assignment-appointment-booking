@@ -10,38 +10,46 @@ import {Termin} from "@/entity/Termin";
 import {Abwesenheit} from "@/entity/Abwesenheit";
 
 export default {
-  name: "AppointmentCalendar",
+  name: "TerminKalender",
   components: {VueCal},
   props: ['termine', 'abwesenheiten'],
   computed: {
     events: {
       get() {
-        return this.convertEverythingToEvents(this.termine, this.abwesenheiten)
+        return this.wandleUmInEvents(this.termine, this.abwesenheiten)
       }
     },
   },
   methods: {
-    convertEverythingToEvents(termine, abwesenheiten) {
+    /**
+     * Konvertiert die eingegebenen Termine und Abwesenheitseinträge in für die Calendar-Library kompatible Events.
+     * Das ganze geschieht separat durch zwei Listen, da Abwesenheitseinträge ein anderes Styling erwünscht ist.
+     */
+    wandleUmInEvents(termine, abwesenheiten) {
       let events = [];
+
+      // alle Termine konvertieren
       for (let counter in termine) {
         if (!Termin.hatKorrektesFormat(termine[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
-        let date = new Date(termine[counter].ausgewaehlterTermin + " " + termine[counter].uhrzeit);
+        let datum = new Date(termine[counter].ausgewaehlterTermin + " " + termine[counter].uhrzeit);
 
-        let newEvent = {
-          start: date,
-          end: date.addHours(1),
+        let terminEvent = {
+          start: datum,
+          end: datum.addHours(1),
           title: termine[counter].vorname + ' ' + termine[counter].nachname,
           class: 'termin'
         };
-        events.push(newEvent)
+        events.push(terminEvent)
       }
-      console.log("successfully converted " + termine.length + " termine.")
+      console.log("Insgesamt wurden " + termine.length + " Termine erfolgreich konvertiert.")
 
+      // alle Abwesenheitseinträge konvertieren
       for (let counter in abwesenheiten) {
         if (!Abwesenheit.hatKorrektesFormat(abwesenheiten[counter])) console.log("not valid appointment. could not add to calendar. " + JSON.stringify(termine[counter]))
         let startDate = abwesenheiten[counter].startDatum;
         let endDate = abwesenheiten[counter].endDatum;
-        // Jeder Tag eines Abwesenheitseintrages muss separat im kalender eingetragen werden
+
+        // Jeder Tag eines Abwesenheitseintrages muss separat im Kalender eingetragen werden
         for (let currentDate = new Date(startDate); currentDate <= new Date(endDate); currentDate.setDate(currentDate.getDate() + 1)) {
           events.push({
             start: currentDate.format("YYYY-MM-DD"),
@@ -52,7 +60,7 @@ export default {
           })
         }
       }
-      console.log("successfully converted " + abwesenheiten.length + " abwesenheiten.")
+      console.log("Insgesamt wurden " + abwesenheiten.length + " Abwesenheitseinträge erfolgreich konvertiert.")
       return events;
     },
   }

@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import TextInput from "@/components/TextInput";
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import TextInput from "@/components/fragments/TextInput";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
 
 export default {
   name: "ArbeitszeitenEinstellungen",
@@ -46,10 +46,6 @@ export default {
         arbeitszeiten: this.zeiten,
         token: this.$store.getters.token
       })
-          .catch((e) => {
-            this.errors.push(e);
-            this.error = true
-          })
     }
   },
   beforeMount() {

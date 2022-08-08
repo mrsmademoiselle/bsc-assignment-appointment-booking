@@ -24,9 +24,9 @@
 
 <script>
 import {TerminService} from "@/services/TerminService";
-import ButtonCancel from "@/components/buttons/ButtonCancel";
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
-import SuccessBanner from "@/components/banner/SuccessBanner";
+import ButtonCancel from "@/components/fragments/ButtonCancel";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
+import SuccessBanner from "@/components/fragments/SuccessBanner";
 
 export default {
   name: "TerminabsageView",

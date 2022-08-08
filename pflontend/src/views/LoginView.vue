@@ -32,8 +32,8 @@
 
 <script>
 
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
-import ErrorBanner from "@/components/banner/ErrorBanner";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
+import ErrorBanner from "@/components/fragments/ErrorBanner";
 
 export default {
   name: "LoginView",

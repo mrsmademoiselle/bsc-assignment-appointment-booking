@@ -8,8 +8,8 @@
   </div>
   <div>
 
-    <AppointmentCalendar v-if="kalenderansicht" :abwesenheiten="alleAbwesenheiten"
-                         :termine="alleTermine" class="mb-2"></AppointmentCalendar>
+    <TerminKalender v-if="kalenderansicht" :abwesenheiten="alleAbwesenheiten"
+                    :termine="alleTermine" class="mb-2"></TerminKalender>
 
     <div v-else class="my-3 ">
       <div class="justify-content-center d-flex mt-3">
@@ -77,12 +77,12 @@
 
 <script>
 
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
-import AppointmentCalendar from "@/components/AppointmentCalendar";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
+import TerminKalender from "@/components/compositions/TerminKalender";
 
 export default {
   name: "TerminUebersichtView",
-  components: {AppointmentCalendar, ButtonSubmit},
+  components: {TerminKalender, ButtonSubmit},
   data: function () {
     return {
       selectedAppointment: null,

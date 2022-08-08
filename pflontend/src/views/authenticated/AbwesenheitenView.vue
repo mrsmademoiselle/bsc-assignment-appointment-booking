@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import AbwesenheitenListe from "@/components/AbwesenheitenListe";
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import AbwesenheitenListe from "@/components/compositions/AbwesenheitenListe";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
 import Datepicker from "@vuepic/vue-datepicker";
-import ErrorBanner from "@/components/banner/ErrorBanner";
+import ErrorBanner from "@/components/fragments/ErrorBanner";
 
 export default {
   name: "AbwesenheitenView",

@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import TextLabel from "@/components/TextLabel";
+import TextLabel from "@/components/fragments/TextLabel";
 import {Termin} from "@/entity/Termin";
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
 
 export default {
   name: "TerminDetailsView",

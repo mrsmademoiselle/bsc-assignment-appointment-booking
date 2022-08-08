@@ -159,18 +159,18 @@
 import {BeratungsstellenService} from "@/services/BeratungsstellenService";
 import {TerminService} from "@/services/TerminService";
 import Datepicker from '@vuepic/vue-datepicker';
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
-import ButtonCancel from "@/components/buttons/ButtonCancel";
-import TitlePrimary from "@/components/titles/TitlePrimary";
-import MultipleChoiceForm from "@/components/MultipleChoiceForm";
-import TextInput from "@/components/TextInput";
-import TitleSecondary from "@/components/titles/TitleSecondary";
-import ProgressBar from "@/components/ProgressBar";
-import TimePicker from "@/components/TimePicker";
-import ErrorBanner from "@/components/banner/ErrorBanner";
-import TextLabel from "@/components/TextLabel";
-import LogoText from "@/components/LogoText";
-import SuccessBanner from "@/components/banner/SuccessBanner";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
+import ButtonCancel from "@/components/fragments/ButtonCancel";
+import TitlePrimary from "@/components/fragments/TitlePrimary";
+import MultipleChoiceForm from "@/components/compositions/MultipleChoiceForm";
+import TextInput from "@/components/fragments/TextInput";
+import TitleSecondary from "@/components/fragments/TitleSecondary";
+import ProgressBar from "@/components/compositions/ProgressBar";
+import TimePicker from "@/components/compositions/TimePicker";
+import ErrorBanner from "@/components/fragments/ErrorBanner";
+import TextLabel from "@/components/fragments/TextLabel";
+import LogoText from "@/components/fragments/LogoText";
+import SuccessBanner from "@/components/fragments/SuccessBanner";
 
 /**
  *Diese Funktion wird verwendet, um nach Abschicken des Formulars die Daten zu löschen bzw. neu zu initialisieren, ohne, dass die Seite komplett neu geladen werden muss.

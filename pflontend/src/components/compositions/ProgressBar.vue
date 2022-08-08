@@ -1,4 +1,13 @@
-<!-- NOT MINE! CREDIT TO https://github.com/pokhrelashok/vue-step-progress-indicator-->
+<!--
+ACHTUNG!
+
+DER CODE DIESER KOMPONENTE IST NICHT VON MIR.
+
+DIE EINBINDUNG DER LIBRARY HAT AUFGRUND VON IRRELEVANTEN ABHÄNGIGKEITEN INNERHALB DER LIBRARYS PACKAGE.JSON
+FÜR VUE3 NICHT FUNKTIONIERT UND SIE WIRD AKTUELL NICHT ODER NUR LANGSAM WEITERENTWICKELT.
+
+CREDIT TO THE ORIGINAL AUTHOR https://github.com/pokhrelashok/vue-step-progress-indicator
+-->
 <template>
 
   <div :style="styleData['progress__wrapper']" class="progress__wrapper">

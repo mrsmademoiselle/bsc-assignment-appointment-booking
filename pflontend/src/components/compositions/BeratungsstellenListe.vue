@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import ButtonSubmit from "@/components/buttons/ButtonSubmit";
+import ButtonSubmit from "@/components/fragments/ButtonSubmit";
 
 export default {
   name: "BeratungsstellenListe",

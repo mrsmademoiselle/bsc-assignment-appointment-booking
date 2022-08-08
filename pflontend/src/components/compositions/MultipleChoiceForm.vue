@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import TitleSecondary from "@/components/titles/TitleSecondary";
+import TitleSecondary from "@/components/fragments/TitleSecondary";
 
 export default {
   name: "MultipleChoiceForm",
