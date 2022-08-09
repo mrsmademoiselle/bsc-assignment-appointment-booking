@@ -10,8 +10,8 @@
     <LogoText v-if="this.termin.ausgewaehlterTermin !== null && this.termin.uhrzeit !== null"
               :text="this.termin.ausgewaehlterTermin.toLocaleDateString('de') + ', ' + this.termin.uhrzeit + ':00 Uhr' "
               logo="fa-clock"></LogoText>
-    <LogoText v-if="this.termin.termingrund !== null"
-              :text="this.termin.termingrund + ', ' + (this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
+    <LogoText v-if="this.termin.beratungsgrund !== null"
+              :text="this.termin.beratungsgrund + ', ' + (this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
               logo="fa-user"></LogoText>
     <LogoText v-if="this.termin.beratungsstelle !== null"
               :text="this.termin.beratungsstelle.formatToReadableString()"
@@ -32,7 +32,7 @@
         <MultipleChoiceForm :hinweis="hinweistext" :options="alleTermingruende"
                             class="pt-3" for="termingrund"
                             header="3. Worum geht es bei Ihrem Termin?"
-                            @onselect="(option) => termin.termingrund= option"></MultipleChoiceForm>
+                            @onselect="(option) => termin.beratungsgrund= option"></MultipleChoiceForm>
       </div>
     </div>
 
@@ -112,7 +112,7 @@
               label="Termin"></TextLabel>
           <TextLabel :input="this.termin.beratungsstelle.formatToReadableString()" label="Beratungsstelle"></TextLabel>
           <TextLabel
-              :input="this.termin.termingrund+ ', '+(this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
+              :input="this.termin.beratungsgrund+ ', '+(this.termin.kundeninformationen.bereitsMitglied ? 'BestandskundIn' : 'NeukundIn')"
               label="Terminart"></TextLabel>
           <TextLabel :input="this.termin.bemerkung" label="Bemerkung"></TextLabel>
 
@@ -180,7 +180,7 @@ function initialState() {
     step: 1,
 
     termin: {
-      termingrund: null,
+      beratungsgrund: null,
       uhrzeit: null,
       ausgewaehlterTermin: null,
       bemerkung: "",
@@ -244,7 +244,7 @@ export default {
     'termin.ausgewaehlterTermin'(newValue) {
       this.getAlleVerfuegbarenUhrzeiten(newValue);
     },
-    'termin.termingrund'(newValue) {
+    'termin.beratungsgrund'(newValue) {
       this.aendereHinweistext(newValue);
     },
     'termin.kundeninformationen.anrede'(newValue) {
@@ -306,7 +306,7 @@ export default {
       if (this.termin.kundeninformationen.bereitsMitglied === null) {
         this.errors.push("Mitgliedsstatus")
       }
-      if (this.termin.termingrund === null && !this.alleTermingruende.find(e => e === this.termin.termingrund)) {
+      if (this.termin.beratungsgrund === null && !this.alleTermingruende.find(e => e === this.termin.beratungsgrund)) {
         this.errors.push("Termingrund")
       }
       return this.errors.length === 0;
@@ -374,7 +374,7 @@ export default {
           }
           if (this.alleTermingruende.length === 0) {
             this.alleTermingruende = await BeratungsstellenService.getAlleTermingruende();
-            this.termin.termingrund = this.alleTermingruende[0];
+            this.termin.beratungsgrund = this.alleTermingruende[0];
           }
           break;
         case 2:

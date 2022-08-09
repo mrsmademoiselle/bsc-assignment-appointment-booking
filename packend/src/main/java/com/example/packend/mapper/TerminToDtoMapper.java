@@ -17,10 +17,10 @@ public class TerminToDtoMapper {
         terminDto.setNachname(termin.getKundeninformationen().getNachname());
         terminDto.setEmail(termin.getKundeninformationen().getEmail());
 
-        if (termin.getKundeninformationen().getGeschlecht() != null) {
-            terminDto.setGeschlecht(termin.getKundeninformationen().getGeschlecht().getAnrede());
+        if (termin.getKundeninformationen().getAnrede() != null) {
+            terminDto.setGeschlecht(termin.getKundeninformationen().getAnrede().getAnrede());
         } else {
-            terminDto.setGeschlecht(Anrede.DIVERSE.getAnrede());
+            terminDto.setGeschlecht(Anrede.DIVERS.getAnrede());
         }
         terminDto.setBereitsMitglied(String.valueOf(termin.getKundeninformationen().isBereitsMitglied()));
         terminDto.setTelefon(termin.getKundeninformationen().getTelefon());

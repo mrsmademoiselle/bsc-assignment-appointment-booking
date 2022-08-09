@@ -1,7 +1,9 @@
 package com.example.packend.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Anrede {
-    MALE("Herr"), FEMALE("Frau"), DIVERSE("");
+    HERR("Herr"), FRAU("Frau"), DIVERS("");
 
     private String anrede = "";
 
@@ -9,6 +11,7 @@ public enum Anrede {
         this.anrede = message;
     }
 
+    @JsonValue
     public String getAnrede() {
         return anrede;
     }

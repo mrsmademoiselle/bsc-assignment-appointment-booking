@@ -81,14 +81,14 @@ public class EmailService {
     }
 
     private String getOffizielleAnrede(Termin termin) {
-        Anrede geschlecht = termin.getKundeninformationen().getGeschlecht() != null
-                ? termin.getKundeninformationen().getGeschlecht()
-                : Anrede.DIVERSE;
+        Anrede geschlecht = termin.getKundeninformationen().getAnrede() != null
+                ? termin.getKundeninformationen().getAnrede()
+                : Anrede.DIVERS;
         String anrede = "";
 
-        if (geschlecht == null || (!geschlecht.equals(Anrede.MALE) && !geschlecht.equals(Anrede.FEMALE))) {
+        if (geschlecht == null || (!geschlecht.equals(Anrede.HERR) && !geschlecht.equals(Anrede.FRAU))) {
             anrede = "Sehr geehrte/r ";
-        } else if (geschlecht.equals(Anrede.MALE)) {
+        } else if (geschlecht.equals(Anrede.HERR)) {
             anrede = "Sehr geehrter " + geschlecht.getAnrede();
         } else {
             anrede = "Sehr geehrte " + geschlecht.getAnrede();

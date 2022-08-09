@@ -1,5 +1,7 @@
 package com.example.packend.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Beratungsgrund {
     TELEFONTERMIN("Telefontermin"), ERSTBERATUNG("Erstberatung"),
     UNTERLAGEN("Unterlagen"), BERATUNG("Beratung");
@@ -10,6 +12,7 @@ public enum Beratungsgrund {
         this.grund = grund;
     }
 
+    @JsonValue
     public String getGrund() {
         return grund;
     }

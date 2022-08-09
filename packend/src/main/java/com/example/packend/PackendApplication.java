@@ -67,7 +67,7 @@ public class PackendApplication implements CommandLineRunner {
                     .nachname("Loof")
                     .vorname("Claudia" + i)
                     .telefon("1234567" + i)
-                    .geschlecht(Anrede.DIVERSE).build();
+                    .anrede(Anrede.DIVERS).build();
             Termin termin = Termin.builder()
                     .ausgewaehlterTermin(LocalDate.of(2022, i, i))
                     .bemerkung(generateString())
@@ -85,7 +85,7 @@ public class PackendApplication implements CommandLineRunner {
                 .nachname("Loof")
                 .vorname("Claudia")
                 .telefon("1234567")
-                .geschlecht(Anrede.DIVERSE).build();
+                .anrede(Anrede.DIVERS).build();
         for (int i = 9; i <= 18; i++) {
             Termin termin = Termin.builder()
                     .ausgewaehlterTermin(LocalDate.of(2022, 10, 10))

@@ -19,7 +19,7 @@ public class Kundeninformationen {
     private String vorname;
     @NotNull
     private String nachname;
-    private Anrede geschlecht;
+    private Anrede anrede;
     @NotNull
     private String email;
     @NotNull
