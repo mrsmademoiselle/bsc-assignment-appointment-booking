@@ -98,7 +98,10 @@ export default {
       this.selectedAppointment = null;
     },
     async fetchApiInformation() {
-      await this.$store.dispatch('fetchAbwesenheiten', this.$store.getters.token);
+      await this.$store.dispatch('fetchAbwesenheiten', {
+        username: this.$store.getters.username,
+        token: this.$store.getters.token
+      });
       await this.$store.dispatch('fetchAppointments', this.$store.getters.token);
 
     },

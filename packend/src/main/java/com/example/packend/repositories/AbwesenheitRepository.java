@@ -12,9 +12,11 @@ import java.util.List;
 public interface AbwesenheitRepository extends JpaRepository<Abwesenheit, Long> {
     List<Abwesenheit> findAll();
 
-    List<Abwesenheit> findAllByStartDatumBetween(LocalDate startDate, LocalDate endDate);
+    List<Abwesenheit> findAllByMitarbeiter_UsernameAndStartDatumBetween(String username, LocalDate startDate, LocalDate endDate);
 
-    List<Abwesenheit> findAllByEndDatumBetween(LocalDate startDate, LocalDate endDate);
+    List<Abwesenheit> findAllByMitarbeiter_UsernameAndEndDatumBetween(String username, LocalDate startDate, LocalDate endDate);
+
+    List<Abwesenheit> findAllByMitarbeiter_Username(String username, Sort sort);
 
     @Override
     List<Abwesenheit> findAll(Sort sort);

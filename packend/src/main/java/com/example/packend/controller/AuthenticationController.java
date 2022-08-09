@@ -44,12 +44,9 @@ public class AuthenticationController {
 
     /**
      * Registrierung
-     * Wenn Username bereits vorhanden gebe 400 wenn User noch nicht vorhanden 200
      */
     @PostMapping("/public/auth/register")
     public String register(@RequestBody LoginRequest userAuthDto) {
-
-        // return new ResponseEntity<>("Benutzername oder Passwort sind nicht valide.", HttpStatus.BAD_REQUEST);
 
         Mitarbeiter mitarbeiter = new Mitarbeiter(userAuthDto.getUsername(), userAuthDto.getPassword());
         if (mitarbeiterService.saveUser(mitarbeiter)) {

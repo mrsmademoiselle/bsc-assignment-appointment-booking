@@ -1,7 +1,9 @@
 package com.example.packend.controller;
 
+import com.example.packend.dto.AbwesenheitDto;
 import com.example.packend.entities.Abwesenheit;
 import com.example.packend.repositories.AbwesenheitRepository;
+import com.example.packend.repositories.MitarbeiterRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -27,15 +29,27 @@ public class AbwesenheitsController {
     @Autowired
     AbwesenheitRepository abwesenheitRepository;
 
-    @GetMapping("/get/all")
-    public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten() {
+    @Autowired
+    MitarbeiterRepository mitarbeiterRepository;
+
+    /**
+     * Gibt alle Abwesenheitseinträge im Zeitraum zurück.
+     */
+    @GetMapping("/get/all/{mitarbeiterId}")
+    public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten(String mitarbeiterId) {
         LOGGER.info("Calling getAlleAbwesenheiten");
 
-        List<Abwesenheit> all = abwesenheitRepository.findAll(Sort.by("startDatum").ascending());
+        List<Abwesenheit> all = abwesenheitRepository.findAllByMitarbeiter_Username(mitarbeiterId, Sort.by("startDatum").ascending());
 
         List<JsonNode> abwesenheitAlsJsonList = new ArrayList<>();
         for (Abwesenheit abwesenheit : all) {
-            JsonNode jsonNode = objectMapper.valueToTree(abwesenheit);
+            AbwesenheitDto abwesenheitDto1 = AbwesenheitDto.builder()
+                    .id(abwesenheit.getId())
+                    .mitarbeiterId(abwesenheit.getMitarbeiter().getUsername())
+                    .endDatum(abwesenheit.getEndDatum())
+                    .startDatum(abwesenheit.getStartDatum())
+                    .build();
+            JsonNode jsonNode = objectMapper.valueToTree(abwesenheitDto1);
             abwesenheitAlsJsonList.add(jsonNode);
         }
         System.out.println(abwesenheitAlsJsonList.size());
@@ -55,17 +69,33 @@ public class AbwesenheitsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Abwesenheit> addAbwesenheit(@RequestBody Abwesenheit abwesenheit) {
-        LOGGER.info("Abwesenheit wird angelegt: " + abwesenheit);
-        LocalDate startDatum = abwesenheit.getStartDatum();
-        LocalDate endDatum = abwesenheit.getEndDatum();
-        boolean nochKeineEintraegeInZeitraum = abwesenheitRepository.findAllByStartDatumBetween(startDatum, endDatum).isEmpty()
-                && abwesenheitRepository.findAllByEndDatumBetween(startDatum, endDatum).isEmpty();
+    public ResponseEntity<AbwesenheitDto> addAbwesenheit(@RequestBody AbwesenheitDto abwesenheitDto) {
+        LOGGER.info("Abwesenheit wird angelegt: " + abwesenheitDto);
+        LocalDate startDatum = abwesenheitDto.getStartDatum();
+        LocalDate endDatum = abwesenheitDto.getEndDatum();
 
-        if (nochKeineEintraegeInZeitraum) {
-            abwesenheit = abwesenheitRepository.save(abwesenheit);
-            return ResponseEntity.ok(abwesenheit);
-        } else {
+        try {
+            boolean nochKeineEintraegeInZeitraum = abwesenheitRepository.findAllByMitarbeiter_UsernameAndStartDatumBetween(abwesenheitDto.getMitarbeiterId(), startDatum, endDatum).isEmpty()
+                    && abwesenheitRepository.findAllByMitarbeiter_UsernameAndEndDatumBetween(abwesenheitDto.getMitarbeiterId(), startDatum, endDatum).isEmpty();
+
+            if (nochKeineEintraegeInZeitraum) {
+                Abwesenheit abwesenheit = Abwesenheit.builder()
+                        .mitarbeiter(mitarbeiterRepository.findByUsername(abwesenheitDto.getMitarbeiterId()).orElseThrow(RuntimeException::new))
+                        .startDatum(abwesenheitDto.getStartDatum())
+                        .endDatum(abwesenheitDto.getEndDatum()).build();
+                abwesenheit = abwesenheitRepository.save(abwesenheit);
+
+                AbwesenheitDto abwesenheitDto1 = AbwesenheitDto.builder()
+                        .id(abwesenheit.getId())
+                        .mitarbeiterId(abwesenheit.getMitarbeiter().getUsername())
+                        .endDatum(abwesenheit.getEndDatum())
+                        .startDatum(abwesenheit.getStartDatum())
+                        .build();
+                return ResponseEntity.ok(abwesenheitDto1);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

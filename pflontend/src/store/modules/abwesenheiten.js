@@ -13,9 +13,9 @@ const getters = {
 }
 
 const actions = { // asynchronous
-    async fetchAbwesenheiten({commit}, token) {
+    async fetchAbwesenheiten({commit}, {username, token}) {
         console.log("Hole alle Abwesenheiten vom Server")
-        let response = await apiService.authenticatedGet("abwesenheit/get/all", token);
+        let response = await apiService.authenticatedGet("abwesenheit/get/all/" + username, token);
 
         if (response.status === 200) {
             commit('fetchAbwesenheiten', response.data);
