@@ -7,7 +7,7 @@
           <th scope="col">Nummer</th>
           <th scope="col">Ansprechpartner</th>
           <th scope="col">Adresse</th>
-          <th scope="col">Löschen</th>
+          <th scope="col">Archivieren (unwiderruflich)</th>
         </tr>
         </thead>
         <tbody>

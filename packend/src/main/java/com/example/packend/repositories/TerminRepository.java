@@ -21,4 +21,7 @@ public interface TerminRepository extends JpaRepository<Termin, Long> {
     List<Termin> findAllByAusgewaehlterTermin(LocalDate ausgewaehlterTermin);
 
     List<Termin> findAllByAusgewaehlterTerminBetween(LocalDate startDate, LocalDate endDate);
+
+    List<Termin> findAllByBeratungsstelle_Ansprechpartner_UsernameAndAusgewaehlterTerminBetween(String username, LocalDate startDate, LocalDate endDate);
+
 }
