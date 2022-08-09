@@ -16,8 +16,6 @@ public class ArbeitszeitenController {
 
     /**
      * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag abzurufen.
-     *
-     * @return
      */
     @GetMapping("public/{mitarbeiterId}/uhrzeiten/get/all")
     public ResponseEntity<Arbeitszeiten> getAlleVerfuegbarenTagesUhrzeiten(@PathVariable String mitarbeiterId) {
@@ -34,11 +32,11 @@ public class ArbeitszeitenController {
     }
 
     /**
-     * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag anzupassen..
+     * Erlaubt es dem Admin, seine für Termine verfügbaren Uhrzeiten pro Tag anzupassen.
      */
     @PostMapping("admin/uhrzeiten/post")
-    public ResponseEntity<String> postSetzeVerfuegbareTagesUhrzeiten(@RequestBody Arbeitszeiten arbeitszeiten) {
-        arbeitszeitenRepository.save(arbeitszeiten);
-        return ResponseEntity.ok("");
+    public ResponseEntity<Arbeitszeiten> postSetzeVerfuegbareTagesUhrzeiten(@RequestBody Arbeitszeiten arbeitszeiten) {
+        arbeitszeiten = arbeitszeitenRepository.save(arbeitszeiten);
+        return ResponseEntity.ok(arbeitszeiten);
     }
 }
