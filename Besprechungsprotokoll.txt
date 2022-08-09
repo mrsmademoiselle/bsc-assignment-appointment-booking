@@ -1,3 +1,7 @@
+---------------------- Fragen
+- Was ist mit Feedback bzgl. Admin-Oberfläche?
+
+---------------------- Notizen
 - Am ende des Absatzes nicht Blocksatz -> möglich bei Google Docs?
 - Ist Unterteilung zwischen Mitarbeiteranforderungen und Kundenanforderungen sinnvoll?
     - Ist die Aufteilung auch anders möglich?

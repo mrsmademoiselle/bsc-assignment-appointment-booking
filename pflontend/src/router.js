@@ -6,8 +6,8 @@ import TerminDetailsView from "@/views/authenticated/TerminDetailsView";
 import TerminabsageView from "@/views/TerminabsageView";
 import {createRouter, createWebHistory} from "vue-router";
 import store from "@/store";
-import AbwesenheitenView from "@/views/authenticated/AbwesenheitenView";
 import PersoenlicheEinstellungenView from "@/views/authenticated/PersoenlicheEinstellungenView";
+import BeratungsstellenVerwaltungView from "@/views/authenticated/BeratungsstellenVerwaltungView";
 
 const routes = [
     {path: '/', component: HomepageClient},
@@ -16,7 +16,7 @@ const routes = [
     {path: '/termin/absage/:id', component: TerminabsageView},
     {path: '/uebersicht', component: TerminUebersichtView, meta: {requiresAuthentication: true}},
     {path: '/appointment/:id', component: TerminDetailsView, props: true, meta: {requiresAuthentication: true}},
-    {path: '/abwesenheit', component: AbwesenheitenView, meta: {requiresAuthentication: true}},
+    {path: '/beratungsstellen', component: BeratungsstellenVerwaltungView, meta: {requiresAuthentication: true}},
     {path: '/einstellungen', component: PersoenlicheEinstellungenView, meta: {requiresAuthentication: true}},
 ]
 

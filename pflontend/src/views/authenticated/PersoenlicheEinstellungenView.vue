@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center mt-4 p-2 bg-light">
     <div :class="this.beratungsstellenAnzeigen ? 'tab-active' : 'tab'" class="tab col-6 h5 p-2"
          title="Beratungsstellen"
-         v-on:click="this.beratungsstellenAnzeigen = !this.beratungsstellenAnzeigen">Beratungsstellen
+         v-on:click="this.beratungsstellenAnzeigen = !this.beratungsstellenAnzeigen">Abwesenheitszeiten
     </div>
     <div :class="this.beratungsstellenAnzeigen ? 'tab' : 'tab-active'" class="tab col-6 h5 p-2"
          title="Arbeitszeiten"
@@ -13,7 +13,7 @@
 
   <div class="bg-light h-100 w-100 py-2">
     <div v-if="beratungsstellenAnzeigen">
-      <BeratungsstellenEinstellungen></BeratungsstellenEinstellungen>
+      <AbwesenheitenView></AbwesenheitenView>
     </div>
     <div v-else>
       <ArbeitszeitenEinstellungen></ArbeitszeitenEinstellungen>
@@ -25,14 +25,14 @@
 </template>
 
 <script>
-import BeratungsstellenEinstellungen from "@/components/compositions/BeratungsstellenEinstellungen";
 import ArbeitszeitenEinstellungen from "@/components/compositions/ArbeitszeitenEinstellungen";
+import AbwesenheitenView from "@/components/compositions/AbwesenheitsEinstellungen";
 
 export default {
   name: "PersoenlicheEinstellungenView",
   components: {
+    AbwesenheitenView,
     ArbeitszeitenEinstellungen,
-    BeratungsstellenEinstellungen,
   },
   data: function () {
     return {
