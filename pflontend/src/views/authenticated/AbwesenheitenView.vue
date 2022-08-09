@@ -64,6 +64,7 @@ export default {
       }
       this.neueAbwesenheit.startDatum = this.datePair[0].format('YYYY-MM-DD');
       this.neueAbwesenheit.endDatum = this.datePair[1].format('YYYY-MM-DD');
+      this.neueAbwesenheit.mitarbeiterId = this.$store.getters.username;
 
       this.$store.dispatch('addAbwesenheit', {abwesenheit: this.neueAbwesenheit, token: this.$store.getters.token})
           .then(() => this.errors = [])

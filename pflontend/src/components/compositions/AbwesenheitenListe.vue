@@ -1,6 +1,6 @@
 <template>
   <div class=" mx-3">
-    <div class="border-bottom h5 d-flex justify-content-start mb-3">Liste aller Abwesenheiten</div>
+    <div class="border-bottom h5 d-flex justify-content-start mb-3">Übersicht Ihrer Abwesenheiten</div>
     <div class="justify-content-center d-flex mt-3">
       <table v-if="abwesenheitsliste.length > 0" class="col-lg-8 table">
         <thead>
