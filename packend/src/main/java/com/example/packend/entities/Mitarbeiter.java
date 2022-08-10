@@ -10,8 +10,9 @@ import javax.persistence.OneToOne;
 @ToString
 @Getter
 @Setter
-@Entity(name = "mitarbeiter")
 @NoArgsConstructor
+
+@Entity(name = "mitarbeiter")
 public class Mitarbeiter {
     @OneToOne
     Arbeitszeiten arbeitszeiten;

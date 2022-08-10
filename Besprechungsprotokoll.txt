@@ -1,4 +1,32 @@
+E-Mail mti Fragen zum Kolloquium, kurzer Termin mit
+- Grundsätzliche Fragen
+    - Fragen zu Usability
+    - Fragen zu Architektur/Entscheidungen
+    - Elemente in Diagrammen ansprechen
+    - Kurze Demo bei der Präsentation zeiteffizient zeigen
+        - 20-25min für die Präsentation
+
+-----
+
+- Eigenständigkeitserklärung am Anfang
+    - 1. Loof_Franziska_Mu
+    - 2. Eigenständigkeitserklärung
+- Deadline: Bachelorarbeit senden an:
+    - Hanemann
+    - Sekretariat ei@th-luebeck.de
+    - Lenka Kleinau
+    - Sophie Jent
+- Meldung zum Kolloquium mitschicken (separat)
+- auch ZIP von Code mitschicken!
+    - falls sie zu groß ist, passwortgeschützt!!!
+- möglichst schnell drucken lassen
+    - zu den gedruckten Versionen auch USB Stick mit Repo mitgeben
+    - drei USB Stick
+dringend deadlind 12.08.
+
 ---------------------- Fragen
+- Fazit nach Kapitel mit Diagrammen
+    - sollte ich die Überleitung in jedem Kapitel haben, kleine Überleitung, nicht ausführlich
 - Was ist mit Feedback bzgl. Admin-Oberfläche?
 - Usability Tests auch mit Admin-Oberfläche?
 

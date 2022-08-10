@@ -256,7 +256,7 @@ export default {
   methods: {
     resetForm() {
       Object.assign(this.$data, initialState());
-      this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
+      this.success = []
 
       this.getApiInformation();
     },
