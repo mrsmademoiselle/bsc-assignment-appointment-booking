@@ -43,7 +43,7 @@ const actions = { // asynchronous
                 })
                 .catch(error => {
                     console.log("Error: " + error);
-                    reject("In diesem Zeitraum gibt es bereits einen Abwesenheitsantrag.")
+                    reject("Der Abwesenheitseintrag konnte nicht angelegt werden. Bitte stellen Sie sicher, dass in dem Zeitraum keine Abwesenheitsanträge und Termine existieren.")
                 })
         });
     }

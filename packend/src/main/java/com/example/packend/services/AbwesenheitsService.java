@@ -29,8 +29,10 @@ public class AbwesenheitsService {
         boolean nochKeineEintraegeInZeitraum = abwesenheitRepository.findAllByMitarbeiter_UsernameAndStartDatumBetween(abwesenheitDto.getMitarbeiterId(), startDatum, endDatum).isEmpty()
                 && abwesenheitRepository.findAllByMitarbeiter_UsernameAndEndDatumBetween(abwesenheitDto.getMitarbeiterId(), startDatum, endDatum).isEmpty();
 
+        System.out.println("Einträge in Zeitraum ? " + nochKeineEintraegeInZeitraum);
         if (nochKeineEintraegeInZeitraum) {
             List<Termin> termineWaehrendAbwesenheit = terminRepository.findAllByBeratungsstelle_Ansprechpartner_UsernameAndAusgewaehlterTerminBetween(abwesenheitDto.getMitarbeiterId(), startDatum, endDatum);
+            System.out.println("Termine während Abwesenheit ? " + termineWaehrendAbwesenheit.size());
             if (!termineWaehrendAbwesenheit.isEmpty()) {
                 return Optional.empty();
             }
@@ -39,6 +41,7 @@ public class AbwesenheitsService {
                     .startDatum(abwesenheitDto.getStartDatum())
                     .endDatum(abwesenheitDto.getEndDatum()).build();
 
+            System.out.println("abwesenheit: " + abwesenheit);
             return Optional.of(abwesenheitRepository.save(abwesenheit));
         } else {
             return Optional.empty();

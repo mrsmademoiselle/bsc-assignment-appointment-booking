@@ -34,11 +34,12 @@ public class AbwesenheitsController {
      * Gibt alle Abwesenheitseinträge im Zeitraum zurück.
      */
     @GetMapping("/get/all/{mitarbeiterId}")
-    public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten(String mitarbeiterId) {
+    public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten(@PathVariable String mitarbeiterId) {
         LOGGER.info("Calling getAlleAbwesenheiten");
 
         List<Abwesenheit> all = abwesenheitRepository.findAllByMitarbeiter_Username(mitarbeiterId, Sort.by("startDatum").ascending());
 
+        System.out.println("alle: " + all.size() + ", mitarbeiterid: " + mitarbeiterId);
         List<JsonNode> abwesenheitAlsJsonList = new ArrayList<>();
         for (Abwesenheit abwesenheit : all) {
             AbwesenheitDto abwesenheitDto1 = AbwesenheitDto.builder()
