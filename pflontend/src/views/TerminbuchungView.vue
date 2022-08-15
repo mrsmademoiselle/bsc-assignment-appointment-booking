@@ -6,7 +6,7 @@
                  show-bridge
                  @onStepChanged="(step) => switchTo(step+1)"></ProgressBar>
   </div>
-  <div class="py-3 container border d-flex justify-content-between rounded">
+  <div class="py-3 container border d-flex justify-content-between shadow rounded">
     <LogoText v-if="this.termin.ausgewaehlterTermin !== null && this.termin.uhrzeit !== null"
               :text="this.termin.ausgewaehlterTermin.toLocaleDateString('de') + ', ' + this.termin.uhrzeit + ':00 Uhr' "
               logo="fa-clock"></LogoText>

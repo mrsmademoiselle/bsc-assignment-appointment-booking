@@ -4,8 +4,16 @@
 
 ### 1. Dependencies installieren
 
+Frontend:
+
 ```
 npm install
+```
+
+Backend:
+
+```
+mvn clean install
 ```
 
 ### 2. E-Mail-Einstellungen
@@ -30,3 +38,12 @@ Backend-Server: PackendApplication.java ausführen
 
 Frontend-Server:
 ```npm run serve```
+
+Über http://localhost:8080 kann nun die Anwendung aufgerufen werden. Für Testzwecke werden Zugangsdaten für die
+Login-Maske mitgeliefert:
+
+```
+Username: admin
+
+Passwort: admin
+```
