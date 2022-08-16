@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="h5 col-auto m-auto">{{ titel }}</div>
+  <div class="row border-bottom py-2 mx-5">
+    <div class="h5 col-auto mr-auto mb-auto">{{ titel }}</div>
     <div v-for="uhrzeit in standard" :key="uhrzeit" class="form-check form-check-inline col-auto">
       <input :id="uhrzeit" v-model="ausgewahlteUhrzeiten" :value="uhrzeit" class="form-check-input" type="checkbox"
              v-on:change="emitteAusgewaehlteUhrzeiten"/>
