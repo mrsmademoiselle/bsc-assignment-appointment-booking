@@ -41,13 +41,13 @@ public class JwtTokenUtil implements Serializable {
         return claimsResolver.apply(claims);
     }
 
-    // Secret rauslesen damit wir rueckwirkend infos aus den Tokens ziehen koennen
+    // Secret rauslesen damit wir rückwirkend infos aus den Tokens ziehen können
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token.replace("{", "").replace("}", "")).getBody();
     }
 
-    // Pruefen ob Token bereits abgelaufen
+    // Prüfen ob Token bereits abgelaufen
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
@@ -60,9 +60,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
 
-    // Erstellen des Tokens
-    // Signieren des Tokens mit HS512
-    // URL-Sichere Serialisieren des Tokens fuer spaeteres konvertieren
+    // Erstellen des Tokens mit HS512
     private String doGenerateToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject)
@@ -71,7 +69,7 @@ public class JwtTokenUtil implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, secret.getBytes(StandardCharsets.UTF_8)).compact();
     }
 
-    // Validieren ueber Username und TTL
+    // Validieren über Username und TTL
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));

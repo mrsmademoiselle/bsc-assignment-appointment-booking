@@ -1,5 +1,6 @@
 package com.example.packend.repositories;
 
+import com.example.packend.entities.Mitarbeiter;
 import com.example.packend.entities.Termin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,9 +20,7 @@ public interface TerminRepository extends JpaRepository<Termin, Long> {
 
     List<Termin> findAllByAusgewaehlterTerminBefore(LocalDate now);
 
-    List<Termin> findAllByAusgewaehlterTermin(LocalDate ausgewaehlterTermin);
-
-    List<Termin> findAllByAusgewaehlterTerminBetween(LocalDate startDate, LocalDate endDate);
+    List<Termin> findAllByAusgewaehlterTerminAndBeratungsstelle_Ansprechpartner(LocalDate ausgewaehlterTermin, Mitarbeiter ansprechpartner);
 
     List<Termin> findAllByBeratungsstelle_Ansprechpartner_UsernameAndAusgewaehlterTerminBetween(String username, LocalDate startDate, LocalDate endDate);
 

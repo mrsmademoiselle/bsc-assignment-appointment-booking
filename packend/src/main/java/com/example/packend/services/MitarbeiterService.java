@@ -24,10 +24,7 @@ public class MitarbeiterService implements UserDetailsService {
     }
 
     /**
-     * Persistiert User
-     *
-     * @param mitarbeiter Zu speichernden User
-     * @return true wenn Objekt persistiert, false wenn Exception eintritt
+     * Speichert einen Mitarbeiter in der Datenbank und gibt den Erfolgsstatus zurück.
      */
     public boolean saveUser(Mitarbeiter mitarbeiter) {
         if (this.mitarbeiterRepository.existsByUsername(mitarbeiter.getUsername())) {
@@ -44,17 +41,13 @@ public class MitarbeiterService implements UserDetailsService {
 
     /**
      * Laden von Benutzerdetails
-     *
-     * @param username Username des users
-     * @return Userdetails
-     * @throws UsernameNotFoundException Exceptionhandling
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Mitarbeiter> optional = mitarbeiterRepository.findByUsername(username);
 
         if (optional.isEmpty())
-            throw new UsernameNotFoundException("Kein Benutzer mit dem Namen " + username + " gefunden");
+            throw new UsernameNotFoundException("Es konnte kein Mitarbeiter mit dem Namen " + username + " gefunden werden");
 
         Mitarbeiter mitarbeiter = optional.get();
         return new org.springframework.security.core.userdetails.User(mitarbeiter.getUsername(), mitarbeiter.getPassword(),

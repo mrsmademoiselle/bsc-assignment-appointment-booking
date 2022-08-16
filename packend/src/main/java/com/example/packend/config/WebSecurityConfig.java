@@ -30,11 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // csrf aus machen, da nicht benoetigt
+        // csrf wird nicht benoetigt
         httpSecurity.csrf().disable().cors().and()
-                // auth-header check fuer folgende Endpunkte deaktivieren
+                // folgende Endpunkte sind öffentlich zugängig
                 .authorizeRequests().antMatchers("/public/**", "/h2/**").permitAll().
-                // Alle Anfragen an anderen Endpunkten werden ueberprueft
+                // alle anderen Anfragen werden nach Token untersucht
                         anyRequest().authenticated().and().
                 // Entrypoint fuer authmanagement angeben und Sessionmanagement deaktivieren
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationExceptionHandler).and().sessionManagement()

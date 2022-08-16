@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TerminToDtoMapper {
 
+    /**
+     * Mappt einen Termin zu seinem Dto
+     */
     public TerminDto terminToDto(Termin termin) {
         TerminDto terminDto = new TerminDto();
 
-        // Kundeninformationen
         terminDto.setId(termin.getId());
         terminDto.setVorname(termin.getKundeninformationen().getVorname());
         terminDto.setNachname(termin.getKundeninformationen().getNachname());

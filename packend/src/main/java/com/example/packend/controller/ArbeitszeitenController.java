@@ -1,7 +1,6 @@
 package com.example.packend.controller;
 
 import com.example.packend.entities.Arbeitszeiten;
-import com.example.packend.repositories.ArbeitszeitenRepository;
 import com.example.packend.services.ArbeitszeitenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ArbeitszeitenController {
 
-    @Autowired
-    ArbeitszeitenRepository arbeitszeitenRepository;
     @Autowired
     ArbeitszeitenService arbeitszeitenService;
 

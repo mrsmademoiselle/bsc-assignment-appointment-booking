@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Hilfsklasse für ausgelagerte object-Mapper-Bean, da standardmäßig
  * das JavaTimeModule nicht registriert wird und es dadurch beim automatischen
- * Mapping in den Controllern zu Fehlern kommt.
+ * Mapping in den Controllern zu Fehlern kommen kann.
  */
 @Configuration
 public class ObjectMapperConfig {

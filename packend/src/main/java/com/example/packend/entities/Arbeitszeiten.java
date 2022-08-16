@@ -43,18 +43,12 @@ public class Arbeitszeiten {
     }
 
     public List<String> getListeFuerTag(LocalDate tag) {
-        switch (tag.getDayOfWeek()) {
-            case MONDAY:
-                return montag;
-            case TUESDAY:
-                return dienstag;
-            case WEDNESDAY:
-                return mittwoch;
-
-            case THURSDAY:
-                return donnerstag;
-            default:
-                return freitag;
-        }
+        return switch (tag.getDayOfWeek()) {
+            case MONDAY -> montag;
+            case TUESDAY -> dienstag;
+            case WEDNESDAY -> mittwoch;
+            case THURSDAY -> donnerstag;
+            default -> freitag;
+        };
     }
 }

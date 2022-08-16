@@ -24,7 +24,6 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    /* Field Injection aus selbem Grund wie PasswordEncoder in MitarbeiterService */
     @Autowired
     private MitarbeiterService mitarbeiterService;
 
@@ -46,17 +45,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null) {
             jwtToken = requestTokenHeader;
             try {
-                // Nach dem User suchen fuer den das Token generiert wurde um eine Korrelation zwischen Token und User zu scahffen
-                // Dadurch das Benutzerinfos fuer die Tokengenerierung verwendet wurden ist das moeglich
+                // Nach dem User suchen, für den das Token generiert wurde
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                logger.error("Token konnte nicht gelesen werden: " + e.getMessage());
+                logger.error("Das Token konnte nicht gelesen werden. " + e.getMessage());
             } catch (ExpiredJwtException e) {
-                logger.error("Token ist abgelaufen: " + e.getMessage());
+                logger.error("Das Token ist nicht mehr gültig! " + e.getMessage());
             }
         } else {
-            // Wenn kein User fuer das Token gefunden wurde ODER es gar kein Token bislang gibt Ausgabe durch logger
-            logger.warn("Kein Token gesetzt");
+            // Wenn kein User für das Token gefunden wurde ODER es gar kein Token bislang gibt Ausgabe durch logger
+            logger.warn("Es wurde kein Token gesetzt");
         }
 
         // Sobald ein User gefunden wurde
@@ -69,8 +67,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // Sobald der User verifiziert wurde, es also ein passendes Token gibt
-                // Weitergabe an Spring
+                // Sobald der User verifiziert wurde, es also ein passendes Token gibt, Weitergabe an Spring
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

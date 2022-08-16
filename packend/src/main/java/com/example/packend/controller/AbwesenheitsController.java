@@ -35,11 +35,11 @@ public class AbwesenheitsController {
      */
     @GetMapping("/get/all/{mitarbeiterId}")
     public ResponseEntity<List<JsonNode>> getAlleAbwesenheiten(@PathVariable String mitarbeiterId) {
-        LOGGER.info("Calling getAlleAbwesenheiten");
+        LOGGER.info("getAlleAbwesenheiten() für Mitarbeiter-ID: " + mitarbeiterId);
 
         List<Abwesenheit> all = abwesenheitRepository.findAllByMitarbeiter_Username(mitarbeiterId, Sort.by("startDatum").ascending());
 
-        System.out.println("alle: " + all.size() + ", mitarbeiterid: " + mitarbeiterId);
+        // Abwesenheiten auf JSON Format mappen
         List<JsonNode> abwesenheitAlsJsonList = new ArrayList<>();
         for (Abwesenheit abwesenheit : all) {
             AbwesenheitDto abwesenheitDto1 = AbwesenheitDto.builder()
@@ -55,18 +55,26 @@ public class AbwesenheitsController {
         return ResponseEntity.ok(abwesenheitAlsJsonList);
     }
 
+    /**
+     * Storniert den Abwesenheitseintrag mit der angegebenen ID, sofern er existiert
+     */
     @PostMapping("/remove/{stringId}")
     public ResponseEntity<String> storniereAbwesenheitseintrag(@PathVariable String stringId) {
         Long id = Long.valueOf(stringId);
         boolean existiert = abwesenheitRepository.existsById(id);
+
         if (existiert) {
             abwesenheitRepository.deleteById(id);
+            LOGGER.info("Abwesenheitseintrag mit ID " + stringId + " wurde erfolgreich storniert.");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    /**
+     * Fügt einen Abwesenheitseintrag hinzu.
+     */
     @PostMapping("/add")
     public ResponseEntity<AbwesenheitDto> addAbwesenheit(@RequestBody AbwesenheitDto abwesenheitDto) {
         LOGGER.info("Abwesenheit wird angelegt: " + abwesenheitDto);
@@ -80,6 +88,8 @@ public class AbwesenheitsController {
                     .endDatum(abwesenheit.getEndDatum())
                     .startDatum(abwesenheit.getStartDatum())
                     .build();
+
+            LOGGER.info("Abwesenheitseintrag wurde erfolgreich angelegt.");
             return ResponseEntity.ok(responseDto);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

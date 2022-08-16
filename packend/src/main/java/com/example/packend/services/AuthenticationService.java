@@ -1,7 +1,6 @@
 package com.example.packend.services;
 
 import com.example.packend.config.JwtTokenUtil;
-import com.example.packend.entities.Mitarbeiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,13 +42,5 @@ public class AuthenticationService {
         } catch (BadCredentialsException e) {
             logger.error("Falsche Zugangsdaten");
         }
-    }
-
-    /**
-     * Gibt den User zu einem jwt zurück. Wenn dieser nicht existiert, wird eine NotFoundException geworfen.
-     */
-    public Mitarbeiter getUserFromJwt(String jwtToken) {
-        String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-        return mitarbeiterService.findMitarbeiter(username);
     }
 }

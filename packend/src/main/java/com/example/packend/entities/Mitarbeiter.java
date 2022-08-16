@@ -20,7 +20,6 @@ public class Mitarbeiter {
     @Column
     @Id
     private String username;
-    // TODO: Adjust datatype for password
     @Column
     private String password;
     @Column

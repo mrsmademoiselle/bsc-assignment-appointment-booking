@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 public class AbsageLink {
-    // TODO to be adjusted if live
     private static final String PREFIX = "http://localhost:8080/termin/absage/";
     @Id
     private Long terminId;

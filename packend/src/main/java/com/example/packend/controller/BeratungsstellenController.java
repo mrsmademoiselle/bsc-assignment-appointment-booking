@@ -26,13 +26,11 @@ public class BeratungsstellenController {
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     BeratungsstellenService beratungsstellenService;
 
     @GetMapping("public/beratungsstellen/get/all")
     public ResponseEntity<List<JsonNode>> getAllBeratungsstellen() {
-        LOGGER.info("Calling getAllBeratungsstellen");
         List<Beratungsstelle> all = beratungsstellenRepository.findAllByIstArchiviertIsFalse();
 
         List<JsonNode> beratungsstellenAlsJsonList = new ArrayList<>();
@@ -44,18 +42,18 @@ public class BeratungsstellenController {
 
     @PostMapping("/beratungsstellen/add")
     public ResponseEntity<Beratungsstelle> addBeratungsstelle(@RequestBody Beratungsstelle beratungsstelle) {
-        LOGGER.warn("calling addBeratungsstelle");
-
         beratungsstelle = beratungsstellenRepository.save(beratungsstelle);
 
+        LOGGER.info("Beratungsstelle wurde erfolgreich angelegt.");
         return ResponseEntity.ok(beratungsstelle);
     }
 
     @PostMapping("/beratungsstellen/archiviere/{stringId}")
     public ResponseEntity<String> archiviereBeratungsstelle(@PathVariable String stringId) {
-        LOGGER.warn("Archiviere Beratungsstelle mit ID " + stringId);
         try {
             beratungsstellenService.archiviereBeratungsstelle(stringId);
+
+            LOGGER.info("Beratungsstelle mit ID " + stringId + " wurde erfolgreich archiviert.");
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

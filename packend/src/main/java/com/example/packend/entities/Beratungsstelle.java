@@ -24,11 +24,7 @@ public class Beratungsstelle {
     @OneToMany
     private List<Mitarbeiter> mitarbeiterListe;
     private boolean istArchiviert;
-
-    public void addMitarbeiter(Mitarbeiter mitarbeiter) {
-        mitarbeiterListe.add(mitarbeiter);
-    }
-
+    
     public String getFormattedAnsprechpartner() {
         return ansprechpartner.getVorname() + " " + ansprechpartner.getNachname();
     }

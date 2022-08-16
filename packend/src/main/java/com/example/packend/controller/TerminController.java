@@ -58,7 +58,8 @@ public class TerminController {
     @GetMapping("/public/termin/{mitarbeiterId}/komplett-belegt/all")
     public ResponseEntity<List<LocalDate>> getAlleKomplettBelegtenDatuemer(@PathVariable String mitarbeiterId) {
         List<LocalDate> komplettBelegteTage = terminService.berechneKomplettBelegteTage(mitarbeiterId);
-        LOGGER.info("Komplett belegte Tage: " + komplettBelegteTage.size());
+
+        LOGGER.info("getAlleKomplettBelegtenDatuemer()-Berechnung abgeschlossen. Anzahl aller komplett belegten Tage: " + komplettBelegteTage.size());
         return ResponseEntity.ok(komplettBelegteTage);
     }
 
@@ -78,15 +79,19 @@ public class TerminController {
         return ResponseEntity.ok(alleTerminDtos);
     }
 
-    @GetMapping("/public/termin/get/{id}")
-    public ResponseEntity<TerminDto> getById(@PathVariable Long id) {
-        LOGGER.info("Calling getById");
+    /**
+     * Gibt die Termindaten zu dem Termin mit der ID zurück.
+     */
+    @GetMapping("/public/termin/get/{terminId}")
+    public ResponseEntity<TerminDto> getById(@PathVariable Long terminId) {
+        LOGGER.info("getById() mit ID " + terminId);
 
-        Optional<Termin> terminOptional = terminRepository.findById(id);
+        Optional<Termin> terminOptional = terminRepository.findById(terminId);
         try {
             if (terminOptional.isPresent()) {
                 Termin termin = terminOptional.get();
                 TerminDto terminDto = terminToDtoMapper.terminToDto(termin);
+
                 return ResponseEntity.ok(terminDto);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,9 +107,10 @@ public class TerminController {
     @PostMapping("/public/termin/post")
     public ResponseEntity<TerminDto> saveTermin(@RequestBody @Validated Termin data) {
         try {
-            LOGGER.info("Calling saveTermin with data " + data.toString());
             Termin gespeicherterTermin = terminService.saveTermin(data);
             TerminDto terminDto = terminToDtoMapper.terminToDto(gespeicherterTermin);
+
+            LOGGER.info("Termin wurde erfolgreich gespeichert.");
             return ResponseEntity.ok(terminDto);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -116,14 +122,14 @@ public class TerminController {
      */
     @GetMapping("/public/termin/cancel/{token}")
     public ResponseEntity<TerminDto> getByCancellationToken(@PathVariable String token) {
-        LOGGER.info("Calling getByCancellationToken with token " + token);
+        LOGGER.info("getByCancellationToken() mit Absage-URL-Token " + token);
 
-        Optional<Termin> terminOptional = terminService.getTerminByCancellationToken(token);
+        Optional<Termin> terminOptional = terminService.getTerminMitAbsageToken(token);
         if (terminOptional.isPresent()) {
             TerminDto terminDto = terminToDtoMapper.terminToDto(terminOptional.get());
             return ResponseEntity.ok(terminDto);
         } else {
-            LOGGER.warn("No Appointment has been found for token " + token);
+            LOGGER.warn("Für das Absage-URL-Token " + token + " wurde kein Termin gefunden. ");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -134,21 +140,19 @@ public class TerminController {
      */
     @PostMapping("/public/termin/cancel/{id}")
     public ResponseEntity<String> terminAbsagenUser(@PathVariable Long id) {
-        LOGGER.info("terminAbsagenUser() mit ID " + id);
         boolean wurdeErfolgreichAbgesagt = terminService.sageTerminAb(id);
 
         if (wurdeErfolgreichAbgesagt) {
+            LOGGER.info("Termin mit ID " + id + " wurde erfolgreich abgesagt.");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            LOGGER.info("No appointment has been found for id " + id);
+            LOGGER.info("Der abzusagende Termin mit ID " + id + " konnte nicht gefunden werden.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("public/termingrund/get/all")
     public ResponseEntity<List<String>> getAllTermingruende() {
-        LOGGER.info("Calling getAllTermingruende");
-
         Beratungsgrund[] values = Beratungsgrund.values();
         return ResponseEntity.ok(Arrays.stream(values)
                 .map(Beratungsgrund::getGrund)
@@ -157,7 +161,6 @@ public class TerminController {
 
     @GetMapping("public/anrede/get/all")
     public ResponseEntity<List<String>> getAllAnreden() {
-        LOGGER.info("Calling getAllAnreden");
         Anrede[] values = Anrede.values();
         return ResponseEntity.ok(Arrays.stream(values)
                 .map(Anrede::getAnrede)

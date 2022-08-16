@@ -31,8 +31,6 @@ public class EmailService {
     }
 
     public void sendeTerminbestaetigung(Termin termin, AbsageLink absageLink) {
-
-        LOGGER.info("Calling sendeTerminbestaetigung");
         String text = String.format(terminbestaetigung.getText(),
                 getOffizielleAnrede(termin),
                 termin.getKundeninformationen().buildFullName(),
@@ -46,8 +44,6 @@ public class EmailService {
 
 
     public void sendeTerminabsage(Termin termin) {
-        LOGGER.info("Calling sendeTerminabsage");
-
         String text = String.format(terminabsage.getText(),
                 getOffizielleAnrede(termin),
                 termin.getKundeninformationen().buildFullName(),
@@ -56,26 +52,22 @@ public class EmailService {
                 getBeratungsstelleFooter(termin),
                 "http://localhost:8080/termin-buchen",
                 getBeratungsstelleFooter(termin));
-        LOGGER.info("EMAIL TEXT: " + text);
         sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminabsage", text);
     }
 
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage template = new SimpleMailMessage();
         template.setFrom(from);
-        template.setTo(cc);
-        // template.setTo(to); TODO in prod wieder einkommentieren
+        template.setTo(cc); // TODO in prod auf tatsächliche E-Mail-Adresse des Termins anpassen
         template.setSubject(subject);
         template.setText(text);
-        LOGGER.debug("##### EMAIL TEXT: " + text);
-        // TODO replace with vlh
         template.setCc(cc);
 
         try {
             emailSender.send(template);
-            LOGGER.info("Sending email with subject " + subject + " to " + to + ", " + cc);
+            LOGGER.info("E-Mail erfolgreich gesendet.");
         } catch (Exception e) {
-            LOGGER.error("Mail sending failed! Mail with subject " + subject + " to email addresses " + to + ", " + cc);
+            LOGGER.error("E-Mail-Versand fehlgeschlagen!");
             e.printStackTrace();
         }
     }

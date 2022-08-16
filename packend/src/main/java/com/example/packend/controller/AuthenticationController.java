@@ -32,12 +32,15 @@ public class AuthenticationController {
     @Autowired
     ObjectMapper objectMapper;
 
+    /**
+     * Loggt einen Benutzer ein.
+     */
     @PostMapping("/public/auth/login")
-    public String login(@RequestBody LoginRequest userData) {
-        LOGGER.warn("Login-Versuch von User " + userData.getUsername());
+    public String login(@RequestBody LoginRequest loginRequest) {
+        LOGGER.warn("Login-Versuch von User " + loginRequest.getUsername());
 
         try {
-            final String token = userAuthService.authentifiziereUndErstelleTokenFuerUser(userData.getUsername(), userData.getPassword());
+            final String token = userAuthService.authentifiziereUndErstelleTokenFuerUser(loginRequest.getUsername(), loginRequest.getPassword());
             LOGGER.info("Login erfolgreich.");
             return token;
         } catch (Exception e) {
@@ -47,7 +50,7 @@ public class AuthenticationController {
     }
 
     /**
-     * Registrierung
+     * Registriert einen Benutzer.
      */
     @PostMapping("/public/auth/register")
     public String registriere(@RequestBody LoginRequest userAuthDto) {
@@ -62,6 +65,9 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Gibt alle Mitarbeiter des Systems zurück.
+     */
     @GetMapping("/mitarbeiter/get/all")
     public ResponseEntity<List<JsonNode>> getAlleMitarbeiter() {
         List<Mitarbeiter> all = mitarbeiterRepository.findAll();
@@ -77,7 +83,7 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(jsonListe);
     }
-
+    
     @GetMapping("/auth/check")
     public void checkValidityOfToken() {
         LOGGER.info("Called auth/check successfully.");

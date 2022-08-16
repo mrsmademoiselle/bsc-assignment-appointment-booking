@@ -22,6 +22,11 @@ public class AbwesenheitsService {
     @Autowired
     TerminRepository terminRepository;
 
+    /**
+     * Fügt einen Abwesenheitseintrag hinzu, SOFERN:
+     * - es in dem Zeitraum noch keinen Abwesenheitseintrag gibt
+     * - es in dem Zeitraum keine Termine gibt
+     */
     public Optional<Abwesenheit> save(AbwesenheitDto abwesenheitDto) {
         LocalDate startDatum = abwesenheitDto.getStartDatum();
         LocalDate endDatum = abwesenheitDto.getEndDatum();

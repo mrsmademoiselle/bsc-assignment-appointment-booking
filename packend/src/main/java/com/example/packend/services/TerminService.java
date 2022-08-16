@@ -7,6 +7,7 @@ import com.example.packend.repositories.ArbeitszeitenRepository;
 import com.example.packend.repositories.TerminRepository;
 import com.example.packend.services.mail.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,11 +36,18 @@ public class TerminService {
         this.mitarbeiterService = mitarbeiterService;
     }
 
+    /**
+     * Gibt alle Uhrzeiten an dem Tag zurück, an denen der Mitarbeiter noch keine Termine hat,
+     * sofern diese Uhrzeiten als Terminbuchungszeiten zugelassen sind.
+     * <p>
+     * Wird ausgeführt, wenn ein Kunde ein Datum bei der Terminbuchung auswählt, um die verfügbaren Uhrzeiten für das Datum zu berechnen.
+     */
     public List<String> getVerfuegbareUhrzeitenFuerTerminUndMitarbeiter(String jahr, String monat, String tag, String mitarbeiterId) {
         Mitarbeiter mitarbeiter = mitarbeiterService.findMitarbeiter(mitarbeiterId);
 
         List<String> verfuegbareUhrzeitenFuerTag = berechneVerfuegbareUhrzeitenFuerTag(
                 LocalDate.of(Integer.parseInt(jahr), Integer.parseInt(monat), Integer.parseInt(tag)), mitarbeiter);
+
         return verfuegbareUhrzeitenFuerTag;
     }
 
@@ -47,22 +55,22 @@ public class TerminService {
      * Berechnet für den angegebenen Tag alle zur Terminbuchung verfügbaren Uhrzeiten.
      */
     public List<String> berechneVerfuegbareUhrzeitenFuerTag(LocalDate tag, Mitarbeiter ansprechpartner) {
-        List<Termin> allByAusgewaehlterTermin = terminRepository.findAllByAusgewaehlterTermin(tag);
-        List<String> alleBelegtenUhrzeitenDesTages = allByAusgewaehlterTermin.stream()
+        List<Termin> alleTermineAnTagFuerMitarbeiter = terminRepository.findAllByAusgewaehlterTerminAndBeratungsstelle_Ansprechpartner(tag, ansprechpartner);
+        List<String> alleBereitsBelegtenUhrzeitenAnTag = alleTermineAnTagFuerMitarbeiter.stream()
                 .map(e -> String.valueOf(e.getUhrzeit().getHour()))
                 .toList();
-
         Arbeitszeiten arbeitszeiten = getArbeitszeitenFuerMitarbeiter(ansprechpartner);
 
         List<String> verfuegbareUhrzeitenFuerTag = arbeitszeiten.getListeFuerTag(tag);
+
         // Weil die Liste verfuegbareUhrzeitenFuerTag nicht modifiable ist, wir aber die Elemente manipulieren wollen
         List<String> modifiableList = new ArrayList<>(verfuegbareUhrzeitenFuerTag);
-        modifiableList.removeAll(alleBelegtenUhrzeitenDesTages);
-
+        // Entferne alle belegten Uhrzeiten aus der Liste der verfügbaren Uhrzeiten
+        modifiableList.removeAll(alleBereitsBelegtenUhrzeitenAnTag);
+        // Alle noch nicht belegten Uhrzeiten für Tag zurückgeben
         return modifiableList;
 
     }
-
 
     /**
      * Berechnet alle Tage, die komplett belegt wurden und somit im Kalender ausgegraut werden.
@@ -73,20 +81,21 @@ public class TerminService {
         Arbeitszeiten arbeitszeiten = getArbeitszeitenFuerMitarbeiter(mitarbeiter);
 
         List<Termin> alleTermineSortiert = terminRepository.findAllByOrderByAusgewaehlterTerminAsc();
-        List<Abwesenheit> alleAbwesenheiten = abwesenheitRepository.findAll();
+        List<Abwesenheit> alleAbwesenheitenDesMitarbeiters = abwesenheitRepository.findAllByMitarbeiter_Username(mitarbeiterId, Sort.by("startDatum").ascending());
 
-        // Alle Tage mit Abwesenheiten sind "komplett belegte Tage"
-        for (Abwesenheit abwesenheit : alleAbwesenheiten) {
+        // Alle Tage, an denen eine Abwesenheit existiert, gelten als "komplett belegte Tage" und müssen als solche eingetragen werdens
+        for (Abwesenheit abwesenheit : alleAbwesenheitenDesMitarbeiters) {
             LocalDate startDatum = abwesenheit.getStartDatum();
             LocalDate endDatum = abwesenheit.getEndDatum();
 
+            // Für jeden Tag dieses Abwesenheitseintrags wird das jeweilige Datum in der Liste gespeichert
             for (LocalDate currentDate = startDatum; currentDate.isBefore(endDatum.plusDays(1)); currentDate = currentDate.plusDays(1)) {
                 alleVollBelegtenTage.add(currentDate);
             }
         }
 
         LocalDate iterierDatum = null;
-        // Über jedes Datum der Terminliste iterieren.
+        // Wenn alle verfügbaren Uhrzeiten an einem Tag mit Terminen belegt sind, wird dieser Tag zur Liste hinzugefügt.
         for (Termin termin : alleTermineSortiert) {
 
             // wenn das Datum dasselbe ist wie das letzte, skippen wir dieses Datum, da wir es bereits geprüft haben
@@ -115,6 +124,9 @@ public class TerminService {
         return alleVollBelegtenTage;
     }
 
+    /**
+     * Speichert einen Termin in der Datenbank, wenn noch kein Termin an dem Tag zu derselben Uhrzeit existiert.
+     */
     public Termin saveTermin(Termin data) {
         List<Termin> ueberschneidendeTermine = terminRepository.findAllByAusgewaehlterTerminAndUhrzeit(data.getAusgewaehlterTermin(), data.getUhrzeit());
 
@@ -127,13 +139,12 @@ public class TerminService {
         return data;
     }
 
-    private AbsageLink generiereUndSpeichereAbsageLink(Termin termin) {
-        String randomString = generiereRandomString();
-        AbsageLink absageLink = new AbsageLink(termin.getId(), randomString);
-        absageLink = absageLinkRepository.save(absageLink);
-        return absageLink;
-    }
-
+    /**
+     * Sagt einen Termin ab, indem
+     * - der Termin gelöscgt wird
+     * - eine Absage-Email rausgeschickt wird
+     * - der AbsageLink gelöscht wird
+     */
     public boolean sageTerminAb(Long id) {
         Optional<Termin> terminOptional = terminRepository.findById(id);
 
@@ -147,14 +158,29 @@ public class TerminService {
         }
     }
 
-    public Optional<Termin> getTerminByCancellationToken(String token) {
-        Optional<AbsageLink> cancellationUrlOptional = absageLinkRepository.findByToken(token);
+    public List<Termin> findAll() {
+        deleteTermineInVergangenheit();
+        return terminRepository.findAll();
+    }
 
-        if (cancellationUrlOptional.isPresent()) {
-            return terminRepository.findById(cancellationUrlOptional.get().getTerminId());
+    /**
+     * Findet den Termin für das Absage-Token
+     */
+    public Optional<Termin> getTerminMitAbsageToken(String token) {
+        Optional<AbsageLink> absageLinkOptional = absageLinkRepository.findByToken(token);
+
+        if (absageLinkOptional.isPresent()) {
+            return terminRepository.findById(absageLinkOptional.get().getTerminId());
         } else {
             return Optional.empty();
         }
+    }
+
+    private AbsageLink generiereUndSpeichereAbsageLink(Termin termin) {
+        String randomString = generiereRandomString();
+        AbsageLink absageLink = new AbsageLink(termin.getId(), randomString);
+        absageLink = absageLinkRepository.save(absageLink);
+        return absageLink;
     }
 
     private String generiereRandomString() {
@@ -178,11 +204,6 @@ public class TerminService {
         } else {
             return optionalArbeitszeiten.get();
         }
-    }
-
-    public List<Termin> findAll() {
-        deleteTermineInVergangenheit();
-        return terminRepository.findAll();
     }
 
     private void deleteTermineInVergangenheit() {
