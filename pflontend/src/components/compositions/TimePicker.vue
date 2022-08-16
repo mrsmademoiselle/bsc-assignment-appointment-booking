@@ -1,7 +1,8 @@
 <template>
-  <div class="mt-3 px-3">
+  <div class="mb-4 pb-4">Bitte beachten Sie, dass nur eine stundenweise Buchung möglich ist.</div>
+  <div :title="'Aktuell ausgewählte Uhrzeit: '+this.times[this.time]+'Uhr'" class="mt-3 px-3">
     <font-awesome-icon v-if="this.time < this.times.length-1" class="pointer" icon="fa-angle-up"
-                       v-on:click="plusEins"/>
+                       title="Nächste Stunde" v-on:click="plusEins"/>
     <div v-if="show" class="h3" v-on:click="openOverlay">{{ times[time] }}:00 Uhr</div>
     <div v-else>
       <div class="input-icons">
@@ -13,7 +14,8 @@
       </div>
     </div>
 
-    <font-awesome-icon v-if="this.time > 0" class="pointer" icon="fa-angle-down" v-on:click="minusEins"/>
+    <font-awesome-icon v-if="this.time > 0" class="pointer" icon="fa-angle-down" title="Vorherige Stunde"
+                       v-on:click="minusEins"/>
   </div>
 </template>
 

@@ -15,7 +15,8 @@
     <div class="mt-4 pb-4"> absagen möchten?</div>
     <div v-if="!abgesagt" class="my-4 justify-content-center d-flex">
       <ButtonCancel title="Nein, abbrechen" @onclick="$router.push('/')"></ButtonCancel>
-      <ButtonSubmit data-target="#myModal" data-toggle="modal" title="Ja, absagen"></ButtonSubmit>
+      <ButtonSubmit data-target="#myModal" data-toggle="modal"
+                    title="Ja, absagen"></ButtonSubmit>
     </div>
     <SuccessBanner v-for="successMessage in success" v-else :key="successMessage"
                    :message="successMessage"></SuccessBanner>

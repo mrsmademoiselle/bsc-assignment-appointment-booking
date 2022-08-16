@@ -8,12 +8,13 @@
             <form>
               <div class="form-floating mb-3">
                 <input id="floatingInput" v-model="username" class="form-control"
-                       placeholder="Bitte Nutzernamen eingeben"
+                       placeholder="Bitte Nutzernamen eingeben" title="Bitte Nutzernamen eingeben"
                        type="text">
               </div>
               <div class="form-floating mb-3">
                 <input id="floatingPassword" v-model="password" class="form-control"
-                       placeholder="Bitte Passwort eingeben" type="password" @keyup.enter="callLogin">
+                       placeholder="Bitte Passwort eingeben" title="Bitte Passwort eingeben" type="password"
+                       @keyup.enter="callLogin">
               </div>
 
               <div v-if="errors.length > 0" class="mt-4">

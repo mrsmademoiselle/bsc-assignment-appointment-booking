@@ -22,17 +22,18 @@
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
       <div class=" justify-content-center">
-        <MultipleChoiceForm :options="alleBeratungsstellen"
-                            class="border-bottom pb-3"
-                            for="beratungsstelle" header="1. Welche Beratungsstelle möchten Sie besuchen?"
+        <MultipleChoiceForm :options="alleBeratungsstellen" class="border-bottom pb-3"
+                            for="beratungsstelle"
+                            header="1. Welche Beratungsstelle möchten Sie besuchen?"
+                            title="Welche Beratungsstelle möchten Sie besuchen?"
                             @onselect="(option) => this.termin.beratungsstelle = option"></MultipleChoiceForm>
         <MultipleChoiceForm :options="['nein', 'ja']" class="border-bottom py-3"
-                            for="bereitsMitglied"
-                            header="2. Sind Sie bereits Mitglied der VLH?" inline="true"
+                            for="bereitsMitglied" header="2. Sind Sie bereits Mitglied der VLH?"
+                            inline="true" title="Sind Sie bereits Mitglied der VLH?"
                             @onselect="(option) => termin.kundeninformationen.bereitsMitglied = option"></MultipleChoiceForm>
         <MultipleChoiceForm :hinweis="hinweistext" :options="alleTermingruende"
-                            class="pt-3" for="termingrund"
-                            header="3. Worum geht es bei Ihrem Termin?"
+                            class="pt-3" for="termingrund" header="3. Worum geht es bei Ihrem Termin?"
+                            title="Worum geht es bei Ihrem Termin?"
                             @onselect="(option) => termin.beratungsgrund= option"></MultipleChoiceForm>
       </div>
     </div>
@@ -84,25 +85,28 @@
           </select>
         </div>
         <TextInput :input="this.termin.kundeninformationen.vorname" label="Vorname" placeholder="Vorname"
-                   required="true"
+                   required="true" title="Bitte geben Sie Ihren Vornamen an."
                    @oninput="(input) => this.termin.kundeninformationen.vorname = input"></TextInput>
         <TextInput :input="this.termin.kundeninformationen.nachname" label="Nachname" placeholder="Nachname"
-                   required="true"
+                   required="true" title="Bitte geben Sie Ihren Nachnamen an."
                    @oninput="(input) => this.termin.kundeninformationen.nachname = input"></TextInput>
         <TextInput :input="this.termin.kundeninformationen.telefon" label="Telefon" placeholder="01234 56789"
-                   required="true"
+                   required="true" title="Bitte geben Sie Ihren Telefonnummer an, damit wir Sie erreichen können."
                    @oninput="(input) => this.termin.kundeninformationen.telefon = input"></TextInput>
         <TextInput :input="this.termin.kundeninformationen.email" label="E-Mail" placeholder="max@mustermann.de"
                    required="true"
+                   title="Bitte geben Sie Ihre E-Mail-Adresse an. Darüber erhalten Sie eine Terminbestätigung."
                    type="email"
                    @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
 
         <div class="form-group row">
           <label class="col-3" for="bemerkung">{{ this.brauchtBeratungsgrund ? 'Bemerkung*' : 'Bemerkung' }}:</label>
-          <textarea id="bemerkung" v-model="this.termin.bemerkung"
-                    :placeholder="this.brauchtBeratungsgrund
+          <textarea id="bemerkung" v-model="this.termin.bemerkung" :placeholder="this.brauchtBeratungsgrund
                     ? 'Bitte geben Sie das Thema für den Beratungstermin ein.'
                     : 'Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!'"
+                    :title="this.brauchtBeratungsgrund
+                    ? 'Bitte geben Sie das Thema für den Beratungstermin ein, damit wir uns darauf vorbereiten können.'
+                    : 'Falls Sie noch Anmerkungen oder Fragen haben, können Sie diese hier festhalten.'"
                     class="form-control col-6"></textarea>
         </div>
       </div>
