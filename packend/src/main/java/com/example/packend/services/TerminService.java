@@ -116,14 +116,19 @@ public class TerminService {
     }
 
     public Termin saveTermin(Termin data) {
+        List<Termin> ueberschneidendeTermine = terminRepository.findAllByAusgewaehlterTerminAndUhrzeit(data.getAusgewaehlterTermin(), data.getUhrzeit());
+
+        if (!ueberschneidendeTermine.isEmpty())
+            throw new RuntimeException("Es gibt bereits einen Termin zu diesem Zeitpunkt.");
+
         data = terminRepository.save(data); // muss zuerst gespeichert werden, damit es eine ID erhält, über die wir die CancellationURL generieren können
-        AbsageLink absageLink = generateOneTimeUrl(data);
+        AbsageLink absageLink = generiereUndSpeichereAbsageLink(data);
         emailService.sendeTerminbestaetigung(data, absageLink);
         return data;
     }
 
-    private AbsageLink generateOneTimeUrl(Termin termin) {
-        String randomString = generateString();
+    private AbsageLink generiereUndSpeichereAbsageLink(Termin termin) {
+        String randomString = generiereRandomString();
         AbsageLink absageLink = new AbsageLink(termin.getId(), randomString);
         absageLink = absageLinkRepository.save(absageLink);
         return absageLink;
@@ -154,7 +159,7 @@ public class TerminService {
         }
     }
 
-    private String generateString() {
+    private String generiereRandomString() {
         Random rng = new Random();
         String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
         int length = 40;

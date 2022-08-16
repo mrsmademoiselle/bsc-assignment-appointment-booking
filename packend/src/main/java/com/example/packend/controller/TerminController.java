@@ -101,9 +101,14 @@ public class TerminController {
      */
     @PostMapping("/public/termin/post")
     public ResponseEntity<TerminDto> saveTermin(@RequestBody @Validated Termin data) {
-        LOGGER.info("Calling saveTermin with data " + data.toString());
-        TerminDto terminDto = terminToDtoMapper.terminToDto(terminService.saveTermin(data));
-        return ResponseEntity.ok(terminDto);
+        try {
+            LOGGER.info("Calling saveTermin with data " + data.toString());
+            Termin gespeicherterTermin = terminService.saveTermin(data);
+            TerminDto terminDto = terminToDtoMapper.terminToDto(gespeicherterTermin);
+            return ResponseEntity.ok(terminDto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
