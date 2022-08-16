@@ -72,7 +72,7 @@
     <!-- Step3: persönliche Daten -->
     <div v-if="step === 3">
       <TitleSecondary muted="true"
-                      text="Bitte teilen Sie uns Ihre Daten mit, damit wir sie erreichen können."></TitleSecondary>
+                      text="Bitte teilen Sie uns Ihre Daten mit, damit wir sie erreichen können (mit * markierte Felder sind Pflichtfelder)"></TitleSecondary>
       <div class="pl-5 ml-5 mt-5">
         <div class="form-group row">
           <label class="col-3">Anrede:</label>
@@ -83,12 +83,16 @@
           </select>
         </div>
         <TextInput :input="this.termin.kundeninformationen.vorname" label="Vorname" placeholder="Vorname"
+                   required="true"
                    @oninput="(input) => this.termin.kundeninformationen.vorname = input"></TextInput>
         <TextInput :input="this.termin.kundeninformationen.nachname" label="Nachname" placeholder="Nachname"
+                   required="true"
                    @oninput="(input) => this.termin.kundeninformationen.nachname = input"></TextInput>
         <TextInput :input="this.termin.kundeninformationen.telefon" label="Telefon" placeholder="01234 56789"
+                   required="true"
                    @oninput="(input) => this.termin.kundeninformationen.telefon = input"></TextInput>
         <TextInput :input="this.termin.kundeninformationen.email" label="E-Mail" placeholder="max@mustermann.de"
+                   required="true"
                    type="email"
                    @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
 
