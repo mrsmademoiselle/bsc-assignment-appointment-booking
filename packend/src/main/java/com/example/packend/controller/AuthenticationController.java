@@ -34,19 +34,23 @@ public class AuthenticationController {
 
     @PostMapping("/public/auth/login")
     public String login(@RequestBody LoginRequest userData) {
-        LOGGER.warn("Login try from User " + userData.getUsername());
+        LOGGER.warn("Login-Versuch von User " + userData.getUsername());
 
-        final String token = userAuthService.authenticateAndGetTokenForUserCredentials(userData.getUsername(), userData.getPassword());
-        LOGGER.info("Login erfolgreich. Token: " + token);
-
-        return token;
+        try {
+            final String token = userAuthService.authentifiziereUndErstelleTokenFuerUser(userData.getUsername(), userData.getPassword());
+            LOGGER.info("Login erfolgreich.");
+            return token;
+        } catch (Exception e) {
+            LOGGER.error("Login fehlgeschlagen.");
+            return "";
+        }
     }
 
     /**
      * Registrierung
      */
     @PostMapping("/public/auth/register")
-    public String register(@RequestBody LoginRequest userAuthDto) {
+    public String registriere(@RequestBody LoginRequest userAuthDto) {
 
         Mitarbeiter mitarbeiter = new Mitarbeiter(userAuthDto.getUsername(), userAuthDto.getPassword());
         if (mitarbeiterService.saveUser(mitarbeiter)) {

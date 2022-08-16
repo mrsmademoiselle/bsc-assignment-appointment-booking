@@ -15,27 +15,6 @@ import java.util.Optional;
 @Service
 public class MitarbeiterService implements UserDetailsService {
     private final MitarbeiterRepository mitarbeiterRepository;
-
-    /*
-    Dieses Feld muss field injection haben, damit kein Zyklus entsteht. Bei uns besteht der Zyklus bei PasswordEncoder,
-    weil Spring nicht entscheiden kann, welche Bean zuerst erstellt werden soll.
-
-    Begründung:
-    Spring versucht zu Beginn die WebSecurityConfig zu erstellen.
-    Dafür braucht er eine MitarbeiterService-Instanz (Konstruktor). Um die zu erstellen, braucht er aber eine Bean von
-    PasswordEncoder, die erst später in der WebSecurityConfig erstellt wird.
-    Somit kann Spring nicht entscheiden, in welcher Reihenfolge die Dependencies aufgelöst werden sollen, weil ein
-    Zyklus besteht: WebSecurity braucht MitarbeiterService, MitarbeiterService braucht PasswordEncoder, PasswordEncoder
-    braucht zu seiner eigenen Erstellung die fertige WebSecurity.
-
-    Warum Field Injection hier funktioniert:
-    Field Injections finden (anders als Constructor Injections) erst dann statt, wenn sie gebraucht werden, sodass
-    zu diesem Zeitpunkt die PasswordEncoder-Bean bereits existiert, weil der Konstruktor von MitarbeiterService bereits erfolgreich
-    aufgerufen wurde.
-
-    Weitere Workarounds wären z.B. das Auslagern der PasswordEncoder-Bean in eine andere Klasse oder das field
-    injecten des UserServices in der WebsecurityConfig.
-    */
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
