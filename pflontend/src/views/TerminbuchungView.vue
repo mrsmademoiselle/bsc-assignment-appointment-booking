@@ -22,7 +22,8 @@
     <!-- Step1: Grund -->
     <div v-if="step === 1 ">
       <div class=" justify-content-center">
-        <MultipleChoiceForm :options="alleBeratungsstellen" class="border-bottom pb-3"
+        <MultipleChoiceForm :options="alleBeratungsstellen"
+                            class="border-bottom pb-3"
                             for="beratungsstelle" header="1. Welche Beratungsstelle möchten Sie besuchen?"
                             @onselect="(option) => this.termin.beratungsstelle = option"></MultipleChoiceForm>
         <MultipleChoiceForm :options="['nein', 'ja']" class="border-bottom py-3"
