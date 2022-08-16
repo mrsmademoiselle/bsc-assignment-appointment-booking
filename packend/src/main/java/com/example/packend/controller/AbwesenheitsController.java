@@ -56,7 +56,7 @@ public class AbwesenheitsController {
     }
 
     @PostMapping("/remove/{stringId}")
-    public ResponseEntity<String> cancelAbwesenheit(@PathVariable String stringId) {
+    public ResponseEntity<String> storniereAbwesenheitseintrag(@PathVariable String stringId) {
         Long id = Long.valueOf(stringId);
         boolean existiert = abwesenheitRepository.existsById(id);
         if (existiert) {
@@ -71,14 +71,16 @@ public class AbwesenheitsController {
     public ResponseEntity<AbwesenheitDto> addAbwesenheit(@RequestBody AbwesenheitDto abwesenheitDto) {
         LOGGER.info("Abwesenheit wird angelegt: " + abwesenheitDto);
         try {
-            Abwesenheit abwesenheit = abwesenheitsService.save(abwesenheitDto).orElseThrow(RuntimeException::new);
-            AbwesenheitDto abwesenheitDto1 = AbwesenheitDto.builder()
+            Abwesenheit abwesenheit = abwesenheitsService.save(abwesenheitDto)
+                    .orElseThrow(RuntimeException::new);
+
+            AbwesenheitDto responseDto = AbwesenheitDto.builder()
                     .id(abwesenheit.getId())
                     .mitarbeiterId(abwesenheit.getMitarbeiter().getUsername())
                     .endDatum(abwesenheit.getEndDatum())
                     .startDatum(abwesenheit.getStartDatum())
                     .build();
-            return ResponseEntity.ok(abwesenheitDto1);
+            return ResponseEntity.ok(responseDto);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

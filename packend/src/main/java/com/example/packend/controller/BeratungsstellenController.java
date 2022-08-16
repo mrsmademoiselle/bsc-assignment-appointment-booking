@@ -2,6 +2,7 @@ package com.example.packend.controller;
 
 import com.example.packend.entities.Beratungsstelle;
 import com.example.packend.repositories.BeratungsstellenRepository;
+import com.example.packend.services.BeratungsstellenService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @RestController
@@ -26,6 +26,9 @@ public class BeratungsstellenController {
     BeratungsstellenRepository beratungsstellenRepository;
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    BeratungsstellenService beratungsstellenService;
 
     @GetMapping("public/beratungsstellen/get/all")
     public ResponseEntity<List<JsonNode>> getAllBeratungsstellen() {
@@ -49,18 +52,12 @@ public class BeratungsstellenController {
     }
 
     @PostMapping("/beratungsstellen/archiviere/{stringId}")
-    public ResponseEntity<String> archiviere(@PathVariable String stringId) {
-        LOGGER.warn("archiviere Beratungsstelle mit ID " + stringId);
-
-        Long id = Long.valueOf(stringId);
-        Optional<Beratungsstelle> optional = beratungsstellenRepository.findById(id);
-        if (optional.isPresent()) {
-            Beratungsstelle beratungsstelle = optional.get();
-            beratungsstelle.setIstArchiviert(true);
-            beratungsstellenRepository.save(beratungsstelle);
-
+    public ResponseEntity<String> archiviereBeratungsstelle(@PathVariable String stringId) {
+        LOGGER.warn("Archiviere Beratungsstelle mit ID " + stringId);
+        try {
+            beratungsstellenService.archiviereBeratungsstelle(stringId);
             return new ResponseEntity<>(HttpStatus.OK);
-        } else {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
