@@ -15,10 +15,39 @@
     <div class="mt-4 pb-4"> absagen möchten?</div>
     <div v-if="!abgesagt" class="my-4 justify-content-center d-flex">
       <ButtonCancel title="Nein, abbrechen" @onclick="$router.push('/')"></ButtonCancel>
-      <ButtonSubmit title="Ja, absagen" @onclick="cancelAppointment"></ButtonSubmit>
+      <ButtonSubmit data-target="#myModal" data-toggle="modal" title="Ja, absagen"></ButtonSubmit>
     </div>
     <SuccessBanner v-for="successMessage in success" v-else :key="successMessage"
                    :message="successMessage"></SuccessBanner>
+  </div>
+  <!-- Modal -->
+  <div v-if="appointment !== null" id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <h4 class="modal-title">Termin absagen</h4>
+        </div>
+        <div class="modal-body">
+          <div>Möchten Sie diesen Termin wirklich absagen?</div>
+          <div class="my-4">{{ appointment.formatDateToGermanLocale() }} {{
+              appointment.uhrzeit
+            }} Uhr
+          </div>
+          <div>{{ appointment.vorname }} {{ appointment.nachname }}</div>
+          <div class="mt-4">Sie werden per E-Mail über die die Terminabsage benachrichtigt.</div>
+          <div>Diese Aktion kann nicht rückgängig gemacht werden.</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-dismiss="modal" type="button">Nein, abbrechen</button>
+          <button class="btn btn-danger" data-dismiss="modal" type="button" v-on:click="cancelAppointment">Ja,
+            absagen
+          </button>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
