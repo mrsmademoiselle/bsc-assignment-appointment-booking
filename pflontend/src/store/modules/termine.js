@@ -24,7 +24,7 @@ const actions = { // asynchronous
     async removeAppointment({commit}, {id, token}) {
         console.log("Entferne Termin mit ID " + id)
 
-        let response = await apiService.authenticatedPost("termin/cancel/" + id, {}, token);
+        let response = await apiService.post("termin/cancel/" + id, {}, token);
         if (response.status === 200) {
             commit('remove', id);
         }

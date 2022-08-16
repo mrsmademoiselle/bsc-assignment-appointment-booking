@@ -134,14 +134,12 @@ public class TerminService {
         return absageLink;
     }
 
-    public boolean cancelAppointment(Long id) {
+    public boolean sageTerminAb(Long id) {
         Optional<Termin> terminOptional = terminRepository.findById(id);
+
         if (terminOptional.isPresent()) {
-            // send cancellation-Email
             emailService.sendeTerminabsage(terminOptional.get());
-            // remove cancellationUrl
             absageLinkRepository.deleteByTerminId(id);
-            // remove appointment
             terminRepository.delete(terminOptional.get());
             return true;
         } else {

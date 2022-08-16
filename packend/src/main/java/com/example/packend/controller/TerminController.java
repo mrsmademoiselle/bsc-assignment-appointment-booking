@@ -133,34 +133,17 @@ public class TerminController {
      * Über diesen Endpunkt kann ein Benutzer seinen eigenen Termin stornieren.
      */
     @PostMapping("/public/termin/cancel/{id}")
-    public ResponseEntity<String> cancelAppointmentUser(@PathVariable Long id) {
-        LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
-        boolean isCancelled = terminService.cancelAppointment(id);
+    public ResponseEntity<String> terminAbsagenUser(@PathVariable Long id) {
+        LOGGER.info("terminAbsagenUser() mit ID " + id);
+        boolean wurdeErfolgreichAbgesagt = terminService.sageTerminAb(id);
 
-        if (isCancelled) {
+        if (wurdeErfolgreichAbgesagt) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             LOGGER.info("No appointment has been found for id " + id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    /**
-     * Über diesen Endpunkt kann ein Admin jeden Termin stornieren.
-     */
-    @PostMapping("/termin/cancel/{id}")
-    public ResponseEntity<String> cancelAppointmentAdmin(@PathVariable Long id) {
-        LOGGER.info("Calling cancelAppointment for Appointment with id " + id);
-        boolean isCancelled = terminService.cancelAppointment(id);
-
-        if (isCancelled) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            LOGGER.info("No appointment has been found for id " + id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
 
     @GetMapping("public/termingrund/get/all")
     public ResponseEntity<List<String>> getAllTermingruende() {
