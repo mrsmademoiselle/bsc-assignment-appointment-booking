@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex justify-content-center mt-4 p-2 bg-light">
-    <div :class="this.beratungsstellenAnzeigen ? 'tab-active' : 'tab'" class="tab col-6 h5 p-2"
+    <div :class="this.beratungsstellenAnzeigen ? 'tab-active' : 'tab'" class="col-6 h5 p-2"
          title="Beratungsstellen"
          v-on:click="this.beratungsstellenAnzeigen = !this.beratungsstellenAnzeigen">Abwesenheitszeiten
     </div>
-    <div :class="this.beratungsstellenAnzeigen ? 'tab' : 'tab-active'" class="tab col-6 h5 p-2"
+    <div :class="this.beratungsstellenAnzeigen ? 'tab' : 'tab-active'" class="col-6 h5 p-2"
          title="Arbeitszeiten"
          v-on:click="this.beratungsstellenAnzeigen = !this.beratungsstellenAnzeigen">
       Arbeitszeiten
@@ -54,15 +54,19 @@ export default {
 <style scoped>
 .tab-active {
   font-weight: bold;
+  background-color: #edefff;
 }
 
 .tab:hover {
-  border-bottom: solid #5fb75f;
+  border-bottom: solid #d0d0ff;
   cursor: pointer;
-  color: #5fb75f;
+  color: white;
+  background-color: #757fce;
 }
 
 .tab {
   cursor: pointer;
+  background-color: #e0e0e0;
+  color: #707070;
 }
 </style>
