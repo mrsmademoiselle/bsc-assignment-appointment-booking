@@ -34,10 +34,10 @@
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header justify-content-center">
-            <h4 class="modal-title">Beratungsstelle löschen</h4>
+            <h4 class="modal-title">Beratungsstelle archivieren</h4>
           </div>
           <div class="modal-body">
-            <div>Möchten Sie diese Beratungsstelle wirklich löschen?</div>
+            <div>Möchten Sie diese Beratungsstelle wirklich archivieren?</div>
             <div class="my-4">{{
                 selectedBeratungsstelle.ansprechpartner.vorname + ' ' + selectedBeratungsstelle.ansprechpartner.nachname
               }}
@@ -46,9 +46,9 @@
             <div>Diese Aktion kann nicht rückgängig gemacht werden.</div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" data-dismiss="modal" type="button">Abbrechen</button>
+            <button class="btn btn-secondary" data-dismiss="modal" type="button">Nein, abbrechen</button>
             <button class="btn btn-danger" data-dismiss="modal" type="button" v-on:click="deleteBeratungsstelle">Ja,
-              löschen
+              archivieren
             </button>
           </div>
         </div>

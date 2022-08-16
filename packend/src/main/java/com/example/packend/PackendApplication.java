@@ -41,6 +41,7 @@ public class PackendApplication implements CommandLineRunner {
         mitarbeiterService.saveUser(janni);
 
         Beratungsstelle preetz = Beratungsstelle.builder()
+                .istArchiviert(false)
                 .ansprechpartner(adminMitarbeiter)
                 .adresse(Adresse.builder().hausnummer("5")
                         .strasse("Mühlenstraße")
@@ -50,6 +51,7 @@ public class PackendApplication implements CommandLineRunner {
         mitarbeiterService.saveUser(claudia);
 
         Beratungsstelle eutin = Beratungsstelle.builder()
+                .istArchiviert(false)
                 .ansprechpartner(adminMitarbeiter)
                 .adresse(Adresse.builder().hausnummer("36")
                         .strasse("Lübecker Straße")

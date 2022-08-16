@@ -42,7 +42,6 @@ export default {
 
   methods: {
     async getApiInformation() {
-      await this.$store.dispatch("fetchBeratungsstellen");
       await this.$store.dispatch("fetchArbeitszeiten", this.$store.getters.username);
     },
   },

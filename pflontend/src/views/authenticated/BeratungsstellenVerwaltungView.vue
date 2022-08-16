@@ -9,7 +9,15 @@ import BeratungsstellenEinstellungen from "@/components/compositions/Beratungsst
 
 export default {
   name: "BeratungsstellenVerwaltungView",
-  components: {BeratungsstellenEinstellungen}
+  components: {BeratungsstellenEinstellungen},
+  methods: {
+    async getApiInformation() {
+      await this.$store.dispatch("fetchBeratungsstellen");
+    },
+  },
+  beforeMount: function () {
+    this.getApiInformation();
+  }
 }
 </script>
 
