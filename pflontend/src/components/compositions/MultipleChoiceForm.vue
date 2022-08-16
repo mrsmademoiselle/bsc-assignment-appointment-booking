@@ -41,6 +41,8 @@ export default {
     displayLabel(option) {
       if (this.for === "beratungsstelle") {
         return option.formatToReadableString();
+      } else if (this.for === 'uhrzeit') {
+        return option + ":00 - " + (Number(option) + 1) + ":00 Uhr"
       } else {
         return option;
       }

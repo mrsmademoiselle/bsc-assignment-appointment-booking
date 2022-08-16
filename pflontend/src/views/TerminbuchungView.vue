@@ -54,16 +54,16 @@
           </Datepicker>
 
         </div>
-        <div class="col-auto">
+        <div class="col-6">
           <div v-if="this.termin.ausgewaehlterTermin !== null">
             <TitleSecondary :muted="true" :text="this.termin.ausgewaehlterTermin !== null
                                 ? ' Ausgewähltes Datum: ' + this.termin.ausgewaehlterTermin.toLocaleDateString('de-DE')
                                 : 'Bitte wählen Sie ein Datum aus.'"
                             class="border-bottom pb-2"></TitleSecondary>
 
+
             <TimePicker :times="verfuegbareUhrzeitenFuerDatum" class="mt-3 p-5"
                         @onselect="(option) => this.termin.uhrzeit = option"></TimePicker>
-
             <div v-if="verfuegbareUhrzeitenFuerDatum.length === 0">Für diesen Tag sind keine Uhrzeiten verfügbar.</div>
           </div>
         </div>

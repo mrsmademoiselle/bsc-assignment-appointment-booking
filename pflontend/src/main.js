@@ -11,12 +11,13 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faAngleUp} from "@fortawesome/free-solid-svg-icons/faAngleUp";
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons/faAngleDown";
-import {faCalendar, faClock, faHouse, faList, faPerson, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faCalendar, faCheck, faClock, faHouse, faList, faPerson, faUser} from "@fortawesome/free-solid-svg-icons";
 
 const app = createApp(App)
 app.use(router)
 app.use(store)
 library.add(faAngleUp)
+library.add(faCheck)
 library.add(faList)
 library.add(faCalendar)
 library.add(faAngleDown)
