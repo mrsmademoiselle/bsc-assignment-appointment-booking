@@ -98,9 +98,12 @@
                    @oninput="(input) => this.termin.kundeninformationen.email = input"></TextInput>
 
         <div class="form-group row">
-          <label class="col-3" for="bemerkung">Bemerkung:</label>
-          <textarea id="bemerkung" v-model="termin.bemerkung" class="form-control col-6"
-                    placeholder="Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!"></textarea>
+          <label class="col-3" for="bemerkung">{{ this.brauchtBeratungsgrund ? 'Bemerkung*' : 'Bemerkung' }}:</label>
+          <textarea id="bemerkung" v-model="this.termin.bemerkung"
+                    :placeholder="this.brauchtBeratungsgrund
+                    ? 'Bitte geben Sie das Thema für den Beratungstermin ein.'
+                    : 'Gibt es noch etwas, das wir wissen sollten? Teilen Sie es uns hier mit!'"
+                    class="form-control col-6"></textarea>
         </div>
       </div>
     </div>
@@ -237,6 +240,13 @@ export default {
   data: function () {
     return initialState();
   },
+  computed: {
+    brauchtBeratungsgrund: {
+      get() {
+        return this.termin.beratungsgrund === 'Erstberatung' || this.termin.beratungsgrund === 'Beratung'
+      }
+    }
+  },
   /**
    * Beobachter für das Feld termin.ausgewaehlterTermin. Verändert sich der Wert durch einen Klick aus den Kalender,
    * werden für dieses Datum die verfügbaren Uhrzeiten geparst und gesetzt.
@@ -342,6 +352,10 @@ export default {
       let phoneNumberRegex = /^\d+$/;
       if (!this.istStringVorhanden(this.termin.kundeninformationen.telefon) || !phoneNumberRegex.test(this.termin.kundeninformationen.telefon)) {
         this.errors.push("Telefonnummer")
+      }
+
+      if (this.brauchtBeratungsgrund && !this.istStringVorhanden(this.termin.bemerkung)) {
+        this.errors.push("Beratungsgrund im Bemerkungsfeld")
       }
       return this.errors.length === 0;
     },
