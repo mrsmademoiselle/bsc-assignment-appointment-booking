@@ -24,7 +24,9 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="appointment in alleTermine" :key="appointment.id">
+          <tr v-for="appointment in alleTermine" :key="appointment.id"
+              :class="istHeute(appointment) ? 'is-today' : ''"
+              :title="(istHeute(appointment) ? 'Dieser Termin ist heute!' :null)">
             <td>{{ appointment.vorname }} {{ appointment.nachname }}</td>
             <td>{{ appointment.formatDateToGermanLocale() }} {{ appointment.uhrzeit }} Uhr</td>
             <td>{{ appointment.email }}</td>
@@ -90,6 +92,14 @@ export default {
     }
   },
   methods: {
+    istHeute(appointment) {
+      let date = new Date(appointment.ausgewaehlterTermin)
+      const today = new Date()
+
+      return date.getDate() === today.getDate() &&
+          date.getMonth() === today.getMonth() &&
+          date.getFullYear() === today.getFullYear();
+    },
     selectAppointment(appointment) {
       this.selectedAppointment = appointment;
     },
@@ -138,5 +148,9 @@ export default {
   font-size: 18pt;
   cursor: pointer;
   color: gray;
+}
+
+.is-today {
+  background-color: #ffeccc;
 }
 </style>

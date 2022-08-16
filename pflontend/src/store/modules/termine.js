@@ -57,13 +57,29 @@ const mutations = { // synchronous
             termine.push(termin);
         });
         state.alleTermine = termine;
+        state.alleTermine.sort(function compare(a, b) {
+            let dateA = new Date(a.ausgewaehlterTermin);
+            let dateB = new Date(b.ausgewaehlterTermin);
+            return dateA - dateB;
+        });
     },
     remove(state, id) {
         state.alleTermine = state.alleTermine.filter(termin => termin.id !== id);
+        state.alleTermine.sort(function compare(a, b) {
+            let dateA = new Date(a.ausgewaehlterTermin);
+            let dateB = new Date(b.ausgewaehlterTermin);
+            return dateA - dateB;
+        });
     },
     add(state, appointment) {
         state.alleTermine = [...state.alleTermine, appointment];
-    }
+        state.alleTermine.sort(function compare(a, b) {
+            let dateA = new Date(a.ausgewaehlterTermin);
+            let dateB = new Date(b.ausgewaehlterTermin);
+            return dateA - dateB;
+        });
+    },
+
 }
 
 export default {
