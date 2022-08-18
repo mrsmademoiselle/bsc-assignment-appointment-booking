@@ -12,6 +12,7 @@
                     :termine="alleTermine" class="mb-2"></TerminKalender>
 
     <div v-else class="my-3 ">
+      <SuccessBanner :message="getMessage()"></SuccessBanner>
       <div class="justify-content-center d-flex mt-3">
         <table v-if="alleTermine.length > 0" class="col-lg-8 table">
           <thead>
@@ -81,17 +82,24 @@
 
 import ButtonSubmit from "@/components/fragments/ButtonSubmit";
 import TerminKalender from "@/components/compositions/TerminKalender";
+import SuccessBanner from "@/components/fragments/SuccessBanner";
 
 export default {
   name: "TerminUebersichtView",
-  components: {TerminKalender, ButtonSubmit},
+  components: {SuccessBanner, TerminKalender, ButtonSubmit},
   data: function () {
     return {
       selectedAppointment: null,
       kalenderansicht: true,
+      successes: []
     }
   },
   methods: {
+    getMessage() {
+      let message = ""
+      this.successes.forEach(e => message = message + e)
+      return message;
+    },
     istHeute(appointment) {
       let date = new Date(appointment.ausgewaehlterTermin)
       const today = new Date()
@@ -104,8 +112,14 @@ export default {
       this.selectedAppointment = appointment;
     },
     cancelAppointment() {
-      this.$store.dispatch('removeAppointment', {id: this.selectedAppointment.id, token: this.$store.getters.token});
-      this.selectedAppointment = null;
+      this.$store.dispatch('removeAppointment', {
+        id: this.selectedAppointment.id,
+        token: this.$store.getters.token
+      }).then(() => {
+        this.successes = []
+        this.successes.push("Der Termin wurde erfolgreich abgesagt.")
+        this.selectedAppointment = null;
+      });
     },
     async fetchApiInformation() {
       await this.$store.dispatch('fetchAbwesenheiten', {
