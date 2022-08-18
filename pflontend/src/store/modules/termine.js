@@ -42,7 +42,7 @@ const actions = { // asynchronous
             })
                 .catch(error => {
                     console.log("Error: " + error);
-                    reject("Der Termin konnte nicht angelegt werden.")
+                    reject("In diesem Zeitraum existiert bereits ein Termin.")
                 })
         })
     }

@@ -286,16 +286,22 @@ export default {
       }
     },
     getErrorMessage() {
-      let message = "Bitte ";
-      for (let i = 0; i < this.errors.length; i++) {
-        message = message +
-            (i === this.errors.length - 2
-                ? (' ' + this.errors[i] + ' und ')
-                : ((i === this.errors.length - 1)
-                    ? (' ' + this.errors[i] + ' ')
-                    : (' ' + this.errors[i] + ', ')));
+      let message = ""
+      if (this.step < 4) {
+        message = "Bitte ";
+        for (let i = 0; i < this.errors.length; i++) {
+          message = message +
+              (i === this.errors.length - 2
+                  ? (' ' + this.errors[i] + ' und ')
+                  : ((i === this.errors.length - 1)
+                      ? (' ' + this.errors[i] + ' ')
+                      : (' ' + this.errors[i] + ', ')));
+        }
+        message = message + " eingeben."
+      } else {
+        this.errors.forEach((e) => message = message + e);
       }
-      message = message + " eingeben."
+
       return message;
     },
     submit() {
@@ -303,9 +309,21 @@ export default {
       if (this.validateAllInputs()) {
         this.step = this.step + 1;
         if (this.termin.uhrzeit.length === 1) this.termin.uhrzeit = '0' + this.termin.uhrzeit;
-        this.termin.uhrzeit += ":00";
-        this.$store.dispatch('addAppointment', this.termin);
-        this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
+        if (!this.termin.uhrzeit.endsWith(":00")) {
+          this.termin.uhrzeit += ":00";
+        }
+        this.$store.dispatch('addAppointment', this.termin)
+            .then(() => {
+              this.errors = [];
+              this.success.push("Vielen Dank für Ihre Buchung! Der Termin wurde erfolgreich angelegt.")
+            })
+            .catch((e) => {
+              if (!this.errors.find(f => f === e)) {
+                this.success = []
+                this.errors.push(e);
+              }
+            })
+        this.getApiInformation();
       }
     },
     switchTo(step) {

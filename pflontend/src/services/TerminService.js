@@ -43,12 +43,4 @@ export class TerminService {
             console.log("Could not cancel appointment", e)
         }
     }
-
-    static async legeTerminAn(termin) {
-        try {
-            (await apiService.post("termin/post", termin));
-        } catch (e) {
-            alert("something went wrong: " + e);
-        }
-    }
 }

@@ -1,5 +1,4 @@
 import TerminUebersichtView from "@/views/authenticated/TerminUebersichtView";
-import HomepageClient from "@/views/HomepageClientView";
 import LoginView from "@/views/LoginView";
 import TerminbuchungView from "@/views/TerminbuchungView";
 import TerminDetailsView from "@/views/authenticated/TerminDetailsView";
@@ -10,9 +9,8 @@ import PersoenlicheEinstellungenView from "@/views/authenticated/PersoenlicheEin
 import BeratungsstellenVerwaltungView from "@/views/authenticated/BeratungsstellenVerwaltungView";
 
 const routes = [
-    {path: '/', component: HomepageClient},
+    {path: '/', component: TerminbuchungView},
     {path: '/login', component: LoginView},
-    {path: '/termin-buchen', component: TerminbuchungView},
     {path: '/termin/absage/:id', component: TerminabsageView},
     {path: '/uebersicht', component: TerminUebersichtView, meta: {requiresAuthentication: true}},
     {path: '/appointment/:id', component: TerminDetailsView, props: true, meta: {requiresAuthentication: true}},

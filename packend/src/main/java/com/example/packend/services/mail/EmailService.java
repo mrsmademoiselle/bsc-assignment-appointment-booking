@@ -50,7 +50,7 @@ public class EmailService {
                 termin.getAusgewaehlterTermin(),
                 termin.getUhrzeit(),
                 getBeratungsstelleFooter(termin),
-                "http://localhost:8080/termin-buchen",
+                "http://localhost:8080/",
                 getBeratungsstelleFooter(termin));
         sendSimpleMessage(termin.getKundeninformationen().getEmail(), "Terminabsage", text);
     }
