@@ -44,6 +44,8 @@ Login-Maske mitgeliefert:
 
 ```
 Username: admin
-
 Passwort: admin
 ```
+
+Für ein leichteres Testing werden außerdem beim Start der Anwendung in PackendApplication.java Dummydaten erstellt (
+Termine, Beratungsstellen, Mitarbeiter). 
