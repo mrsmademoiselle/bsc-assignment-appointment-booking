@@ -6,13 +6,19 @@
 
 Frontend:
 
+npm (oder alternativ yarn) muss installiert sein: https://www.npmjs.com/package/download
+
 ```
+cd pflontend
 npm install
 ```
 
 Backend:
 
+Maven muss installiert sein: https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/
+
 ```
+cd packend
 mvn clean install
 ```
 
