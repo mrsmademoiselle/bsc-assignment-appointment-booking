@@ -1,12 +1,17 @@
-# pflontend
+# Appointment booking tool
+
+This repository is an assignment from my universitys course of summer 2022.
+The UI is designed in german due to the course being german.
+
+It's explicitly cut towards tax consultants use cases.
 
 ## Project setup
 
-### 1. Dependencies installieren
+### 1. Install dependencies
 
 Frontend:
 
-npm (oder alternativ yarn) muss installiert sein: https://www.npmjs.com/package/download
+npm (or alternatively yarn) has to be installed: https://www.npmjs.com/package/download
 
 ```
 cd pflontend
@@ -15,43 +20,43 @@ npm install
 
 Backend:
 
-Maven muss installiert sein: https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/
+Maven has to be installed: https://maven.apache.org/download.cgi?Preferred=ftp://ftp.osuosl.org/pub/apache/
 
 ```
 cd packend
 mvn clean install
 ```
 
-### 2. E-Mail-Einstellungen
+### 2. Mail Settings
 
-Die Einstellungen für den E-Mail-Versand befinden sich in der application.properties-Datei.
+You need to configure your own mail settings in order to send them to your clients.
 
-Bitte darauf achten, dass imap/pop für den E-Mail-Account erlaubt ist! Ggf. beim Anbieter überprüfen.
+The settings for this can be found in the `application.properties` file.
 
-Folgende Zeilen müssen angepasst werden:
+Please note that imap/pop is allowed for your mail account. Enable this in your providers settings if not already enabled.
+
+The following lines need to be adjusted:
 
 ```properties
-# Für die Einstellungen des E-Mail-Senders
-spring.mail.username=<Email-Adresse des E-Mail-Senders>
-spring.mail.password=<Passwort zu o.g. E-Mail-Account>
-# Automatisches CC an diese E-Mail-Adresse
-spring.mail.cc=<E-Mail-Adresse>
+# Settings of the mail sender
+spring.mail.username=<mail address of sender>
+spring.mail.password=<password to mail account above>
+# Automatic CC to this mail address, if applicable. Can be left empty if not needed.
+spring.mail.cc=<second mail address>
 ```
 
-### 3. Ausführen
+### 3. Run
 
-Backend-Server: PackendApplication.java ausführen
+Backend-Server: Run `PackendApplication.java`
 
 Frontend-Server:
 ```npm run serve```
 
-Über http://localhost:8080 kann nun die Anwendung aufgerufen werden. Für Testzwecke werden Zugangsdaten für die
-Login-Maske mitgeliefert:
+The application can now be opened at http://localhost:8080.
 
 ```
 Username: admin
 Passwort: admin
 ```
 
-Für ein leichteres Testing werden außerdem beim Start der Anwendung in PackendApplication.java Dummydaten erstellt (
-Termine, Beratungsstellen, Mitarbeiter). 
+For easier testing, random data is created upon application start (appointments, employees,...).
